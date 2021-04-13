@@ -1,4 +1,4 @@
-package com.example.aloe
+package com.aladdin.aloe
 
 import io.flutter.embedding.android.FlutterActivity
 
