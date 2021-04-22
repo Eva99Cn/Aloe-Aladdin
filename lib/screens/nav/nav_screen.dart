@@ -1,4 +1,5 @@
 import 'package:aloe/screens/home/components/home_screen.dart';
+import 'package:aloe/screens/news/news_screen.dart';
 import 'package:aloe/screens/profile/profile_screen.dart';
 import 'package:aloe/screens/sign_in/sign_in_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,7 +20,7 @@ class _NavScreenState extends State<NavScreen> {
     int badge = 0;
     List<Widget> widgetOptions = <Widget>[
       HomeScreen(),
-      HomeScreen(),
+      NewsScreen(),
       currentUser != null
           ? (currentUser.emailVerified ? ProfileScreen() : SignInScreen())
           : SignInScreen()
@@ -75,12 +76,11 @@ class _NavScreenState extends State<NavScreen> {
                             },
                           ),
                           GButton(
-                            icon: Icons.search,
-                            text: 'Recherche',
+                            icon: Icons.article_sharp,
+                            text: 'Actualités',
                             onPressed: () {
                               setState(() {
                                 selectedIndex = 1;
-                                print("sdsd");
                               });
                             },
                           ),
