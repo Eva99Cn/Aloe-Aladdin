@@ -117,17 +117,12 @@ class _SignFormState extends State<SignForm> {
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
-          removeError(error: kShortPassError);
         }
         return null;
       },
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kPassNullError);
-          return "";
-        } else if (value.length < 8) {
-          addError(error: kShortPassError);
           return "";
         }
         return null;
@@ -176,7 +171,7 @@ class _SignFormState extends State<SignForm> {
       setState(() {
         addError(
             error:
-                "Il y a eu une erreur \nlors de l'authentification veuillez réessayer !");
+                "Il y a eu une erreur \nlors de l'authentification \nveuillez réessayer !");
       });
     });
   }

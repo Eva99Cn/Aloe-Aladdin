@@ -1,5 +1,5 @@
 import 'package:aloe/components/default_button.dart';
-import 'package:aloe/screens/sign_in/sign_in_screen.dart';
+import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../size_config.dart';
@@ -29,10 +29,8 @@ class Body extends StatelessWidget {
                 DefaultButton(
                   text: "returnhome",
                   press: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SignInScreen()));
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => NavScreen()));
                   },
                 ),
                 SizedBox(height: getProportionateScreenHeight(30)),

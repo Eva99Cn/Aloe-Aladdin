@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'components/body.dart';
 
-class SignUpSuccessScreen extends StatelessWidget {
+class ProfileScreen extends StatelessWidget {
+  static String routeName = "/profile";
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Body(),
-    );
+    return Body();
   }
 }

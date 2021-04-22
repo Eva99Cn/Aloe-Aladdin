@@ -1,5 +1,5 @@
 import 'package:aloe/components/default_button.dart';
-import 'package:aloe/screens/sign_in/sign_in_screen.dart';
+import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../size_config.dart';
@@ -16,26 +16,36 @@ class Body extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: SizeConfig.screenHeight * 0.03),
-                Text("Inscription"),
+                SizedBox(
+                  height: MediaQuery.of(context).size.width * 0.05,
+                ),
                 Text(
-                  "Veuillez confirmer votre adresse mail\n N'oubliez pas de vérifier dans vos courrier indésirable",
+                  "Inscription",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: getProportionateScreenWidth(28),
+                    fontSize: MediaQuery.of(context).size.width * 0.07,
                   ),
                 ),
-                SizedBox(height: SizeConfig.screenHeight * 0.06),
+                Text(
+                  "Veuillez confirmer votre adresse mail\n N'oubliez pas de vérifier dans vos courriers indésirables",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width * 0.05,
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.width * 0.05,
+                ),
                 DefaultButton(
                   text: "J'ai compris",
                   press: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SignInScreen()));
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => NavScreen()));
                   },
                 ),
-                SizedBox(height: getProportionateScreenHeight(30)),
+                SizedBox(
+                  height: MediaQuery.of(context).size.width * 0.05,
+                ),
               ],
             ),
           ),

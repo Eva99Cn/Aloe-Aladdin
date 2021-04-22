@@ -1,5 +1,7 @@
 import 'package:aloe/screens/home/components/home_screen.dart';
+import 'package:aloe/screens/profile/profile_screen.dart';
 import 'package:aloe/screens/sign_in/sign_in_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
@@ -13,11 +15,14 @@ class _NavScreenState extends State<NavScreen> {
   int selectedIndex = 0;
 
   Widget build(BuildContext context) {
+    User currentUser = FirebaseAuth.instance.currentUser;
     int badge = 0;
     List<Widget> widgetOptions = <Widget>[
       HomeScreen(),
       HomeScreen(),
-      SignInScreen()
+      currentUser != null
+          ? (currentUser.emailVerified ? ProfileScreen() : SignInScreen())
+          : SignInScreen()
     ];
     Widget currentWidget = widgetOptions.elementAt(selectedIndex);
 
