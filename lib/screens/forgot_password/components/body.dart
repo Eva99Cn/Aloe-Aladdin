@@ -15,20 +15,20 @@ class Body extends StatelessWidget {
       width: double.infinity,
       child: SingleChildScrollView(
         child: Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          padding: EdgeInsets.symmetric(
+              horizontal: getProportionateScreenWidth(context, 20)),
           child: Column(
             children: [
-              SizedBox(height: SizeConfig.screenHeight * 0.04),
+              SizedBox(height: getProportionateScreenHeight(context, 20)),
               Text(
                 "Mot de passe oublié ?",
                 style: TextStyle(
-                  fontSize: getProportionateScreenWidth(28),
+                  fontSize: getProportionateScreenWidth(context, 28),
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: SizeConfig.screenHeight * 0.1),
+              SizedBox(height: getProportionateScreenHeight(context, 10)),
               ForgotPassForm(),
             ],
           ),
@@ -56,7 +56,8 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
       child: Column(
         children: [
           TextFormField(
-            style: TextStyle(fontSize: getProportionateScreenWidth(14)),
+            style:
+                TextStyle(fontSize: getProportionateScreenWidth(context, 14)),
             keyboardType: TextInputType.emailAddress,
             onSaved: (newValue) => email = newValue,
             onChanged: (value) {
@@ -87,17 +88,18 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
             },
             decoration: InputDecoration(
               labelText: "Email",
-              labelStyle: TextStyle(fontSize: getProportionateScreenHeight(20)),
+              labelStyle: TextStyle(
+                  fontSize: getProportionateScreenHeight(context, 20)),
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: InkWell(
                   child: Icon(Icons.mail_outline,
-                      size: getProportionateScreenHeight(20)),
+                      size: getProportionateScreenHeight(context, 20)),
                   onTap: () {}),
             ),
           ),
-          SizedBox(height: getProportionateScreenHeight(30)),
+          SizedBox(height: getProportionateScreenHeight(context, 30)),
           FormError(errors: errors),
-          SizedBox(height: SizeConfig.screenHeight * 0.1),
+          SizedBox(height: getProportionateScreenHeight(context, 10)),
           DefaultButton(
             text: "Continuer",
             press: () {
@@ -107,7 +109,7 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
               }
             },
           ),
-          SizedBox(height: SizeConfig.screenHeight * 0.1),
+          SizedBox(height: getProportionateScreenHeight(context, 20)),
           NoAccountText(),
         ],
       ),

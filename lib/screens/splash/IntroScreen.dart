@@ -10,7 +10,6 @@ class IntroScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     User result = FirebaseAuth.instance.currentUser;
-    SizeConfig().init(context);
     return new SplashScreen(
         seconds: 2,
         navigateAfterSeconds: result != null
@@ -22,7 +21,7 @@ class IntroScreen extends StatelessWidget {
           'Aloe',
           style: new TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: getProportionateScreenWidth(40),
+              fontSize: getProportionateScreenWidth(context, 40),
               color: Colors.black),
         ),
         backgroundColor: Colors.white,

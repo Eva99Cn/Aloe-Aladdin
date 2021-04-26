@@ -41,13 +41,13 @@ class _SignUpFormState extends State<SignUpForm> {
           key: _formKey,
           child: Column(
             children: [
-              SizedBox(height: getProportionateScreenHeight(30)),
+              SizedBox(height: getProportionateScreenHeight(context, 30)),
               buildEmailFormField(),
-              SizedBox(height: getProportionateScreenHeight(30)),
+              SizedBox(height: getProportionateScreenHeight(context, 30)),
               buildPasswordFormField(),
-              SizedBox(height: getProportionateScreenHeight(30)),
+              SizedBox(height: getProportionateScreenHeight(context, 30)),
               buildConformPassFormField(),
-              SizedBox(height: getProportionateScreenHeight(30)),
+              SizedBox(height: getProportionateScreenHeight(context, 30)),
               FormError(errors: errors),
               DefaultButton(
                 text: "S'inscrire",
@@ -68,7 +68,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildConformPassFormField() {
     return TextFormField(
-      style: TextStyle(fontSize: getProportionateScreenWidth(12)),
+      style: TextStyle(fontSize: getProportionateScreenWidth(context, 12)),
       obscureText: true,
       onSaved: (newValue) => conformPassword = newValue,
       onChanged: (value) {
@@ -91,7 +91,8 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       decoration: InputDecoration(
         labelText: "Confirmer le mot de passe" + "*",
-        labelStyle: TextStyle(fontSize: getProportionateScreenWidth(20)),
+        labelStyle:
+            TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -103,7 +104,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
-      style: TextStyle(fontSize: getProportionateScreenWidth(12)),
+      style: TextStyle(fontSize: getProportionateScreenWidth(context, 12)),
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
@@ -126,7 +127,8 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       decoration: InputDecoration(
         labelText: "Email" + "*",
-        labelStyle: TextStyle(fontSize: getProportionateScreenWidth(20)),
+        labelStyle:
+            TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -138,7 +140,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
-      style: TextStyle(fontSize: getProportionateScreenWidth(12)),
+      style: TextStyle(fontSize: getProportionateScreenWidth(context, 12)),
       obscureText: true,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
@@ -161,7 +163,8 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       decoration: InputDecoration(
         labelText: "Mot de passe" + "*",
-        labelStyle: TextStyle(fontSize: getProportionateScreenWidth(20)),
+        labelStyle:
+            TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,

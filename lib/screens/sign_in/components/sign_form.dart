@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
+import '../../../size_config.dart';
 
 class SignForm extends StatefulWidget {
   @override
@@ -33,9 +34,11 @@ class _SignFormState extends State<SignForm> {
       child: Column(
         children: [
           buildEmailFormField(),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+          SizedBox(
+            height: getProportionateScreenHeight(context, 20),
+          ),
           buildPasswordFormField(),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+          SizedBox(height: getProportionateScreenHeight(context, 20)),
           Row(
             children: [
               Spacer(),
@@ -47,14 +50,14 @@ class _SignFormState extends State<SignForm> {
                 child: Text(
                   "Mot de passe oublié" + "?",
                   style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.height * 0.02,
+                      fontSize: getProportionateScreenWidth(context, 8),
                       decoration: TextDecoration.underline),
                 ),
               )
             ],
           ),
           FormError(errors: errors),
-          //SizedBox(height: getProportionateScreenHeight(20)),
+          //SizedBox(height: getProportionateScreenHeight(context,20)),
           DefaultButton(
             text: "Se connecter",
             press: () {
@@ -72,7 +75,7 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
-      style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05),
+      style: TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
@@ -95,8 +98,9 @@ class _SignFormState extends State<SignForm> {
       },
       decoration: InputDecoration(
         labelText: "Email",
-        labelStyle:
-            TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05),
+        labelStyle: TextStyle(
+          fontSize: getProportionateScreenWidth(context, 8),
+        ),
 
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
@@ -111,7 +115,9 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
-      style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05),
+      style: TextStyle(
+        fontSize: getProportionateScreenWidth(context, 8),
+      ),
       obscureText: true,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
@@ -130,7 +136,7 @@ class _SignFormState extends State<SignForm> {
       decoration: InputDecoration(
         labelText: "${("Mot de passe")}",
         labelStyle:
-            TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05),
+            TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
 
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly

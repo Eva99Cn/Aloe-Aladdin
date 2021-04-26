@@ -25,12 +25,6 @@ class _NavScreenState extends State<NavScreen> {
           ? (currentUser.emailVerified ? ProfileScreen() : SignInScreen())
           : SignInScreen()
     ];
-    Widget currentWidget = widgetOptions.elementAt(selectedIndex);
-
-    @override
-    void initState() {
-      super.initState();
-    }
 
     return Scaffold(
       body: SingleChildScrollView(

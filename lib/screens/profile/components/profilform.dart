@@ -5,6 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
+import '../../../size_config.dart';
 
 class ProfilForm extends StatefulWidget {
   @override
@@ -25,8 +26,8 @@ class _ProfilFormState extends State<ProfilForm> {
   String oldPassword;
   String newpassword;
 
-  bool _isModifyProfil = false;
-  bool _isModifyEmail = false;
+  bool isModifyProfil = false;
+  bool isModifyEmail = false;
   bool _isModifyPassword = false;
   final List<String> errors = [];
 
@@ -73,7 +74,7 @@ class _ProfilFormState extends State<ProfilForm> {
                           child: ElevatedButton(
                             onPressed: () {
                               setState(() {
-                                _isModifyEmail = _isModifyEmail ? false : true;
+                                isModifyEmail = isModifyEmail ? false : true;
                               });
                             },
                             style: ElevatedButton.styleFrom(
@@ -83,13 +84,13 @@ class _ProfilFormState extends State<ProfilForm> {
                               "Modifier",
                               style: TextStyle(
                                 color: Colors.black,
-                                //fontSize: getProportionateScreenWidth(16),
+                                //fontSize: getProportionateScreenWidth(context,16),
                               ),
                             ),
                           ),
                         ),
                         Visibility(
-                          visible: _isModifyEmail,
+                          visible: isModifyEmail,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Form(
@@ -98,8 +99,8 @@ class _ProfilFormState extends State<ProfilForm> {
                                 children: [
                                   buildEmailFormField(),
                                   //SizedBox(
-                                  //  height: getProportionateScreenHeight(30)),
-                                  buildPassword1FormField(),
+                                  //  height: getProportionateScreenHeight(context,30)),
+                                  buildModifyEmailPasswordFormField(),
                                   // SizedBox(
                                   //  height: ),
                                   DefaultButton(
@@ -151,20 +152,19 @@ class _ProfilFormState extends State<ProfilForm> {
                                 children: [
                                   buildOldPassFormField(),
                                   // SizedBox(
-                                  //    height: getProportionateScreenHeight(30)),
-                                  buildPasswordFormField(),
+                                  //    height: getProportionateScreenHeight(context,30)),
+                                  buildNewPasswordFormField(),
                                   // SizedBox(
-                                  //    height: getProportionateScreenHeight(30)),
-                                  buildConformPassFormField(),
+                                  //    height: getProportionateScreenHeight(context,30)),
+                                  buildNewConfirmPassFormField(),
                                   // SizedBox(
-                                  //   height: getProportionateScreenHeight(30)),
+                                  //   height: getProportionateScreenHeight(context,30)),
                                   DefaultButton(
                                     text: "Continue",
                                     press: () {
                                       if (_formPasswordKey.currentState
                                           .validate()) {
                                         _formPasswordKey.currentState.save();
-                                        // if all are valid then go to success screen
                                         modifyPassword();
                                       }
                                     },
@@ -185,9 +185,11 @@ class _ProfilFormState extends State<ProfilForm> {
     );
   }
 
-  TextFormField buildConformPassFormField() {
+  TextFormField buildNewConfirmPassFormField() {
     return TextFormField(
-      style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05),
+      style: TextStyle(
+        fontSize: getProportionateScreenWidth(context, 8),
+      ),
       obscureText: true,
       onSaved: (newValue) => conformPassword = newValue,
       onChanged: (value) {
@@ -211,7 +213,7 @@ class _ProfilFormState extends State<ProfilForm> {
       decoration: InputDecoration(
         labelText: "Confirmer le nouveau mot de passe",
         labelStyle:
-            TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05),
+            TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: InkWell(
             child: Icon(Icons.lock_outline_rounded, size: 20), onTap: () {}),
@@ -221,7 +223,7 @@ class _ProfilFormState extends State<ProfilForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
-      style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05),
+      style: TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
@@ -245,7 +247,7 @@ class _ProfilFormState extends State<ProfilForm> {
       decoration: InputDecoration(
         labelText: "Nouveau Email",
         labelStyle:
-            TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05),
+            TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon:
             InkWell(child: Icon(Icons.mail_outline, size: 20), onTap: () {}),
@@ -255,7 +257,7 @@ class _ProfilFormState extends State<ProfilForm> {
 
   TextFormField buildOldPassFormField() {
     return TextFormField(
-      style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05),
+      style: TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
       obscureText: true,
       onSaved: (newValue) => oldPassword = newValue,
       onChanged: (value) {
@@ -274,7 +276,7 @@ class _ProfilFormState extends State<ProfilForm> {
       decoration: InputDecoration(
         labelText: "Ancien mot de passe",
         labelStyle:
-            TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05),
+            TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: InkWell(
             child: Icon(Icons.lock_outline_rounded, size: 20), onTap: () {}),
@@ -282,9 +284,9 @@ class _ProfilFormState extends State<ProfilForm> {
     );
   }
 
-  TextFormField buildPassword1FormField() {
+  TextFormField buildModifyEmailPasswordFormField() {
     return TextFormField(
-      style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05),
+      style: TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
       obscureText: true,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
@@ -308,7 +310,7 @@ class _ProfilFormState extends State<ProfilForm> {
       decoration: InputDecoration(
         labelText: "Mot de passe",
         labelStyle:
-            TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05),
+            TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: InkWell(
             child: Icon(Icons.lock_outline_rounded, size: 20), onTap: () {}),
@@ -316,9 +318,9 @@ class _ProfilFormState extends State<ProfilForm> {
     );
   }
 
-  TextFormField buildPasswordFormField() {
+  TextFormField buildNewPasswordFormField() {
     return TextFormField(
-      style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05),
+      style: TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
       obscureText: true,
       onSaved: (newValue) => newpassword = newValue,
       onChanged: (value) {
@@ -342,7 +344,7 @@ class _ProfilFormState extends State<ProfilForm> {
       decoration: InputDecoration(
         labelText: "Nouveau mot de passe",
         labelStyle:
-            TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05),
+            TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: InkWell(
             child: Icon(Icons.lock_outline_rounded, size: 20), onTap: () {}),
@@ -363,7 +365,7 @@ class _ProfilFormState extends State<ProfilForm> {
                 'email': email,
               });
               setState(() {
-                _isModifyEmail = false;
+                isModifyEmail = false;
               });
 
               errors.clear();

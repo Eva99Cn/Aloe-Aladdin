@@ -2,6 +2,7 @@ import 'package:aloe/screens/sign_up/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
+import '../size_config.dart';
 
 class NoAccountText extends StatelessWidget {
   const NoAccountText({
@@ -16,7 +17,7 @@ class NoAccountText extends StatelessWidget {
         Text(
           "Pas de compte ?",
           style: TextStyle(
-            fontSize: MediaQuery.of(context).size.width * 0.05,
+            fontSize: getProportionateScreenWidth(context, 8),
           ),
         ),
         GestureDetector(
@@ -25,7 +26,7 @@ class NoAccountText extends StatelessWidget {
           child: Text(
             "S'inscrire",
             style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width * 0.05,
+                fontSize: getProportionateScreenWidth(context, 8),
                 color: kPrimaryColor),
           ),
         ),

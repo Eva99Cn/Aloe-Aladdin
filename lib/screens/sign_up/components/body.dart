@@ -10,25 +10,23 @@ class Body extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          padding: EdgeInsets.symmetric(
+              horizontal: getProportionateScreenWidth(context, 15)),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
+                SizedBox(
+                    height: getProportionateScreenHeight(context, 40)), // 4%
                 Text(
                   "Créer un compte",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: getProportionateScreenWidth(28),
+                    fontSize: getProportionateScreenWidth(context, 28),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: SizeConfig.screenHeight * 0.08),
+                SizedBox(height: getProportionateScreenHeight(context, 40)),
                 SignUpForm(),
-                SizedBox(height: SizeConfig.screenHeight * 0.08),
-
-                SizedBox(height: getProportionateScreenHeight(20)),
               ],
             ),
           ),

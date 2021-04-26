@@ -11,21 +11,21 @@ class Body extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          padding: EdgeInsets.symmetric(
+              horizontal: getProportionateScreenWidth(context, 20)),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: SizeConfig.screenHeight * 0.03),
+                SizedBox(height: getProportionateScreenHeight(context, 20)),
                 Text("Mot de passe oublié"),
                 Text(
                   "Un email à été envoyé pour changer votre mot de passe",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: getProportionateScreenWidth(28),
+                    fontSize: getProportionateScreenWidth(context, 28),
                   ),
                 ),
-                SizedBox(height: SizeConfig.screenHeight * 0.06),
+                SizedBox(height: getProportionateScreenHeight(context, 20)),
                 DefaultButton(
                   text: "returnhome",
                   press: () {
@@ -33,7 +33,7 @@ class Body extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => NavScreen()));
                   },
                 ),
-                SizedBox(height: getProportionateScreenHeight(30)),
+                SizedBox(height: getProportionateScreenHeight(context, 30)),
               ],
             ),
           ),

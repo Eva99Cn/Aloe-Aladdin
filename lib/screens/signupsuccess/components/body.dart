@@ -11,30 +11,30 @@ class Body extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          padding: EdgeInsets.symmetric(
+              horizontal: getProportionateScreenWidth(context, 20)),
           child: SingleChildScrollView(
             child: Column(
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.width * 0.05,
+                  height: getProportionateScreenHeight(context, 20),
                 ),
                 Text(
                   "Inscription",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.width * 0.07,
+                    fontSize: getProportionateScreenWidth(context, 20),
                   ),
                 ),
                 Text(
                   "Veuillez confirmer votre adresse mail\n N'oubliez pas de vérifier dans vos courriers indésirables",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.width * 0.05,
+                    fontSize: getProportionateScreenWidth(context, 10),
                   ),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.width * 0.05,
+                  height: getProportionateScreenHeight(context, 20),
                 ),
                 DefaultButton(
                   text: "J'ai compris",
@@ -44,7 +44,7 @@ class Body extends StatelessWidget {
                   },
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.width * 0.05,
+                  height: getProportionateScreenHeight(context, 20),
                 ),
               ],
             ),

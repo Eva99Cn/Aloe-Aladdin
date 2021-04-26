@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
+import '../size_config.dart';
 
 class DefaultButton extends StatelessWidget {
   const DefaultButton({
@@ -16,8 +17,8 @@ class DefaultButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.6,
-        height: MediaQuery.of(context).size.height * 0.08,
+        width: getProportionateScreenWidth(context, 100),
+        height: getProportionateScreenHeight(context, 50),
         child: TextButton(
           style: TextButton.styleFrom(
             backgroundColor: kPrimaryColor,
@@ -26,7 +27,7 @@ class DefaultButton extends StatelessWidget {
           child: Text(
             text,
             style: TextStyle(
-              fontSize: MediaQuery.of(context).size.width * 0.05,
+              fontSize: getProportionateScreenWidth(context, 10),
               color: Colors.black,
             ),
             textAlign: TextAlign.center,
