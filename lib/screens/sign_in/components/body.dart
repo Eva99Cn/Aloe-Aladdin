@@ -1,4 +1,5 @@
 import 'package:aloe/components/no_account_text.dart';
+import 'package:aloe/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../../size_config.dart';
@@ -14,7 +15,9 @@ class Body extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: getProportionateScreenHeight(context, 20)),
+                SizedBox(
+                    height: getProportionateScreenHeight(
+                        context, generalPaddingSize)),
                 Text(
                   "Connexion",
                   style: TextStyle(

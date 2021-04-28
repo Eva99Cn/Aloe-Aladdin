@@ -1,7 +1,7 @@
 import 'package:aloe/components/default_button.dart';
 import 'package:aloe/components/form_error.dart';
 import 'package:aloe/screens/forgot_password/forgot_password_screen.dart';
-import 'package:aloe/screens/home/components/home_screen.dart';
+import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -35,10 +35,12 @@ class _SignFormState extends State<SignForm> {
         children: [
           buildEmailFormField(),
           SizedBox(
-            height: getProportionateScreenHeight(context, 20),
+            height: getProportionateScreenHeight(context, generalPaddingSize),
           ),
           buildPasswordFormField(),
-          SizedBox(height: getProportionateScreenHeight(context, 20)),
+          SizedBox(
+              height:
+                  getProportionateScreenHeight(context, generalPaddingSize)),
           Row(
             children: [
               Spacer(),
@@ -50,7 +52,8 @@ class _SignFormState extends State<SignForm> {
                 child: Text(
                   "Mot de passe oublié" + "?",
                   style: TextStyle(
-                      fontSize: getProportionateScreenWidth(context, 8),
+                      fontSize:
+                          getProportionateScreenWidth(context, bodyFontSize),
                       decoration: TextDecoration.underline),
                 ),
               )
@@ -75,7 +78,8 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
-      style: TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
+      style: TextStyle(
+          fontSize: getProportionateScreenWidth(context, formFontSize)),
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
@@ -99,7 +103,7 @@ class _SignFormState extends State<SignForm> {
       decoration: InputDecoration(
         labelText: "Email",
         labelStyle: TextStyle(
-          fontSize: getProportionateScreenWidth(context, 8),
+          fontSize: getProportionateScreenWidth(context, formFontSize),
         ),
 
         // If  you are using latest version of flutter then lable text and hint text shown like this
@@ -116,7 +120,7 @@ class _SignFormState extends State<SignForm> {
   TextFormField buildPasswordFormField() {
     return TextFormField(
       style: TextStyle(
-        fontSize: getProportionateScreenWidth(context, 8),
+        fontSize: getProportionateScreenWidth(context, formFontSize),
       ),
       obscureText: true,
       onSaved: (newValue) => password = newValue,
@@ -135,15 +139,13 @@ class _SignFormState extends State<SignForm> {
       },
       decoration: InputDecoration(
         labelText: "${("Mot de passe")}",
-        labelStyle:
-            TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
-
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        labelStyle: TextStyle(
+            fontSize: getProportionateScreenWidth(context, formFontSize)),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: InkWell(
-            child: Icon(Icons.lock_outlined,
-                size: MediaQuery.of(context).size.width * 0.05),
+            child: Icon(
+              Icons.lock_outlined,
+            ),
             onTap: () {}),
       ),
     );
@@ -163,14 +165,22 @@ class _SignFormState extends State<SignForm> {
       if (result.user.emailVerified) {
         if (result.user.uid != "DNrxNkfOjeZmJcFLIBpnDjMdbYa2") {
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => HomeScreen()));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => NavScreen(
+                        startingIndex: 0,
+                      )));
         } else {
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => HomeScreen()));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => NavScreen(
+                        startingIndex: 0,
+                      )));
         }
       } else {
         addError(
-            error: "Mail non vérifié, nouveau mail de vérification envoyé");
+            error: "Mail non vérifié, \n nouveau mail de vérification\nenvoyé");
         result.user.sendEmailVerification();
       }
     }).catchError((err) {

@@ -13,29 +13,34 @@ class Body extends StatelessWidget {
         width: double.infinity,
         child: Padding(
           padding: EdgeInsets.symmetric(
-              horizontal: getProportionateScreenWidth(context, 20)),
+              horizontal:
+                  getProportionateScreenWidth(context, generalPaddingSize)),
           child: SingleChildScrollView(
             child: Column(
               children: [
                 SizedBox(
-                  height: getProportionateScreenHeight(context, 20),
+                  height:
+                      getProportionateScreenHeight(context, generalPaddingSize),
                 ),
                 Text(
                   "Inscription",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: getProportionateScreenWidth(context, 20),
+                    fontSize:
+                        getProportionateScreenWidth(context, bodyFontSize),
                   ),
                 ),
                 Text(
                   "Veuillez confirmer votre adresse mail\n N'oubliez pas de vérifier dans vos courriers indésirables",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: getProportionateScreenWidth(context, 10),
+                    fontSize:
+                        getProportionateScreenWidth(context, bodyFontSize),
                   ),
                 ),
                 SizedBox(
-                  height: getProportionateScreenHeight(context, 20),
+                  height:
+                      getProportionateScreenHeight(context, generalPaddingSize),
                 ),
                 DefaultButton(
                   text: "J'ai compris",
@@ -48,7 +53,8 @@ class Body extends StatelessWidget {
                   },
                 ),
                 SizedBox(
-                  height: getProportionateScreenHeight(context, 20),
+                  height:
+                      getProportionateScreenHeight(context, generalPaddingSize),
                 ),
               ],
             ),

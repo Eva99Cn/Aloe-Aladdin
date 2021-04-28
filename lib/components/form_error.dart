@@ -1,3 +1,4 @@
+import 'package:aloe/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../size_config.dart';
@@ -25,11 +26,11 @@ class FormError extends StatelessWidget {
           color: Colors.red,
         ),
         SizedBox(
-          width: getProportionateScreenWidth(context, 8),
+          width: getProportionateScreenWidth(context, generalPaddingSize),
         ),
         Text(error,
             style: TextStyle(
-              fontSize: getProportionateScreenWidth(context, 8),
+              fontSize: getProportionateScreenWidth(context, 10),
             )),
       ],
     );

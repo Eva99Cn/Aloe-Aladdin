@@ -13,22 +13,38 @@ class Body extends StatelessWidget {
         width: double.infinity,
         child: Padding(
           padding: EdgeInsets.symmetric(
-              horizontal: getProportionateScreenWidth(context, 20)),
+              horizontal:
+                  getProportionateScreenWidth(context, generalPaddingSize)),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: getProportionateScreenHeight(context, 20)),
-                Text("Mot de passe oublié"),
+                SizedBox(
+                    height: getProportionateScreenHeight(
+                        context, generalPaddingSize)),
                 Text(
-                  "Un email à été envoyé pour changer votre mot de passe",
-                  textAlign: TextAlign.center,
+                  "Mot de passe oublié",
                   style: TextStyle(
-                    fontSize: getProportionateScreenWidth(context, 28),
+                    fontSize:
+                        getProportionateScreenWidth(context, headerFontSize),
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: getProportionateScreenHeight(context, 20)),
+                SizedBox(
+                    height: getProportionateScreenHeight(
+                        context, generalPaddingSize)),
+                Text(
+                  "Un email a été envoyé pour changer votre mot de passe",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize:
+                        getProportionateScreenWidth(context, bodyFontSize),
+                  ),
+                ),
+                SizedBox(
+                    height:
+                        getProportionateScreenHeight(context, bodyFontSize)),
                 DefaultButton(
-                  text: "returnhome",
+                  text: "Accueil",
                   press: () {
                     Navigator.pushReplacement(
                         context,
@@ -37,7 +53,6 @@ class Body extends StatelessWidget {
                                 NavScreen(startingIndex: homeScreenIndex)));
                   },
                 ),
-                SizedBox(height: getProportionateScreenHeight(context, 30)),
               ],
             ),
           ),

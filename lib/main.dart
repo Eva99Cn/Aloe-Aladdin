@@ -29,7 +29,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: kBackgroundColor,
-        fontFamily: 'Lato',
+        fontFamily: 'Montserrat',
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: IntroScreen(),

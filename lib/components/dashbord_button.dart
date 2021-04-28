@@ -27,7 +27,7 @@ class DashboardButton extends StatelessWidget {
           child: Text(
             text,
             style: TextStyle(
-              fontSize: getProportionateScreenWidth(context, 10),
+              fontSize: getProportionateScreenWidth(context, bodyFontSize),
               color: Colors.white,
             ),
             textAlign: TextAlign.center,

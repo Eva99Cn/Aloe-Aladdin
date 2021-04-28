@@ -25,3 +25,9 @@ User currentUser = FirebaseAuth.instance.currentUser;
 int homeScreenIndex = 0;
 int newsScreenIndex = 1;
 int signInScreenIndex = 2;
+
+double formFontSize = 12;
+double bodyFontSize = 12;
+double headerFontSize = 28;
+
+double generalPaddingSize = 20;

@@ -41,13 +41,21 @@ class _SignUpFormState extends State<SignUpForm> {
           key: _formKey,
           child: Column(
             children: [
-              SizedBox(height: getProportionateScreenHeight(context, 30)),
+              SizedBox(
+                  height: getProportionateScreenHeight(
+                      context, generalPaddingSize)),
               buildEmailFormField(),
-              SizedBox(height: getProportionateScreenHeight(context, 30)),
+              SizedBox(
+                  height: getProportionateScreenHeight(
+                      context, generalPaddingSize)),
               buildPasswordFormField(),
-              SizedBox(height: getProportionateScreenHeight(context, 30)),
+              SizedBox(
+                  height: getProportionateScreenHeight(
+                      context, generalPaddingSize)),
               buildConformPassFormField(),
-              SizedBox(height: getProportionateScreenHeight(context, 30)),
+              SizedBox(
+                  height: getProportionateScreenHeight(
+                      context, generalPaddingSize)),
               FormError(errors: errors),
               DefaultButton(
                 text: "S'inscrire",
@@ -68,7 +76,8 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildConformPassFormField() {
     return TextFormField(
-      style: TextStyle(fontSize: getProportionateScreenWidth(context, 12)),
+      style: TextStyle(
+          fontSize: getProportionateScreenWidth(context, formFontSize)),
       obscureText: true,
       onSaved: (newValue) => conformPassword = newValue,
       onChanged: (value) {
@@ -91,8 +100,8 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       decoration: InputDecoration(
         labelText: "Confirmer le mot de passe" + "*",
-        labelStyle:
-            TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
+        labelStyle: TextStyle(
+            fontSize: getProportionateScreenWidth(context, formFontSize)),
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -104,7 +113,8 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
-      style: TextStyle(fontSize: getProportionateScreenWidth(context, 12)),
+      style: TextStyle(
+          fontSize: getProportionateScreenWidth(context, formFontSize)),
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
@@ -116,9 +126,8 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       validator: (value) {
-        if (value.isEmpty) {
-          addError(error: "kSecreyKeyNullError");
-          return "";
+        if (value.isNotEmpty) {
+          addError(error: "kEmailNullError");
         } else if (!emailValidatorRegExp.hasMatch(value)) {
           addError(error: "kInvalidEmailError");
           return "";
@@ -127,8 +136,8 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       decoration: InputDecoration(
         labelText: "Email" + "*",
-        labelStyle:
-            TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
+        labelStyle: TextStyle(
+            fontSize: getProportionateScreenWidth(context, formFontSize)),
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -140,7 +149,8 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
-      style: TextStyle(fontSize: getProportionateScreenWidth(context, 12)),
+      style: TextStyle(
+          fontSize: getProportionateScreenWidth(context, formFontSize)),
       obscureText: true,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
@@ -163,8 +173,8 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       decoration: InputDecoration(
         labelText: "Mot de passe" + "*",
-        labelStyle:
-            TextStyle(fontSize: getProportionateScreenWidth(context, 8)),
+        labelStyle: TextStyle(
+            fontSize: getProportionateScreenWidth(context, formFontSize)),
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -188,10 +198,17 @@ class _SignUpFormState extends State<SignUpForm> {
       result.user.sendEmailVerification();
       databaseReference.child(result.user.uid).set({
         'email': email,
-      });
+      }).catchError((onError) {});
 
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => SignUpSuccessScreen()));
-    }).catchError((err) {});
+    }).catchError((err) {
+      if (err.toString() ==
+          "[firebase_auth/email-already-in-use] The email address is already in use by another account.") {
+        addError(error: "Email déja utilisé");
+      } else {
+        addError(error: "Il y a eu une erreur, rééssayez");
+      }
+    });
   }
 }

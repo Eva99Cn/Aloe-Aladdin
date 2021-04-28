@@ -25,7 +25,7 @@ class LogOut extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => NavScreen(
-                              startingIndex: signInScreenIndex,
+                              startingIndex: homeScreenIndex,
                             )));
               },
             )

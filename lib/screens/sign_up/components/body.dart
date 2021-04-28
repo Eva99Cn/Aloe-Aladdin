@@ -1,3 +1,4 @@
+import 'package:aloe/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../../size_config.dart';
@@ -11,21 +12,26 @@ class Body extends StatelessWidget {
         width: double.infinity,
         child: Padding(
           padding: EdgeInsets.symmetric(
-              horizontal: getProportionateScreenWidth(context, 15)),
+              horizontal:
+                  getProportionateScreenWidth(context, generalPaddingSize)),
           child: SingleChildScrollView(
             child: Column(
               children: [
                 SizedBox(
-                    height: getProportionateScreenHeight(context, 40)), // 4%
+                    height: getProportionateScreenHeight(
+                        context, generalPaddingSize)), // 4%
                 Text(
                   "Créer un compte",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: getProportionateScreenWidth(context, 28),
+                    fontSize:
+                        getProportionateScreenWidth(context, headerFontSize),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: getProportionateScreenHeight(context, 40)),
+                SizedBox(
+                    height: getProportionateScreenHeight(
+                        context, generalPaddingSize)),
                 SignUpForm(),
               ],
             ),
