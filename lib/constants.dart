@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 const kPrimaryColor = Color(0xFF16B84E); // Vert principal
-const kPrimaryLightColor = Color(0xFFFFECDF);
+const kBackgroundColor = Color(0xFFF5F5DC); //Beige clair
 const kPrimaryGradientColor = Colors.accents;
 const kSecondaryColor = Color(0xff09423E); // Vert Foncé
 const kTextColor = Color(0xFF757575); // Noir

@@ -28,8 +28,8 @@ class _MyAppState extends State<MyApp> {
       title: 'Aloe',
       theme: ThemeData(
         primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: Colors.white,
-        fontFamily: "Oswald",
+        scaffoldBackgroundColor: kBackgroundColor,
+        fontFamily: 'Lato',
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: IntroScreen(),
