@@ -2,6 +2,7 @@ import 'package:aloe/components/default_button.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../../constants.dart';
 import '../../../size_config.dart';
 
 class Body extends StatelessWidget {
@@ -39,8 +40,11 @@ class Body extends StatelessWidget {
                 DefaultButton(
                   text: "J'ai compris",
                   press: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => NavScreen()));
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                NavScreen(startingIndex: homeScreenIndex)));
                   },
                 ),
                 SizedBox(

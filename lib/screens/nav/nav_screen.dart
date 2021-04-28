@@ -7,17 +7,21 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class NavScreen extends StatefulWidget {
+  final int startingIndex;
+  const NavScreen({Key key, this.startingIndex}) : super(key: key);
   @override
   _NavScreenState createState() => _NavScreenState();
 }
 
 class _NavScreenState extends State<NavScreen> {
   @override
-  int selectedIndex = 0;
+  int selectedIndex;
+  void initState() {
+    selectedIndex = widget.startingIndex;
+  }
 
   Widget build(BuildContext context) {
     User currentUser = FirebaseAuth.instance.currentUser;
-    int badge = 0;
     List<Widget> widgetOptions = <Widget>[
       HomeScreen(),
       NewsScreen(),

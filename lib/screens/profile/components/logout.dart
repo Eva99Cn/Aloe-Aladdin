@@ -2,6 +2,7 @@ import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../../constants.dart';
 import '../../../size_config.dart';
 
 class LogOut extends StatelessWidget {
@@ -20,8 +21,12 @@ class LogOut extends StatelessWidget {
               icon: (Icon(Icons.logout)),
               onPressed: () {
                 _auth.signOut();
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => NavScreen()));
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => NavScreen(
+                              startingIndex: signInScreenIndex,
+                            )));
               },
             )
           ],

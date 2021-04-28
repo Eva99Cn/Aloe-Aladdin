@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 const kPrimaryColor = Color(0xFF16B84E); // Vert principal
@@ -18,3 +19,9 @@ String kInvalidEmailError = "Le mail n'est pas valide";
 String kPassNullError = "Veuillez entrer un mot de passe";
 String kShortPassError = "Le mot de passe est trop court";
 String kMatchPassError = "Les mots de passes ne correspondent pas";
+
+User currentUser = FirebaseAuth.instance.currentUser;
+
+int homeScreenIndex = 0;
+int newsScreenIndex = 1;
+int signInScreenIndex = 2;

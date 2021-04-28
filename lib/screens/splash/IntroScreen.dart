@@ -14,9 +14,9 @@ class IntroScreen extends StatelessWidget {
         seconds: 2,
         navigateAfterSeconds: result != null
             ? result.uid == "DNrxNkfOjeZmJcFLIBpnDjMdbYa2"
-                ? NavScreen()
-                : NavScreen()
-            : NavScreen(),
+                ? NavScreen(startingIndex: homeScreenIndex)
+                : NavScreen(startingIndex: homeScreenIndex)
+            : NavScreen(startingIndex: homeScreenIndex),
         title: Text(
           'Aloe',
           style: new TextStyle(
