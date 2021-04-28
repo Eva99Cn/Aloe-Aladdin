@@ -15,9 +15,9 @@ class NavScreen extends StatefulWidget {
 
 class _NavScreenState extends State<NavScreen> {
   @override
-  int selectedIndex;
+  int selectedIndex = 0;
   void initState() {
-    selectedIndex = widget.startingIndex;
+    int selectedIndex = widget.startingIndex;
   }
 
   Widget build(BuildContext context) {
@@ -67,29 +67,14 @@ class _NavScreenState extends State<NavScreen> {
                           GButton(
                             icon: Icons.home,
                             text: 'Accueil',
-                            onPressed: () {
-                              setState(() {
-                                selectedIndex = 0;
-                              });
-                            },
                           ),
                           GButton(
                             icon: Icons.article_sharp,
                             text: 'Actualités',
-                            onPressed: () {
-                              setState(() {
-                                selectedIndex = 1;
-                              });
-                            },
                           ),
                           GButton(
                             icon: Icons.account_circle,
                             text: 'Profil',
-                            onPressed: () {
-                              setState(() {
-                                selectedIndex = 2;
-                              });
-                            },
                           ),
                         ],
                         selectedIndex: selectedIndex,

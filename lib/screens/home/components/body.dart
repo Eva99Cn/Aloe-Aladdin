@@ -1,5 +1,7 @@
 import 'package:aloe/components/dashbord_button.dart';
 import 'package:aloe/constants.dart';
+import 'package:aloe/screens/all_plants/all_plants_screen.dart';
+import 'package:aloe/screens/my_plants/my_plants_screen.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -12,37 +14,21 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   @override
-  int selectedIndex = 0;
+  int selectedOption = 0;
 
   Widget build(BuildContext context) {
     List<Widget> widgetOptions = <Widget>[
       buildDashboard(context),
-      HomeScreen(), // TODO : Toutes les plantes
-      currentUser != null
-          ? (currentUser.emailVerified
-              ? HomeScreen()
-              : NavScreen(
-                  startingIndex: signInScreenIndex,
-                ))
-          : NavScreen(
-              startingIndex: signInScreenIndex,
-            ), //TODO : Mes plantes
-      currentUser != null
-          ? (currentUser.emailVerified
-              ? HomeScreen()
-              : NavScreen(
-                  startingIndex: signInScreenIndex,
-                ))
-          : NavScreen(
-              startingIndex: signInScreenIndex,
-            ), // TODO : Activités
+      AllPlantsScreen(), // TODO : Toutes les plantes
+      MyPlantsScreen(), // TODO : Mes plantes
+      HomeScreen(), // TODO : Activités
     ];
 
     return SingleChildScrollView(
         child: SafeArea(
             child: Column(
       children: [
-        widgetOptions.elementAt(selectedIndex),
+        widgetOptions.elementAt(selectedOption),
       ],
     )));
   }
@@ -54,16 +40,9 @@ class _BodyState extends State<Body> {
         DashboardButton(
           text: "Toutes les plantes",
           press: () {
-            currentUser == null
-                ? Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => (NavScreen(
-                              startingIndex: signInScreenIndex,
-                            ))))
-                : setState(() {
-                    selectedIndex = 1;
-                  });
+            setState(() {
+              selectedOption = 1;
+            });
           },
         ),
         DashboardButton(
@@ -77,7 +56,7 @@ class _BodyState extends State<Body> {
                               startingIndex: signInScreenIndex,
                             ))))
                 : setState(() {
-                    selectedIndex = 1;
+                    selectedOption = 2;
                   });
           },
         ),
@@ -92,7 +71,7 @@ class _BodyState extends State<Body> {
                               startingIndex: signInScreenIndex,
                             ))))
                 : setState(() {
-                    selectedIndex = 1;
+                    selectedOption = 3;
                   });
           },
         )
@@ -100,3 +79,5 @@ class _BodyState extends State<Body> {
     );
   }
 }
+
+class AllPlants {}
