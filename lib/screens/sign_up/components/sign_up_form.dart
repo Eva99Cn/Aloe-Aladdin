@@ -119,17 +119,17 @@ class _SignUpFormState extends State<SignUpForm> {
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: "kEmailNullError");
+          removeError(error: kEmailNullError);
         } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: "kInvalidEmailError");
+          removeError(error: kInvalidEmailError);
         }
         return null;
       },
       validator: (value) {
         if (value.isNotEmpty) {
-          addError(error: "kEmailNullError");
+          addError(error: kEmailNullError);
         } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: "kInvalidEmailError");
+          addError(error: kInvalidEmailError);
           return "";
         }
         return null;
@@ -166,7 +166,7 @@ class _SignUpFormState extends State<SignUpForm> {
           addError(error: kPassNullError);
           return "";
         } else if (value.length < 8) {
-          addError(error: "kShortPassError");
+          addError(error: kShortPassError);
           return "";
         }
         return null;
