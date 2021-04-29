@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
+import '../../constants.dart';
+
 class NavScreen extends StatefulWidget {
   final int startingIndex;
   const NavScreen({Key key, this.startingIndex}) : super(key: key);
@@ -16,8 +18,13 @@ class NavScreen extends StatefulWidget {
 class _NavScreenState extends State<NavScreen> {
   @override
   int selectedIndex = 0;
+
   void initState() {
     int selectedIndex = widget.startingIndex;
+  }
+
+  void _onSearchButtonPressed() {
+    print("search button clicked");
   }
 
   Widget build(BuildContext context) {
@@ -58,6 +65,7 @@ class _NavScreenState extends State<NavScreen> {
                         rippleColor: Colors.grey[800],
                         hoverColor: Colors.grey[700],
                         iconSize: 20,
+                        haptic: true,
                         textStyle: TextStyle(fontSize: 16, color: Colors.white),
                         tabBackgroundColor: Colors.grey[900],
                         padding: EdgeInsets.symmetric(
@@ -65,9 +73,19 @@ class _NavScreenState extends State<NavScreen> {
                         duration: Duration(milliseconds: 800),
                         tabs: [
                           GButton(
-                            icon: Icons.home,
-                            text: 'Accueil',
-                          ),
+                              icon: Icons.home,
+                              text: 'Accueil',
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    pageBuilder: (_, __, ___) => NavScreen(
+                                      startingIndex: homeScreenIndex,
+                                    ),
+                                    transitionDuration: Duration(seconds: 0),
+                                  ),
+                                );
+                              }),
                           GButton(
                             icon: Icons.article_sharp,
                             text: 'Actualités',
