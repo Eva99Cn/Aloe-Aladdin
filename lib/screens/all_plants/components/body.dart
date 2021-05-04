@@ -1,3 +1,4 @@
+import 'package:aloe/screens/all_plants/components/grid_of_plants.dart';
 import 'package:flutter/material.dart';
 
 import '../../../size_config.dart';
@@ -13,13 +14,14 @@ class Body extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "ICI page Toutes les plantes",
+                  "Toutes les plantes",
                   style: TextStyle(
                     fontSize: getProportionateScreenWidth(context, 15),
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                AllPlantsGrid()
               ],
             ),
           ),

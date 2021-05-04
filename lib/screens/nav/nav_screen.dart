@@ -23,10 +23,6 @@ class _NavScreenState extends State<NavScreen> {
     int selectedIndex = widget.startingIndex;
   }
 
-  void _onSearchButtonPressed() {
-    print("search button clicked");
-  }
-
   Widget build(BuildContext context) {
     User currentUser = FirebaseAuth.instance.currentUser;
     List<Widget> widgetOptions = <Widget>[

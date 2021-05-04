@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "112297494134",
+    "firebase_url": "https://aloe-37675-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "aloe-37675",
     "storage_bucket": "aloe-37675.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "112297494134-j468j1mh0jtqqtp59626hh1hbkpvbi7h.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "112297494134-ngnr4uqqk312n11h2o3bntmct45vkgjq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.aladdin.aloe"
+              }
             }
           ]
         }
