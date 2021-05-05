@@ -19,6 +19,8 @@ String kInvalidEmailError = "Le mail n'est pas valide";
 String kPassNullError = "Veuillez entrer un mot de passe";
 String kShortPassError = "Le mot de passe est trop court";
 String kMatchPassError = "Les mots de passes ne correspondent pas";
+String kPlantNameNullError = "Veuillez entrer un surnom";
+String kInvalidPlantNameError = "Le surnom existe deja";
 
 User currentUser = FirebaseAuth.instance.currentUser;
 
