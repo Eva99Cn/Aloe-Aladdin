@@ -24,6 +24,8 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
   var now = new DateTime.now();
   var formatter = new DateFormat('yyyy-MM-dd');
   final _formKey = GlobalKey<FormState>();
+  bool isVisibleNewPlantForm = false;
+  String addPlantText = "Ajouter";
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -79,15 +81,67 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                       ),
                     ),
                     DefaultButton(
-                        text: "Ajouter cette plante",
+                        text: addPlantText,
                         press: () {
                           errors.clear();
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return buildDialogAddPlant(context);
-                              });
+                          setAddPlantButtonText();
                         }),
+                    Visibility(
+                        visible: isVisibleNewPlantForm,
+                        child: Form(
+                            key: _formKey,
+                            child: Container(
+                              child: Column(
+                                children: [
+                                  Container(
+                                      height: 100,
+                                      child: buildPlantNameFormField(context)),
+                                  FormError(errors: errors),
+                                  TextButton(
+                                    child: Text(
+                                      "Ajouter à mes plantes",
+                                      style: TextStyle(color: kPrimaryColor),
+                                    ),
+                                    onPressed: () async {
+                                      if (_formKey.currentState.validate()) {
+                                        _formKey.currentState.save();
+                                        print(errors);
+                                        DataSnapshot snapshot =
+                                            await databaseReference
+                                                .child("Users")
+                                                .child(currentUser.uid)
+                                                .child(plantName)
+                                                .once();
+
+                                        if (snapshot.value == null) {
+                                          errors.remove(kInvalidPlantNameError);
+                                          databaseReference
+                                              .child("Users")
+                                              .child(currentUser.uid)
+                                              .child(plantName)
+                                              .set({
+                                            "plantId":
+                                                allPlants["Id_Ma_Plante"],
+                                            "arrosageDate":
+                                                formatter.format(now)
+                                          });
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return buildDialogAddPlantSuccess(
+                                                    context);
+                                              });
+                                        } else {
+                                          setState(() {
+                                            errors.add(kInvalidPlantNameError);
+                                          });
+                                        }
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ))),
                     Container(
                       child: Column(
                         children: [
@@ -111,9 +165,9 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
     );
   }
 
-  AlertDialog buildDialogAddPlant(BuildContext context) {
+  AlertDialog buildDialogAddPlantSuccess(BuildContext context) {
     return AlertDialog(
-      title: new Text('Ajouter cette plante'),
+      title: new Text('La plante a bien été ajouté'),
       actions: <Widget>[
         Form(
             key: _formKey,
@@ -122,38 +176,12 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
               width: getProportionateScreenWidth(context, 150),
               child: Column(
                 children: [
-                  Container(
-                      height: 100, child: buildPlantNameFormField(context)),
-                  FormError(errors: errors),
                   TextButton(
                     child: Text(
                       "OK",
                     ),
-                    onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        _formKey.currentState.save();
-                        print(errors);
-                        DataSnapshot snapshot = await databaseReference
-                            .child("Users")
-                            .child(currentUser.uid)
-                            .child(plantName)
-                            .once();
-
-                        if (snapshot.value == null) {
-                          errors.remove(kInvalidPlantNameError);
-                          databaseReference
-                              .child("Users")
-                              .child(currentUser.uid)
-                              .child(plantName)
-                              .set({
-                            "plantId": allPlants["Id_Ma_Plante"],
-                            "arrosageDate": formatter.format(now)
-                          });
-                          Navigator.pop(context);
-                        } else {
-                          errors.add(kInvalidPlantNameError);
-                        }
-                      }
+                    onPressed: () {
+                      Navigator.of(context).pop();
                     },
                   ),
                 ],
@@ -190,5 +218,19 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
         ),
       ),
     );
+  }
+
+  void setAddPlantButtonText() {
+    if (isVisibleNewPlantForm) {
+      setState(() {
+        addPlantText = "Ajouter";
+      });
+      isVisibleNewPlantForm = false;
+    } else {
+      setState(() {
+        addPlantText = "Annuler";
+      });
+      isVisibleNewPlantForm = true;
+    }
   }
 }

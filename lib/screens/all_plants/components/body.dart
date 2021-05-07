@@ -1,7 +1,10 @@
+import 'package:aloe/constants.dart';
 import 'package:aloe/screens/all_plants/components/plant_details.dart';
+import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 import '../../../size_config.dart';
 
@@ -29,8 +32,32 @@ class _BodyState extends State<Body> {
           padding: EdgeInsets.symmetric(horizontal: 10),
           child: SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                widgetOptions.elementAt(selectedOption),
+                IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    onPressed: () {
+                      if (selectedOption == 0) {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.fade,
+                                child: NavScreen(
+                                  startingIndex: homeScreenIndex,
+                                )));
+                      } else {
+                        setState(() {
+                          selectedOption = 0;
+                        });
+                      }
+                    }),
+                AnimatedSwitcher(
+                    duration: Duration(milliseconds: 800),
+                    reverseDuration: Duration(milliseconds: 800),
+                    transitionBuilder:
+                        (Widget child, Animation<double> animation) =>
+                            ScaleTransition(child: child, scale: animation),
+                    child: widgetOptions.elementAt(selectedOption)),
               ],
             ),
           ),
