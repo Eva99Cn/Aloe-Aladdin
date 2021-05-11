@@ -1,5 +1,6 @@
 import 'package:aloe/components/default_button.dart';
 import 'package:aloe/components/form_error.dart';
+import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
   List<String> errors = [];
 
   var now = new DateTime.now();
-  var formatter = new DateFormat('yyyy-MM-dd');
+  var formatter = new DateFormat('yyyy-MM-dd hh:mm');
   final _formKey = GlobalKey<FormState>();
   bool isVisibleNewPlantForm = false;
   String addPlantText = "Ajouter";
@@ -83,8 +84,17 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                     DefaultButton(
                         text: addPlantText,
                         press: () {
-                          errors.clear();
-                          setAddPlantButtonText();
+                          if (currentUser != null) {
+                            errors.clear();
+                            setAddPlantButtonText();
+                          } else {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => (NavScreen(
+                                          startingIndex: signInScreenIndex,
+                                        ))));
+                          }
                         }),
                     Visibility(
                         visible: isVisibleNewPlantForm,
@@ -169,24 +179,22 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
     return AlertDialog(
       title: new Text('La plante a bien été ajouté'),
       actions: <Widget>[
-        Form(
-            key: _formKey,
-            child: Container(
-              height: getProportionateScreenWidth(context, 100),
-              width: getProportionateScreenWidth(context, 150),
-              child: Column(
-                children: [
-                  TextButton(
-                    child: Text(
-                      "OK",
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
+        Container(
+          height: getProportionateScreenWidth(context, 100),
+          width: getProportionateScreenWidth(context, 150),
+          child: Column(
+            children: [
+              TextButton(
+                child: Text(
+                  "OK",
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
-            ))
+            ],
+          ),
+        )
       ],
     );
   }
@@ -212,6 +220,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
           return "";
         } else if (!plantNameValidatorRegExp.hasMatch(value)) {
           addError(error: kInvalidPlantNameError);
+          return "";
         }
         return null;
       },

@@ -23,9 +23,9 @@ String kMatchPassError = "Les mots de passes ne correspondent pas";
 String kPlantNameNullError = "Veuillez entrer un surnom";
 String kPlantNameExistsError = "Le surnom existe deja";
 String kInvalidPlantNameError =
-    "Le surnom ne doit contenir que des lettres, des nombres ou - _";
+    "Le surnom ne doit contenir que des lettres, des nombres et ne peut contenir d'espace";
 
-final RegExp plantNameValidatorRegExp = RegExp(r"/^[\w-_]*$/");
+final RegExp plantNameValidatorRegExp = RegExp(r'^[a-zA-Z0-9]+$');
 
 User currentUser = FirebaseAuth.instance.currentUser;
 

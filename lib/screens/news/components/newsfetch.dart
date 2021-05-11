@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:aloe/models/News.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -20,16 +21,6 @@ Future<List<News>> _getNews() async {
   }
 
   return Articles;
-}
-
-class News {
-  final String publishedAt;
-  final String title;
-  final String url;
-  final String author;
-  final String urlToImage;
-
-  News(this.publishedAt, this.title, this.url, this.author, this.urlToImage);
 }
 
 class NewsFetch extends StatefulWidget {
