@@ -37,7 +37,8 @@ dependencies:
   cached_network_image: ^2.5.1
   url_launcher: ^6.0.3
   page_transition: ^1.1.7+6 
-  animations: ^2.0.0
+  flutter_local_notifications: ^5.0.0+4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

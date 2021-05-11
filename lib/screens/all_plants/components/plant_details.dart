@@ -22,7 +22,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
   List<String> errors = [];
 
   var now = new DateTime.now();
-  var formatter = new DateFormat('yyyy-MM-dd');
+  var formatter = new DateFormat('yyyy-MM-dd hh:mm');
   final _formKey = GlobalKey<FormState>();
   bool isVisibleNewPlantForm = false;
   String addPlantText = "Ajouter";
@@ -169,24 +169,22 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
     return AlertDialog(
       title: new Text('La plante a bien été ajouté'),
       actions: <Widget>[
-        Form(
-            key: _formKey,
-            child: Container(
-              height: getProportionateScreenWidth(context, 100),
-              width: getProportionateScreenWidth(context, 150),
-              child: Column(
-                children: [
-                  TextButton(
-                    child: Text(
-                      "OK",
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
+        Container(
+          height: getProportionateScreenWidth(context, 100),
+          width: getProportionateScreenWidth(context, 150),
+          child: Column(
+            children: [
+              TextButton(
+                child: Text(
+                  "OK",
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
-            ))
+            ],
+          ),
+        )
       ],
     );
   }
@@ -212,6 +210,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
           return "";
         } else if (!plantNameValidatorRegExp.hasMatch(value)) {
           addError(error: kInvalidPlantNameError);
+          return "";
         }
         return null;
       },
