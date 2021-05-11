@@ -14,13 +14,18 @@ const defaultDuration = Duration(milliseconds: 250);
 // Form Error
 final RegExp emailValidatorRegExp =
     RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
 String kEmailNullError = "Veuillez entrer un mail";
 String kInvalidEmailError = "Le mail n'est pas valide";
 String kPassNullError = "Veuillez entrer un mot de passe";
 String kShortPassError = "Le mot de passe est trop court";
 String kMatchPassError = "Les mots de passes ne correspondent pas";
 String kPlantNameNullError = "Veuillez entrer un surnom";
-String kInvalidPlantNameError = "Le surnom existe deja";
+String kPlantNameExistsError = "Le surnom existe deja";
+String kInvalidPlantNameError =
+    "Le surnom ne doit contenir que des lettres, des nombres ou - _";
+
+final RegExp plantNameValidatorRegExp = RegExp(r"/^[\w-_]*$/");
 
 User currentUser = FirebaseAuth.instance.currentUser;
 

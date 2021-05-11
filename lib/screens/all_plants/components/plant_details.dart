@@ -114,13 +114,14 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                                 .once();
 
                                         if (snapshot.value == null) {
-                                          errors.remove(kInvalidPlantNameError);
+                                          errors.remove(kPlantNameExistsError);
                                           databaseReference
                                               .child("Users")
                                               .child(currentUser.uid)
                                               .child(plantName)
                                               .set({
-                                            "plantId":
+                                            "NomPlante": plantName,
+                                            "IdPlante":
                                                 allPlants["Id_Ma_Plante"],
                                             "arrosageDate":
                                                 formatter.format(now)
@@ -132,9 +133,8 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                                     context);
                                               });
                                         } else {
-                                          setState(() {
-                                            errors.add(kInvalidPlantNameError);
-                                          });
+                                          addError(
+                                              error: kPlantNameExistsError);
                                         }
                                       }
                                     },
@@ -201,6 +201,8 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPlantNameNullError);
+        } else if (plantNameValidatorRegExp.hasMatch(value)) {
+          removeError(error: kInvalidPlantNameError);
         }
         return null;
       },
@@ -208,6 +210,8 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
         if (value.isEmpty) {
           addError(error: kPlantNameNullError);
           return "";
+        } else if (!plantNameValidatorRegExp.hasMatch(value)) {
+          addError(error: kInvalidPlantNameError);
         }
         return null;
       },
