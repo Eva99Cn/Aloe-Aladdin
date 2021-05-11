@@ -1,5 +1,6 @@
 import 'package:aloe/components/default_button.dart';
 import 'package:aloe/components/form_error.dart';
+import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -83,8 +84,17 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                     DefaultButton(
                         text: addPlantText,
                         press: () {
-                          errors.clear();
-                          setAddPlantButtonText();
+                          if (currentUser != null) {
+                            errors.clear();
+                            setAddPlantButtonText();
+                          } else {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => (NavScreen(
+                                          startingIndex: signInScreenIndex,
+                                        ))));
+                          }
                         }),
                     Visibility(
                         visible: isVisibleNewPlantForm,
