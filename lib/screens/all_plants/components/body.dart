@@ -1,5 +1,6 @@
 import 'package:aloe/constants.dart';
 import 'package:aloe/screens/all_plants/components/plant_details.dart';
+import 'package:aloe/screens/all_plants/components/plant_search.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -17,6 +18,8 @@ class _BodyState extends State<Body> {
   @override
   int selectedOption = 0;
   int plantId = 0;
+  String query;
+  List<dynamic> allPlants = [];
 
   Widget build(BuildContext context) {
     List<Widget> widgetOptions = <Widget>[
@@ -24,6 +27,9 @@ class _BodyState extends State<Body> {
       PlantDetailsScreen(
         plantId: plantId,
       ),
+      PlantSearch(
+        query: query,
+      )
     ];
 
     return SafeArea(
@@ -34,26 +40,41 @@ class _BodyState extends State<Body> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                IconButton(
-                    icon: Icon(Icons.arrow_back),
-                    onPressed: () {
-                      if (selectedOption == 0) {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.fade,
-                                child: NavScreen(
-                                  startingIndex: homeScreenIndex,
-                                )));
-                      } else {
-                        setState(() {
-                          selectedOption = 0;
-                        });
-                      }
-                    }),
+                Row(
+                  children: [
+                    IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        onPressed: () {
+                          if (selectedOption == 0) {
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.fade,
+                                    child: NavScreen(
+                                      startingIndex: homeScreenIndex,
+                                    )));
+                          } else {
+                            setState(() {
+                              selectedOption = 0;
+                            });
+                          }
+                        }),
+                    Spacer(),
+                    Visibility(
+                      visible: selectedOption == 0 ? true : false,
+                      child: IconButton(
+                          icon: Icon(Icons.search),
+                          onPressed: () {
+                            setState(() {
+                              selectedOption = 2;
+                            });
+                          }),
+                    ),
+                  ],
+                ),
                 AnimatedSwitcher(
-                    duration: Duration(milliseconds: 800),
-                    reverseDuration: Duration(milliseconds: 800),
+                    duration: Duration(milliseconds: 500),
+                    reverseDuration: Duration(milliseconds: 500),
                     transitionBuilder:
                         (Widget child, Animation<double> animation) =>
                             ScaleTransition(child: child, scale: animation),
@@ -69,8 +90,9 @@ class _BodyState extends State<Body> {
   Widget buildGridOfPlants() {
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.reference().child('AllPlantes');
-    List<dynamic> allPlants = [];
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         StreamBuilder(
             stream: databaseReference.onValue,
