@@ -19,4 +19,5 @@ Cookbook: Useful Flutter samples
 For help getting started with Flutter, view our online documentation, which offers tutorials, samples, guidance on mobile development, and a full API referenc
 
 ## App preview 
-![Aloe - Preview 1](https://user-images.githubusercontent.com/55144558/117952105-1ef52700-b315-11eb-8aa9-2bff4c27a811.png)![Aloe - Preview 2](https://user-images.githubusercontent.com/55144558/117952129-24527180-b315-11eb-86c1-131a87ebb68c.png)
+![Simulator Screen Shot - iPhone 8 ](https://user-images.githubusercontent.com/55144558/117952672-ab074e80-b315-11eb-9a3f-7058a58724b7.png)    ![Simulator Screen Shot - iPhone 8](https://user-images.githubusercontent.com/55144558/117952674-ac387b80-b315-11eb-9a83-f065f03f98bf.png)
+ 
