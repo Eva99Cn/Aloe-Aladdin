@@ -88,14 +88,11 @@ class _BodyState extends State<Body> {
   }
 
   Widget buildGridOfPlants() {
-    DatabaseReference databaseReference =
-        FirebaseDatabase.instance.reference().child('AllPlantes');
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         StreamBuilder(
-            stream: databaseReference.onValue,
+            stream: databaseReference.child("AllPlantes").onValue,
             builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
               if (snapshot.hasData) {
                 allPlants.clear();

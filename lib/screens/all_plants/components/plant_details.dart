@@ -17,7 +17,6 @@ class PlantDetailsScreen extends StatefulWidget {
 }
 
 class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
-  DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
   Map<dynamic, dynamic> allPlants = {};
   String plantName;
   List<String> errors = [];
@@ -130,6 +129,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                               .child(currentUser.uid)
                                               .child(plantName)
                                               .set({
+                                            "DateAjout": formatter.format(now),
                                             "NomPlante": plantName,
                                             "IdPlante":
                                                 allPlants["Id_Ma_Plante"],

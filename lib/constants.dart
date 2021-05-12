@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 const kPrimaryColor = Color(0xFF16B84E); // Vert principal
@@ -28,6 +29,7 @@ String kInvalidPlantNameError =
 final RegExp plantNameValidatorRegExp = RegExp(r'^[a-zA-Z0-9]+$');
 
 User currentUser = FirebaseAuth.instance.currentUser;
+DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
 
 int homeScreenIndex = 0;
 int newsScreenIndex = 1;

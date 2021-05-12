@@ -14,7 +14,6 @@ class PlantSearch extends StatefulWidget {
 }
 
 class _PlantSearchState extends State<PlantSearch> {
-  DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
   List<dynamic> allPlants = [];
   bool hasNotFoundPlants = false;
   @override

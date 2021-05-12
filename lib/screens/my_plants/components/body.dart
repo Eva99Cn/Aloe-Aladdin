@@ -1,15 +1,22 @@
-import 'package:aloe/components/default_button.dart';
 import 'package:aloe/models/UserPlant.dart';
-import 'package:aloe/services/notifications_services.dart';
+import 'package:aloe/screens/my_plants/components/add_watering_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../size_config.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  var formatter = new DateFormat('yyyy-MM-dd hh:mm');
+
   @override
   Widget build(BuildContext context) {
-    var formatter = new DateFormat('yyyy-MM-dd hh:mm');
+    UserPlant userPlant;
     return SafeArea(
       child: SizedBox(
         child: Padding(
@@ -28,20 +35,9 @@ class Body extends StatelessWidget {
 
                 /*
                 
-                Exemple d'utilisation : à corriger et implémenter implémenter
+                Exemple d'utilisation : à corriger et à implémenter
                 */
-                DefaultButton(
-                  text: "Test notif",
-                  press: () {
-                    UserPlant userPlant = new UserPlant(
-                        "Dave",
-                        formatter.parse("2021-05-11 05:09"),
-                        "1 fois par semaine",
-                        1);
-                    NotificationService()
-                        .scheduleNotificationForNextWatering(userPlant);
-                  },
-                )
+                AddWateringButton(plantName: "test")
               ],
             ),
           ),
