@@ -1,5 +1,5 @@
+import 'package:aloe/components/add_watering_button.dart';
 import 'package:aloe/models/UserPlant.dart';
-import 'package:aloe/screens/my_plants/components/add_watering_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -37,7 +37,10 @@ class _BodyState extends State<Body> {
                 
                 Exemple d'utilisation : à corriger et à implémenter
                 */
-                AddWateringButton(plantName: "test")
+                AddWateringButton(
+                  plantName: "capu",
+                  isForActivitiesScreen: false,
+                )
               ],
             ),
           ),

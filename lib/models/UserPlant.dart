@@ -1,4 +1,4 @@
-import 'package:intl/intl.dart';
+import '../constants.dart';
 
 class UserPlant {
   final Map<dynamic, dynamic> userPlantInformation;
@@ -11,8 +11,6 @@ class UserPlant {
   UserPlant(this.userPlantInformation, this.wateringRequirements);
 
   void init() {
-    var formatter = new DateFormat('yyyy-MM-dd hh:mm');
-
     this.name = userPlantInformation["NomPlante"];
     this.plantId = userPlantInformation["IdPlante"];
     this.acquisitionDate = formatter.parse(userPlantInformation["DateAjout"]);

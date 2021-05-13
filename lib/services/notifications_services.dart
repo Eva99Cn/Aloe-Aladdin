@@ -46,9 +46,9 @@ class NotificationService {
         userPlant.hashCode,
         "Aloe",
         "N'oubliez pas d'arroser " + userPlant.name,
-        tz.TZDateTime.now(tz.local).add(new Duration(seconds: 1
-            //days: computeWatering(userPlant.wateringRequirements)
-            )),
+        tz.TZDateTime.now(tz.local).add(new Duration(
+            //seconds: 1
+            days: computeWatering(userPlant.wateringRequirements))),
         const NotificationDetails(
             android: AndroidNotificationDetails("Aloe", "Aloe", 'Rappel')),
         payload: "Rappel",

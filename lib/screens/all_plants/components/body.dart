@@ -1,3 +1,4 @@
+import 'package:aloe/components/returnButton.dart';
 import 'package:aloe/constants.dart';
 import 'package:aloe/screens/all_plants/components/plant_details.dart';
 import 'package:aloe/screens/all_plants/components/plant_search.dart';
@@ -42,23 +43,21 @@ class _BodyState extends State<Body> {
               children: [
                 Row(
                   children: [
-                    IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        onPressed: () {
-                          if (selectedOption == 0) {
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.fade,
-                                    child: NavScreen(
-                                      startingIndex: homeScreenIndex,
-                                    )));
-                          } else {
-                            setState(() {
-                              selectedOption = 0;
-                            });
-                          }
-                        }),
+                    ReturnButton(press: () {
+                      if (selectedOption == 0) {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.fade,
+                                child: NavScreen(
+                                  startingIndex: homeScreenIndex,
+                                )));
+                      } else {
+                        setState(() {
+                          selectedOption = 0;
+                        });
+                      }
+                    }),
                     Spacer(),
                     Visibility(
                       visible: selectedOption == 0 ? true : false,

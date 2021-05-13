@@ -6,14 +6,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../size_config.dart';
+import '../size_config.dart';
 
 class AddWateringButton extends StatefulWidget {
   final String plantName;
-  const AddWateringButton({
-    Key key,
-    @required this.plantName,
-  }) : super(key: key);
+  final bool isForActivitiesScreen;
+  const AddWateringButton(
+      {Key key, @required this.plantName, @required this.isForActivitiesScreen})
+      : super(key: key);
 
   @override
   _AddWateringButtonState createState() => _AddWateringButtonState();
@@ -22,8 +22,9 @@ class AddWateringButton extends StatefulWidget {
 class _AddWateringButtonState extends State<AddWateringButton> {
   var formatter = new DateFormat('yyyy-MM-dd hh:mm');
   DateTime initialDate = DateTime.now();
-
   DateTime choosenDateTime = DateTime.now();
+  Map<dynamic, dynamic> plantInformation;
+
   @override
   Widget build(BuildContext context) {
     UserPlant userPlant;
@@ -46,7 +47,7 @@ class _AddWateringButtonState extends State<AddWateringButton> {
                   .once()
                   .then((DataSnapshot snapshotPlant) {
                 Map<dynamic, dynamic> _values = snapshotPlant.value;
-                Map<dynamic, dynamic> plantInformation = _values.values.first;
+                plantInformation = _values.values.first;
 
                 userPlant = new UserPlant(
                   userPlantInformation,
@@ -58,24 +59,33 @@ class _AddWateringButtonState extends State<AddWateringButton> {
             });
           },
           style: ElevatedButton.styleFrom(
-              primary: kPrimaryColor, padding: const EdgeInsets.all(8.0)),
+              elevation: 0,
+              primary: widget.isForActivitiesScreen
+                  ? Colors.transparent
+                  : kPrimaryColor,
+              padding: const EdgeInsets.all(8.0)),
           child: Container(
             width: getProportionateScreenWidth(context, 100),
-            child: Row(
-              children: [
-                Text(
-                  "Ajouter un arrosage",
-                  style: TextStyle(
+            child: widget.isForActivitiesScreen
+                ? Icon(
+                    Icons.done_outline_sharp,
                     color: Colors.black,
+                  )
+                : Row(
+                    children: [
+                      Text(
+                        "Ajouter un arrosage",
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                      Spacer(),
+                      Icon(
+                        Icons.calendar_today,
+                        color: Colors.black,
+                      )
+                    ],
                   ),
-                ),
-                Spacer(),
-                Icon(
-                  Icons.calendar_today,
-                  color: Colors.black,
-                )
-              ],
-            ),
           ),
         ),
       ),
@@ -113,10 +123,17 @@ class _AddWateringButtonState extends State<AddWateringButton> {
                                 .child(currentUser.uid)
                                 .child(widget.plantName)
                                 .update({
-                              "arrosageDate": formatter.format(choosenDateTime)
+                              "arrosageDate": formatter.format(choosenDateTime),
+                              "prochainArrosage": formatter.format(
+                                  choosenDateTime.add(Duration(
+                                      days:
+                                          NotificationService().computeWatering(
+                                plantInformation["Fréquence_Arrosage"],
+                              ))))
                             });
                             NotificationService()
                                 .scheduleNotificationForNextWatering(userPlant);
+
                             Navigator.pop(c);
                           },
                           child: Text("Confirmer")),

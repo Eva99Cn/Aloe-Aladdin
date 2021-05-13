@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 const kPrimaryColor = Color(0xFF16B84E); // Vert principal
 const kBackgroundColor = Color(0xFFF5F5DC); //Beige clair
@@ -40,3 +41,5 @@ double bodyFontSize = 12;
 double headerFontSize = 28;
 
 double generalPaddingSize = 20;
+
+var formatter = new DateFormat('yyyy-MM-dd hh:mm');
