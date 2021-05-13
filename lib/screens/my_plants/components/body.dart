@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:aloe/components/add_watering_button.dart';
 import 'package:aloe/models/UserPlant.dart';
+import 'package:aloe/screens/my_plants/components/plants_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -22,7 +23,6 @@ class _BodyState extends State<Body> {
   var formatter = new DateFormat('yyyy-MM-dd hh:mm');
   var currentUser = FirebaseAuth.instance.currentUser;
   LinkedHashMap<dynamic, dynamic> myPlants = new LinkedHashMap();
-  LinkedHashMap<dynamic, dynamic> myPlant = new LinkedHashMap();
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +58,8 @@ class _BodyState extends State<Body> {
                         myPlants.forEach((key, value) {
                           // TODO get photo of the plant
 
-                          widgets.add(AddWateringButton(
-                            plantName: value.name,
-                            isForActivitiesScreen: false,
+                          widgets.add(PlantDetailsItem(
+                            plantInformation: value,
                           ));
                         });
                         return Column(children: widgets);
