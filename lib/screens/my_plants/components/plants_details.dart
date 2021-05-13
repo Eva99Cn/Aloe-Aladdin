@@ -33,23 +33,58 @@ class _PlantDetailsItemState extends State<PlantDetailsItem> {
             builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
               if (snapshot.hasData) {
                 myPlant.clear();
-
-                Map<dynamic, dynamic> _values = snapshot.data.snapshot.value;
-                _values.forEach((key, value) {
-                  myPlant.addAll(value);
-                });
-
+                try {
+                  Map<dynamic, dynamic> _values = snapshot.data.snapshot.value;
+                  _values.forEach((key, value) {
+                    myPlant.addAll(value);
+                  });
+                } catch (err) {
+                  return Center(
+                    child: Column(
+                      children: [
+                        Text("Pas de plantes ajoutées"),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                primary: kPrimaryColor,
+                                padding: const EdgeInsets.all(8.0)),
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => NavScreen(
+                                            startingIndex: homeScreenIndex,
+                                            widgetIndex: 1,
+                                          )));
+                            },
+                            child: Text("Ajouter des plantes"))
+                      ],
+                    ),
+                  );
+                }
                 var photoUrl = myPlant['Photo'];
 
                 return (Row(
                   children: [
-                    Image.network(photoUrl),
+                    Container(
+                      height: getProportionateScreenHeight(context, 70),
+                      width: getProportionateScreenWidth(context, 40),
+                      child: CachedNetworkImage(
+                        placeholder: (context, url) => Text(
+                          "Loading...",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        fit: BoxFit.fill,
+                        imageUrl: photoUrl,
+                      ),
+                    ),
                     Column(
                       children: [Text(widget.plantInformation['NomPlante'])],
                     )
                   ],
                 ));
               }
+              return Container();
             }));
   }
 }
