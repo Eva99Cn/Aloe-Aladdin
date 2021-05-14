@@ -43,4 +43,3 @@ double headerFontSize = 28;
 double generalPaddingSize = 20;
 
 var formatter = new DateFormat('yyyy-MM-dd hh:mm');
-DateTime nowDate = DateTime.now();

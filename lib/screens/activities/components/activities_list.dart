@@ -15,6 +15,7 @@ class ActivitiesList extends StatefulWidget {
 
 class _ActivitiesListState extends State<ActivitiesList> {
   int plantId = 0;
+  DateTime nowDate = DateTime.now();
 
   List<dynamic> userPlants = [];
   List<dynamic> allPlants = [];
@@ -117,7 +118,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Prochain arrosage ",
+                                    "Arrosage ",
                                     style: TextStyle(
                                       fontSize: getProportionateScreenHeight(
                                           context, 14),
@@ -127,13 +128,27 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                   Text(
                                     userPlants[index]["prochainArrosage"] !=
                                             null
-                                        ? "D-" +
-                                            formatter
-                                                .parse(userPlants[index]
-                                                    ["prochainArrosage"])
-                                                .difference(nowDate)
-                                                .inDays
-                                                .toString()
+                                        ? formatter
+                                                    .parse(userPlants[index]
+                                                        ["prochainArrosage"])
+                                                    .difference(nowDate)
+                                                    .inDays <
+                                                0
+                                            ? "D + " +
+                                                formatter
+                                                    .parse(userPlants[index]
+                                                        ["prochainArrosage"])
+                                                    .difference(nowDate)
+                                                    .inDays
+                                                    .abs()
+                                                    .toString()
+                                            : "D - " +
+                                                formatter
+                                                    .parse(userPlants[index]
+                                                        ["prochainArrosage"])
+                                                    .difference(nowDate)
+                                                    .inDays
+                                                    .toString()
                                         : "Pas défini",
                                     style: TextStyle(
                                       fontSize: getProportionateScreenHeight(
@@ -141,6 +156,39 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                       color: Colors.black,
                                     ),
                                   ),
+                                  LinearProgressIndicator(
+                                    semanticsValue: formatter
+                                        .parse(userPlants[index]
+                                            ["prochainArrosage"])
+                                        .difference(nowDate)
+                                        .inDays
+                                        .toString(),
+                                    backgroundColor: Colors.grey,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        formatter
+                                                    .parse(userPlants[index]
+                                                        ["prochainArrosage"])
+                                                    .difference(nowDate)
+                                                    .inDays >
+                                                0
+                                            ? kPrimaryColor
+                                            : Colors.red),
+                                    value: 1 -
+                                        (formatter
+                                                .parse(userPlants[index]
+                                                    ["prochainArrosage"])
+                                                .difference(nowDate)
+                                                .inSeconds
+                                                .toDouble() /
+                                            formatter
+                                                .parse(userPlants[index]
+                                                    ["prochainArrosage"])
+                                                .difference(formatter.parse(
+                                                    userPlants[index]
+                                                        ["arrosageDate"]))
+                                                .inSeconds
+                                                .toDouble()),
+                                  )
                                 ],
                               ),
                               trailing: Container(
