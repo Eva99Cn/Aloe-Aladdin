@@ -46,13 +46,6 @@ class _ActivitiesListState extends State<ActivitiesList> {
                   _values.forEach((key, value) {
                     userPlants.add(value);
                   });
-                  databaseReference
-                      .child("AllPlantes")
-                      .once()
-                      .then((DataSnapshot snapshotPlant) {
-                    List<dynamic> _values = snapshotPlant.value;
-                    allPlants.addAll(_values);
-                  });
                 } catch (err) {
                   return Center(
                     child: Column(
@@ -85,7 +78,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
                     itemCount: userPlants.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
-                        padding: const EdgeInsets.only(right: 10, bottom: 10),
+                        padding: const EdgeInsets.only(bottom: 10),
                         child: Column(
                           children: [
                             ListTile(
@@ -153,8 +146,8 @@ class _ActivitiesListState extends State<ActivitiesList> {
                               ),
                               trailing: Container(
                                 height:
-                                    getProportionateScreenHeight(context, 70),
-                                width: getProportionateScreenWidth(context, 40),
+                                    getProportionateScreenHeight(context, 60),
+                                width: getProportionateScreenWidth(context, 20),
                                 child: AddWateringButton(
                                   plantName: userPlants[index]["NomPlante"],
                                   isForActivitiesScreen: true,

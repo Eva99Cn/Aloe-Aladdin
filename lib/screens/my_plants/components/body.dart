@@ -2,7 +2,6 @@ import 'package:aloe/components/add_watering_button.dart';
 import 'package:aloe/models/UserPlant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../../size_config.dart';
 
@@ -12,8 +11,6 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  var formatter = new DateFormat('yyyy-MM-dd hh:mm');
-
   @override
   Widget build(BuildContext context) {
     UserPlant userPlant;

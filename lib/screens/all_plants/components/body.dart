@@ -111,9 +111,6 @@ class _BodyState extends State<Body> {
                       maxCrossAxisExtent:
                           getProportionateScreenHeight(context, 300),
                       childAspectRatio: 3 / 2,
-                      crossAxisSpacing:
-                          getProportionateScreenHeight(context, 0),
-                      mainAxisSpacing: getProportionateScreenWidth(context, 10),
                     ),
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
@@ -126,44 +123,46 @@ class _BodyState extends State<Body> {
                               selectedOption = 1;
                             });
                           },
-                          child: Column(
-                            children: [
-                              Flexible(
-                                child: Card(
-                                  elevation: 0,
-                                  child: GridTile(
-                                    child: Container(
-                                      height: getProportionateScreenHeight(
-                                          context, 200),
-                                      width: getProportionateScreenWidth(
-                                          context, 600),
-                                      child: CachedNetworkImage(
-                                        placeholder: (context, url) => Text(
-                                          "Loading...",
-                                          style: TextStyle(fontSize: 20),
-                                        ),
-                                        imageUrl: allPlants[index]["Photo"],
-                                        fit: BoxFit.fill,
-                                      ),
+                          child: Card(
+                            elevation: 4,
+                            borderOnForeground: true,
+                            color: Colors.white,
+                            child: GridTile(
+                              child: Container(
+                                height:
+                                    getProportionateScreenHeight(context, 200),
+                                width:
+                                    getProportionateScreenWidth(context, 600),
+                                child: CachedNetworkImage(
+                                  placeholder: (context, url) => Text(
+                                    "Loading...",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  imageUrl: allPlants[index]["Photo"],
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              footer: Padding(
+                                padding: const EdgeInsets.only(left: 15),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(6),
                                     ),
+                                  ),
+                                  child: Text(
+                                    allPlants[index]["Nom"],
+                                    style: TextStyle(
+                                      fontSize: getProportionateScreenHeight(
+                                          context, 14),
+                                      color: Colors.black,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
                               ),
-                              Container(
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      allPlants[index]["Nom"],
-                                      style: TextStyle(
-                                        fontSize: getProportionateScreenHeight(
-                                            context, 14),
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       );

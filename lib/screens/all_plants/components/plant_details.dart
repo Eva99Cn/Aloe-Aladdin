@@ -4,7 +4,6 @@ import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -22,7 +21,6 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
   List<String> errors = [];
 
   var now = new DateTime.now();
-  var formatter = new DateFormat('yyyy-MM-dd hh:mm');
   final _formKey = GlobalKey<FormState>();
   bool isVisibleNewPlantForm = false;
   String addPlantText = "Ajouter";

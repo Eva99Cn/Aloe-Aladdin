@@ -4,7 +4,6 @@ import 'package:aloe/services/notifications_services.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../size_config.dart';
 
@@ -20,7 +19,6 @@ class AddWateringButton extends StatefulWidget {
 }
 
 class _AddWateringButtonState extends State<AddWateringButton> {
-  var formatter = new DateFormat('yyyy-MM-dd hh:mm');
   DateTime initialDate = DateTime.now();
   DateTime choosenDateTime = DateTime.now();
   Map<dynamic, dynamic> plantInformation;
