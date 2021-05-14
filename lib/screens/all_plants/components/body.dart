@@ -1,27 +1,37 @@
 import 'package:aloe/components/returnButton.dart';
 import 'package:aloe/constants.dart';
+import 'package:aloe/screens/all_plants/components/grid_of_plants.dart';
 import 'package:aloe/screens/all_plants/components/plant_details.dart';
 import 'package:aloe/screens/all_plants/components/plant_search.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 
 import '../../../size_config.dart';
 
 class Body extends StatefulWidget {
+  final Widget selectedWiget;
+  const Body({Key key, this.selectedWiget}) : super(key: key);
   @override
   _BodyState createState() => _BodyState();
 }
 
 class _BodyState extends State<Body> {
-  @override
   int selectedOption = 0;
   int plantId = 0;
   String query;
+  Widget selectedWidget;
   List<dynamic> allPlants = [];
 
+  @override
+  void initState() {
+    super.initState();
+    selectedWidget =
+        widget.selectedWiget != null ? widget.selectedWiget : GridOfPlants();
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<Widget> widgetOptions = <Widget>[
       buildGridOfPlants(),
@@ -43,41 +53,32 @@ class _BodyState extends State<Body> {
               children: [
                 Row(
                   children: [
-                    ReturnButton(press: () {
-                      if (selectedOption == 0) {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.fade,
-                                child: NavScreen(
-                                  startingIndex: homeScreenIndex,
-                                )));
-                      } else {
-                        setState(() {
-                          selectedOption = 0;
-                        });
-                      }
-                    }),
+                    ReturnButton(),
                     Spacer(),
                     Visibility(
                       visible: selectedOption == 0 ? true : false,
                       child: IconButton(
                           icon: Icon(Icons.search),
                           onPressed: () {
-                            setState(() {
-                              selectedOption = 2;
-                            });
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => NavScreen(
+                                          startingIndex: homeScreenIndex,
+                                          selectedWidget: PlantSearch(),
+                                        )));
                           }),
                     ),
                   ],
                 ),
-                AnimatedSwitcher(
+                selectedWidget,
+                /*  AnimatedSwitcher(
                     duration: Duration(milliseconds: 500),
                     reverseDuration: Duration(milliseconds: 500),
                     transitionBuilder:
                         (Widget child, Animation<double> animation) =>
                             ScaleTransition(child: child, scale: animation),
-                    child: widgetOptions.elementAt(selectedOption)),
+                    child: widgetOptions.elementAt(selectedOption)),*/
               ],
             ),
           ),
@@ -120,8 +121,16 @@ class _BodyState extends State<Body> {
                           onTap: () {
                             setState(() {
                               plantId = allPlants[index]["Id_Ma_Plante"];
-                              selectedOption = 1;
                             });
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => NavScreen(
+                                          startingIndex: homeScreenIndex,
+                                          selectedWidget: PlantDetailsScreen(
+                                            plantId: plantId,
+                                          ),
+                                        )));
                           },
                           child: Card(
                             elevation: 4,

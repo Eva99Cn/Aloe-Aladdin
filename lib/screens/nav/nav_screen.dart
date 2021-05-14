@@ -9,8 +9,8 @@ import '../../constants.dart';
 
 class NavScreen extends StatefulWidget {
   final int startingIndex;
-  final int widgetIndex;
-  const NavScreen({Key key, this.startingIndex, this.widgetIndex})
+  final Widget selectedWidget;
+  const NavScreen({Key key, this.startingIndex, this.selectedWidget})
       : super(key: key);
   @override
   _NavScreenState createState() => _NavScreenState();
@@ -19,18 +19,17 @@ class NavScreen extends StatefulWidget {
 class _NavScreenState extends State<NavScreen> {
   @override
   int selectedIndex = 0;
-  int homeWidgetIndex = 0;
+  Widget selectedWidget = HomeScreen();
 
   void initState() {
     selectedIndex = widget.startingIndex;
-    homeWidgetIndex = widget.widgetIndex != null ? widget.widgetIndex : 0;
+    selectedWidget =
+        widget.selectedWidget != null ? widget.selectedWidget : HomeScreen();
   }
 
   Widget build(BuildContext context) {
     List<Widget> widgetOptions = <Widget>[
-      HomeScreen(
-        widgetIndex: homeWidgetIndex,
-      ),
+      widget.selectedWidget,
       NewsScreen(),
       currentUser != null ? ProfileScreen() : SignInScreen()
     ];
@@ -78,8 +77,8 @@ class _NavScreenState extends State<NavScreen> {
                                   context,
                                   PageRouteBuilder(
                                     pageBuilder: (_, __, ___) => NavScreen(
-                                      startingIndex: homeScreenIndex,
-                                    ),
+                                        startingIndex: homeScreenIndex,
+                                        selectedWidget: HomeScreen()),
                                     transitionDuration: Duration(seconds: 0),
                                   ),
                                 );

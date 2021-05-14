@@ -1,5 +1,6 @@
 import 'package:aloe/components/default_button.dart';
 import 'package:aloe/components/form_error.dart';
+import 'package:aloe/components/returnButton.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -19,6 +20,13 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
   Map<dynamic, dynamic> allPlants = {};
   String plantName;
   List<String> errors = [];
+  int plantId;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    plantId = widget.plantId - 1;
+  }
 
   var now = new DateTime.now();
   final _formKey = GlobalKey<FormState>();
@@ -28,8 +36,6 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
   void addError({String error}) {
     if (!errors.contains(error))
       setState(() {
-        print(errors);
-
         errors.add(error);
       });
   }
@@ -44,20 +50,21 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        ReturnButton(),
         StreamBuilder(
             stream: databaseReference
                 .child('AllPlantes')
-                .orderByChild("Id_Ma_Plante")
-                .equalTo(widget.plantId)
+                .child(plantId.toString())
                 .onValue,
             builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
               if (snapshot.hasData) {
+                print(snapshot.data.snapshot.value);
                 allPlants.clear();
+
                 Map<dynamic, dynamic> _values = snapshot.data.snapshot.value;
-                _values.forEach((key, value) {
-                  allPlants.addAll(value);
-                });
+                allPlants = snapshot.data.snapshot.value;
 
                 return Column(
                   children: [

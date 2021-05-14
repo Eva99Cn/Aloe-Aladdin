@@ -1,4 +1,5 @@
 import 'package:aloe/components/add_watering_button.dart';
+import 'package:aloe/screens/all_plants/components/grid_of_plants.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -62,7 +63,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                   MaterialPageRoute(
                                       builder: (context) => NavScreen(
                                             startingIndex: homeScreenIndex,
-                                            widgetIndex: 1,
+                                            selectedWidget: GridOfPlants(),
                                           )));
                             },
                             child: Text("Ajouter des plantes"))
