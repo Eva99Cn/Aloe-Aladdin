@@ -131,9 +131,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                             formatter
                                                 .parse(userPlants[index]
                                                     ["prochainArrosage"])
-                                                .difference(formatter.parse(
-                                                    userPlants[index]
-                                                        ["arrosageDate"]))
+                                                .difference(nowDate)
                                                 .inDays
                                                 .toString()
                                         : "Pas défini",

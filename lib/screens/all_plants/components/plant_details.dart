@@ -18,15 +18,9 @@ class PlantDetailsScreen extends StatefulWidget {
 
 class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
   Map<dynamic, dynamic> allPlants = {};
-  String plantName;
+  String plantName = "";
   List<String> errors = [];
   int plantId;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    plantId = widget.plantId - 1;
-  }
 
   var now = new DateTime.now();
   final _formKey = GlobalKey<FormState>();
@@ -48,6 +42,12 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    plantId = widget.plantId - 1;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,10 +61,10 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
             builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
               if (snapshot.hasData) {
                 print(snapshot.data.snapshot.value);
-                allPlants.clear();
-
-                Map<dynamic, dynamic> _values = snapshot.data.snapshot.value;
-                allPlants = snapshot.data.snapshot.value;
+                try {
+                  Map<dynamic, dynamic> _values = snapshot.data.snapshot.value;
+                  allPlants = _values;
+                } catch (err) {}
 
                 return Column(
                   children: [
@@ -195,6 +195,8 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
+                  _formKey.currentState.reset();
+                  setAddPlantButtonText();
                 },
               ),
             ],

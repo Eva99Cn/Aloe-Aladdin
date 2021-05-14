@@ -37,15 +37,15 @@ class _AddWateringButtonState extends State<AddWateringButton> {
                 .once()
                 .then((DataSnapshot snapshot) {
               Map<dynamic, dynamic> userPlantInformation = snapshot.value;
-
+              int plantId = userPlantInformation["IdPlante"] - 1;
               databaseReference
                   .child("AllPlantes")
-                  .orderByChild("Id_Ma_Plante")
-                  .equalTo(userPlantInformation["IdPlante"])
+                  .child(plantId.toString())
                   .once()
                   .then((DataSnapshot snapshotPlant) {
+                print(snapshotPlant.value);
                 Map<dynamic, dynamic> _values = snapshotPlant.value;
-                plantInformation = _values.values.first;
+                plantInformation = _values;
 
                 userPlant = new UserPlant(
                   userPlantInformation,
