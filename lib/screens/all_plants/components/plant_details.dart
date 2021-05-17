@@ -143,6 +143,8 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                                 allPlants["Id_Ma_Plante"],
                                             "arrosageDate":
                                                 formatter.format(now),
+                                            "prochainArrosage":
+                                                formatter.format(now),
                                           });
                                           showDialog(
                                               context: context,
