@@ -1,6 +1,7 @@
 import 'package:aloe/constants.dart';
 import 'package:aloe/models/UserPlant.dart';
 import 'package:aloe/services/notifications_services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,8 @@ class AddWateringButton extends StatefulWidget {
 }
 
 class _AddWateringButtonState extends State<AddWateringButton> {
+  User _auth = FirebaseAuth.instance.currentUser;
+
   DateTime initialDate = DateTime.now();
   DateTime choosenDateTime = DateTime.now();
   Map<dynamic, dynamic> plantInformation;
@@ -32,7 +35,7 @@ class _AddWateringButtonState extends State<AddWateringButton> {
           onPressed: () {
             databaseReference
                 .child("Users")
-                .child(currentUser.uid)
+                .child(_auth.uid)
                 .child(widget.plantName)
                 .once()
                 .then((DataSnapshot snapshot) {
@@ -43,7 +46,6 @@ class _AddWateringButtonState extends State<AddWateringButton> {
                   .child(plantId.toString())
                   .once()
                   .then((DataSnapshot snapshotPlant) {
-                print(snapshotPlant.value);
                 Map<dynamic, dynamic> _values = snapshotPlant.value;
                 plantInformation = _values;
 
@@ -116,19 +118,7 @@ class _AddWateringButtonState extends State<AddWateringButton> {
                     children: [
                       TextButton(
                           onPressed: () {
-                            databaseReference
-                                .child("Users")
-                                .child(currentUser.uid)
-                                .child(widget.plantName)
-                                .update({
-                              "arrosageDate": formatter.format(choosenDateTime),
-                              "prochainArrosage": formatter.format(
-                                  choosenDateTime.add(Duration(
-                                      days:
-                                          NotificationService().computeWatering(
-                                plantInformation["Fréquence_Arrosage"],
-                              ))))
-                            });
+                            updateNextWateringDateOnDatabase();
                             NotificationService()
                                 .scheduleNotificationForNextWatering(userPlant);
 
@@ -145,5 +135,19 @@ class _AddWateringButtonState extends State<AddWateringButton> {
                 ],
               ));
         });
+  }
+
+  Future<void> updateNextWateringDateOnDatabase() async {
+    await databaseReference
+        .child("Users")
+        .child(_auth.uid)
+        .child(widget.plantName)
+        .update({
+      "arrosageDate": formatter.format(choosenDateTime),
+      "prochainArrosage": formatter.format(choosenDateTime.add(Duration(
+          days: NotificationService().computeWatering(
+        plantInformation["Fréquence_Arrosage"],
+      ))))
+    });
   }
 }

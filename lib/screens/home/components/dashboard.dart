@@ -5,6 +5,7 @@ import 'package:aloe/screens/all_plants/all_plants_screen.dart';
 import 'package:aloe/screens/all_plants/components/grid_of_plants.dart';
 import 'package:aloe/screens/my_plants/my_plants_screen.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class DashBoard extends StatefulWidget {
@@ -24,6 +25,9 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   Widget build(BuildContext context) {
+    User currentUser = FirebaseAuth.instance.currentUser;
+    bool isUserSignedIn = currentUser == null;
+
     return SingleChildScrollView(
         child: SafeArea(
             child: Padding(
@@ -46,7 +50,7 @@ class _DashBoardState extends State<DashBoard> {
         DashboardButton(
           text: "Mes Plantes",
           press: () {
-            currentUser == null
+            isUserSignedIn
                 ? Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -65,7 +69,7 @@ class _DashBoardState extends State<DashBoard> {
         DashboardButton(
           text: "Activités",
           press: () {
-            currentUser == null
+            isUserSignedIn
                 ? Navigator.push(
                     context,
                     MaterialPageRoute(

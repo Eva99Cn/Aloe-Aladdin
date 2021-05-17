@@ -2,6 +2,7 @@ import 'package:aloe/components/add_watering_button.dart';
 import 'package:aloe/screens/all_plants/components/grid_of_plants.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -34,6 +35,8 @@ class _ActivitiesListState extends State<ActivitiesList> {
 
   @override
   Widget build(BuildContext context) {
+    User currentUser = FirebaseAuth.instance.currentUser;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -79,6 +82,18 @@ class _ActivitiesListState extends State<ActivitiesList> {
                     physics: ScrollPhysics(),
                     itemCount: userPlants.length,
                     itemBuilder: (BuildContext context, int index) {
+                      var isNextWateringDefined =
+                          userPlants[index]["prochainArrosage"] != null;
+                      var hasWateringDatePassed = formatter
+                              .parse(userPlants[index]["prochainArrosage"])
+                              .difference(nowDate)
+                              .inDays <
+                          0;
+                      int daysRemainingBeforeWatering = formatter
+                          .parse(userPlants[index]["prochainArrosage"])
+                          .difference(nowDate)
+                          .inDays
+                          .abs();
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: Column(
@@ -126,28 +141,13 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                     ),
                                   ),
                                   Text(
-                                    userPlants[index]["prochainArrosage"] !=
-                                            null
-                                        ? formatter
-                                                    .parse(userPlants[index]
-                                                        ["prochainArrosage"])
-                                                    .difference(nowDate)
-                                                    .inDays <
-                                                0
+                                    isNextWateringDefined
+                                        ? hasWateringDatePassed
                                             ? "D + " +
-                                                formatter
-                                                    .parse(userPlants[index]
-                                                        ["prochainArrosage"])
-                                                    .difference(nowDate)
-                                                    .inDays
-                                                    .abs()
+                                                daysRemainingBeforeWatering
                                                     .toString()
                                             : "D - " +
-                                                formatter
-                                                    .parse(userPlants[index]
-                                                        ["prochainArrosage"])
-                                                    .difference(nowDate)
-                                                    .inDays
+                                                daysRemainingBeforeWatering
                                                     .toString()
                                         : "Pas défini",
                                     style: TextStyle(

@@ -1,4 +1,4 @@
-import 'package:aloe/screens/home/components/home_screen.dart';
+import 'package:aloe/screens/home/home_screen.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

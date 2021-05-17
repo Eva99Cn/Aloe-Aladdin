@@ -1,6 +1,7 @@
 import 'package:aloe/components/default_button.dart';
 import 'package:aloe/components/form_error.dart';
-import 'package:aloe/screens/signupsuccess/signupsuccess.dart';
+import 'package:aloe/screens/home/home_screen.dart';
+import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -122,7 +123,7 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       validator: (value) {
-        if (value.isNotEmpty) {
+        if (value.isEmpty) {
           addError(error: kEmailNullError);
         } else if (!emailValidatorRegExp.hasMatch(value)) {
           addError(error: kInvalidEmailError);
@@ -134,8 +135,6 @@ class _SignUpFormState extends State<SignUpForm> {
         labelText: "Email" + "*",
         labelStyle: TextStyle(
             fontSize: getProportionateScreenWidth(context, formFontSize)),
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon:
             InkWell(child: Icon(Icons.mail_outline, size: 20), onTap: () {}),
@@ -192,9 +191,12 @@ class _SignUpFormState extends State<SignUpForm> {
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((result) async {
       result.user.sendEmailVerification();
-
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => SignUpSuccessScreen()));
+      _auth.signOut();
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return buildDialogSignUpSuccess(context);
+          });
     }).catchError((err) {
       if (err.toString() ==
           "[firebase_auth/email-already-in-use] The email address is already in use by another account.") {
@@ -203,5 +205,36 @@ class _SignUpFormState extends State<SignUpForm> {
         addError(error: "Il y a eu une erreur, rééssayez");
       }
     });
+  }
+
+  AlertDialog buildDialogSignUpSuccess(BuildContext context) {
+    return AlertDialog(
+        title: Column(
+          children: [
+            Icon(
+              Icons.thumb_up_sharp,
+              size: getProportionateScreenHeight(context, 60),
+            ),
+            Text(
+              "Veuillez confirmer votre adresse mail. N'oubliez pas de vérifier dans vos courriers indésirables",
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(
+              "J'ai compris",
+            ),
+            onPressed: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NavScreen(
+                            startingIndex: homeScreenIndex,
+                            selectedWidget: HomeScreen(),
+                          )));
+            },
+          ),
+        ]);
   }
 }

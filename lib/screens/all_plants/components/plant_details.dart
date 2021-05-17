@@ -3,6 +3,7 @@ import 'package:aloe/components/form_error.dart';
 import 'package:aloe/components/returnButton.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -49,6 +50,8 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    User currentUser = FirebaseAuth.instance.currentUser;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
