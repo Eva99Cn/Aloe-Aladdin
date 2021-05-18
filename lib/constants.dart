@@ -20,11 +20,17 @@ String kEmailNullError = "Veuillez entrer un mail";
 String kInvalidEmailError = "Le mail n'est pas valide";
 String kPassNullError = "Veuillez entrer un mot de passe";
 String kShortPassError = "Le mot de passe est trop court";
+String kConfirmPassNullError = "Veuillez confirmer votre mot de passe";
+
 String kMatchPassError = "Les mots de passes ne correspondent pas";
 String kPlantNameNullError = "Veuillez entrer un surnom";
 String kPlantNameExistsError = "Le surnom existe deja";
 String kInvalidPlantNameError =
     "Le surnom ne doit contenir que des lettres, des nombres et ne peut contenir d'espace";
+
+String kTooManyAttempts =
+    "L'accès à ce compte a été temporairement désactivé en raison de nombreuses tentatives de connexion infructueuses.";
+String kWrongPassword = "Le mot de passe n'est pas valide";
 
 final RegExp plantNameValidatorRegExp = RegExp(r'^[a-zA-Z0-9]+$');
 

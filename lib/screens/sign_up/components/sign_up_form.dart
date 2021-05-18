@@ -18,7 +18,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   String email;
   String password;
-  String conformPassword;
+  String confirmPassword;
 
   bool remember = false;
   final List<String> errors = [];
@@ -28,6 +28,12 @@ class _SignUpFormState extends State<SignUpForm> {
       setState(() {
         errors.add(error);
       });
+  }
+
+  void removeError({String error}) {
+    setState(() {
+      errors.remove(error);
+    });
   }
 
   @override
@@ -76,20 +82,23 @@ class _SignUpFormState extends State<SignUpForm> {
       style: TextStyle(
           fontSize: getProportionateScreenWidth(context, formFontSize)),
       obscureText: true,
-      onSaved: (newValue) => conformPassword = newValue,
+      onSaved: (newValue) => confirmPassword = newValue,
       onChanged: (value) {
+        print(password);
+
         if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
-        } else if (value.isNotEmpty && password == conformPassword) {
+          removeError(error: kConfirmPassNullError);
+        }
+        if (password == confirmPassword) {
           removeError(error: kMatchPassError);
         }
-        conformPassword = value;
+        confirmPassword = value;
       },
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kPassNullError);
+          addError(error: kConfirmPassNullError);
           return "";
-        } else if ((password != value)) {
+        } else if (password != value) {
           addError(error: kMatchPassError);
           return "";
         }
@@ -99,8 +108,6 @@ class _SignUpFormState extends State<SignUpForm> {
         labelText: "Confirmer le mot de passe" + "*",
         labelStyle: TextStyle(
             fontSize: getProportionateScreenWidth(context, formFontSize)),
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: InkWell(
             child: Icon(Icons.lock_outline_rounded, size: 20), onTap: () {}),
@@ -152,7 +159,8 @@ class _SignUpFormState extends State<SignUpForm> {
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
+        }
+        if (value.length >= 8) {
           removeError(error: kShortPassError);
         }
         password = value;
@@ -178,13 +186,6 @@ class _SignUpFormState extends State<SignUpForm> {
             child: Icon(Icons.lock_outline_rounded, size: 20), onTap: () {}),
       ),
     );
-  }
-
-  void removeError({String error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
   }
 
   Future<void> signUp() async {

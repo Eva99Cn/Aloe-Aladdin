@@ -174,11 +174,17 @@ class _SignFormState extends State<SignForm> {
         result.user.sendEmailVerification();
       }
     }).catchError((err) {
-      setState(() {
+      if (err.toString() ==
+          "[firebase_auth/too-many-requests] Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.") {
+        addError(error: kTooManyAttempts);
+      } else if (err.toString() ==
+          "[firebase_auth/wrong-password] The password is invalid or the user does not have a password.") {
+        addError(error: kWrongPassword);
+      } else {
         addError(
             error:
                 "Il y a eu une erreur \nlors de l'authentification \nveuillez réessayer !");
-      });
+      }
     });
   }
 }

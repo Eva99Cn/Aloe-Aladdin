@@ -19,27 +19,47 @@ class _ProfilFormState extends State<ProfilForm> {
 
   String email;
   String password;
-  String conformPassword;
+  String confirmPassword;
   String oldPassword;
   String newpassword;
 
-  bool isModifyProfil = false;
   bool isModifyEmail = false;
-  bool _isModifyPassword = false;
-  final List<String> errors = [];
+  bool isModifyPassword = false;
+  final List<String> errorsPasswordForm = [];
+  final List<String> errorsEmailForm = [];
 
   void addError({String error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
+    if (isModifyEmail) {
+      if (!errorsEmailForm.contains(error)) {
+        setState(() {
+          errorsEmailForm.add(error);
+        });
+      }
+    }
+    if (isModifyPassword) {
+      if (!errorsPasswordForm.contains(error)) {
+        setState(() {
+          errorsPasswordForm.add(error);
+        });
+      }
+    }
   }
 
   void removeError({String error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
+    if (isModifyEmail) {
+      if (errorsEmailForm.contains(error)) {
+        setState(() {
+          errorsEmailForm.remove(error);
+        });
+      }
+    }
+    if (isModifyPassword) {
+      if (errorsPasswordForm.contains(error)) {
+        setState(() {
+          errorsPasswordForm.remove(error);
+        });
+      }
+    }
   }
 
   @override
@@ -52,7 +72,6 @@ class _ProfilFormState extends State<ProfilForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                FormError(errors: errors),
                 Text(
                   "Email" + " : ",
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -68,6 +87,7 @@ class _ProfilFormState extends State<ProfilForm> {
                       setState(() {
                         isModifyEmail = isModifyEmail ? false : true;
                       });
+                      errorsEmailForm.clear();
                     },
                     style: ElevatedButton.styleFrom(
                         primary: kSecondaryColor,
@@ -90,11 +110,8 @@ class _ProfilFormState extends State<ProfilForm> {
                       child: Column(
                         children: [
                           buildEmailFormField(),
-                          //SizedBox(
-                          //  height: getProportionateScreenHeight(context,30)),
                           buildModifyEmailPasswordFormField(),
-                          // SizedBox(
-                          //  height: ),
+                          FormError(errors: errorsEmailForm),
                           DefaultButton(
                             text: "Continue",
                             press: () {
@@ -117,8 +134,9 @@ class _ProfilFormState extends State<ProfilForm> {
                   child: ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        _isModifyPassword = _isModifyPassword ? false : true;
+                        isModifyPassword = isModifyPassword ? false : true;
                       });
+                      errorsPasswordForm.clear();
                     },
                     style: ElevatedButton.styleFrom(
                         primary: kSecondaryColor,
@@ -133,7 +151,7 @@ class _ProfilFormState extends State<ProfilForm> {
                   ),
                 ),
                 Visibility(
-                  visible: _isModifyPassword,
+                  visible: isModifyPassword,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Form(
@@ -141,14 +159,9 @@ class _ProfilFormState extends State<ProfilForm> {
                       child: Column(
                         children: [
                           buildOldPassFormField(),
-                          // SizedBox(
-                          //    height: getProportionateScreenHeight(context,30)),
                           buildNewPasswordFormField(),
-                          // SizedBox(
-                          //    height: getProportionateScreenHeight(context,30)),
                           buildNewConfirmPassFormField(),
-                          // SizedBox(
-                          //   height: getProportionateScreenHeight(context,30)),
+                          FormError(errors: errorsPasswordForm),
                           DefaultButton(
                             text: "Continue",
                             press: () {
@@ -177,14 +190,15 @@ class _ProfilFormState extends State<ProfilForm> {
         fontSize: getProportionateScreenWidth(context, 8),
       ),
       obscureText: true,
-      onSaved: (newValue) => conformPassword = newValue,
+      onSaved: (newValue) => confirmPassword = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
-        } else if (value.isNotEmpty && newpassword == conformPassword) {
+        }
+        if (newpassword == value) {
           removeError(error: kMatchPassError);
         }
-        conformPassword = value;
+        confirmPassword = value;
       },
       validator: (value) {
         if (value.isEmpty) {
@@ -278,7 +292,8 @@ class _ProfilFormState extends State<ProfilForm> {
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
+        }
+        if (value.length >= 8) {
           removeError(error: kShortPassError);
         }
         password = value;
@@ -312,7 +327,8 @@ class _ProfilFormState extends State<ProfilForm> {
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
+        }
+        if (value.length >= 8) {
           removeError(error: kShortPassError);
         }
         newpassword = value;
@@ -349,14 +365,20 @@ class _ProfilFormState extends State<ProfilForm> {
                 isModifyEmail = false;
               });
 
-              errors.clear();
+              errorsEmailForm.clear();
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("EmailChanged"),
+                content: Text("L'Email à bien été modifié"),
                 duration: Duration(seconds: 5),
               ));
             }))
         .catchError((err) {
-      addError(error: "tryagain");
+      if (err.toString() ==
+          "[firebase_auth/too-many-requests] Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.") {
+        addError(error: kTooManyAttempts);
+      } else if (err.toString() ==
+          "[firebase_auth/wrong-password] The password is invalid or the user does not have a password.") {
+        addError(error: kWrongPassword);
+      }
     });
   }
 
@@ -367,16 +389,22 @@ class _ProfilFormState extends State<ProfilForm> {
         .then((value) =>
             _auth.currentUser.updatePassword(newpassword).then((value) {
               setState(() {
-                _isModifyPassword = false;
+                isModifyPassword = false;
               });
-              errors.clear();
+              errorsPasswordForm.clear();
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("PasswordChanged"),
+                content: Text("Le mot de passe à bien été modifié"),
                 duration: Duration(seconds: 5),
               ));
             }))
         .catchError((err) {
-      addError(error: "tryagain");
+      if (err.toString() ==
+          "[firebase_auth/too-many-requests] Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.") {
+        addError(error: kTooManyAttempts);
+      } else if (err.toString() ==
+          "[firebase_auth/wrong-password] The password is invalid or the user does not have a password.") {
+        addError(error: kWrongPassword);
+      }
     });
   }
 }
