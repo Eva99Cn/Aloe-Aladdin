@@ -22,7 +22,7 @@ String kPassNullError = "Veuillez entrer un mot de passe";
 String kShortPassError = "Le mot de passe est trop court";
 String kConfirmPassNullError = "Veuillez confirmer votre mot de passe";
 
-String kMatchPassError = "Les mots de passes ne correspondent pas";
+String kMatchPassError = "Les mots de passe ne correspondent pas";
 String kPlantNameNullError = "Veuillez entrer un surnom";
 String kPlantNameExistsError = "Le surnom existe deja";
 String kInvalidPlantNameError =
