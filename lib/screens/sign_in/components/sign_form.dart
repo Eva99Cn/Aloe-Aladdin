@@ -106,9 +106,6 @@ class _SignFormState extends State<SignForm> {
         labelStyle: TextStyle(
           fontSize: getProportionateScreenWidth(context, formFontSize),
         ),
-
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: InkWell(
           child: Icon(Icons.mail_outline,
@@ -164,22 +161,13 @@ class _SignFormState extends State<SignForm> {
         .signInWithEmailAndPassword(email: email, password: password)
         .then((result) async {
       if (result.user.emailVerified) {
-        if (result.user.uid != "DNrxNkfOjeZmJcFLIBpnDjMdbYa2") {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => NavScreen(
-                        startingIndex: 0,
-                        selectedWidget: HomeScreen(),
-                      )));
-        } else {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => NavScreen(
-                        startingIndex: 0,
-                      )));
-        }
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => NavScreen(
+                      startingIndex: 0,
+                      selectedWidget: HomeScreen(),
+                    )));
       } else {
         addError(
             error: "Mail non vérifié, \n nouveau mail de vérification\nenvoyé");
