@@ -1,6 +1,6 @@
 import 'package:aloe/components/default_button.dart';
 import 'package:aloe/components/form_error.dart';
-import 'package:aloe/components/returnButton.dart';
+import 'package:aloe/components/return_button.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -70,7 +70,18 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                 } catch (err) {}
 
                 return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Text(
+                      allPlants["Nom"],
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: getProportionateScreenHeight(context, 25),
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(""),
                     Card(
                       elevation: 0,
                       child: GridTile(
@@ -162,19 +173,186 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                 ],
                               ),
                             ))),
-                    Container(
-                      child: Column(
-                        children: [
-                          Text(
-                            allPlants["Nom"],
-                            style: TextStyle(
-                              fontSize:
-                                  getProportionateScreenHeight(context, 14),
-                              color: Colors.black,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(padding: EdgeInsets.all(10)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                " Espèce : ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+                            Expanded(
+                                child: Text(
+                              allPlants["Espèce"],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize:
+                                    getProportionateScreenHeight(context, 14),
+                                color: Colors.black,
+                              ),
+                            ))
+                          ],
+                        ),
+                        Text(""),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                " Fréquence d'arrosage : ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Expanded(
+                                child: Text(
+                              allPlants["Fréquence_Arrosage"],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize:
+                                    getProportionateScreenHeight(context, 14),
+                                color: Colors.black,
+                              ),
+                            ))
+                          ],
+                        ),
+                        Text(""),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                " Difficulté d'entretien : ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Expanded(
+                                child: Text(
+                              allPlants["Difficulté_Entretien"],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize:
+                                    getProportionateScreenHeight(context, 14),
+                                color: Colors.black,
+                              ),
+                            ))
+                          ],
+                        ),
+                        Text(""),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                " Climat : ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Expanded(
+                                child: Text(
+                              allPlants["Climat"],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize:
+                                    getProportionateScreenHeight(context, 14),
+                                color: Colors.black,
+                              ),
+                            ))
+                          ],
+                        ),
+                        Text(""),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                " Exposition : ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Expanded(
+                                child: Text(
+                              allPlants["Expositon"],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize:
+                                    getProportionateScreenHeight(context, 14),
+                                color: Colors.black,
+                              ),
+                            ))
+                          ],
+                        ),
+                        Text(""),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                " Saison de semence : ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Expanded(
+                                child: Text(
+                              allPlants["Saison_Semence"],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize:
+                                    getProportionateScreenHeight(context, 14),
+                                color: Colors.black,
+                              ),
+                            ))
+                          ],
+                        ),
+                        Text(""),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                " Type de terre : ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Expanded(
+                                child: Text(
+                              allPlants["Terre"],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize:
+                                    getProportionateScreenHeight(context, 14),
+                                color: Colors.black,
+                              ),
+                            ))
+                          ],
+                        ),
+                        Text(""),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                " Taille à maturité : ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Expanded(
+                                child: Text(
+                              allPlants["Taille_A_Maturité"],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize:
+                                    getProportionateScreenHeight(context, 14),
+                                color: Colors.black,
+                              ),
+                            ))
+                          ],
+                        ),
+                      ],
                     ),
                   ],
                 );

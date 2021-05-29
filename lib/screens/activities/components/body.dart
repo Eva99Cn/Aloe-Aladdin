@@ -1,4 +1,4 @@
-import 'package:aloe/components/returnButton.dart';
+import 'package:aloe/components/return_button.dart';
 import 'package:flutter/material.dart';
 
 import 'activities_list.dart';

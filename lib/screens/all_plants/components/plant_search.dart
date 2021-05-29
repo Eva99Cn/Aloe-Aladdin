@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:aloe/components/plant_card.dart';
-import 'package:aloe/components/returnButton.dart';
+import 'package:aloe/components/return_button.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
