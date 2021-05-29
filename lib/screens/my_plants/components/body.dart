@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:aloe/components/add_watering_button.dart';
+import 'package:aloe/components/returnButton.dart';
 import 'package:aloe/models/UserPlant.dart';
 import 'package:aloe/screens/my_plants/components/plants_details.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
@@ -12,6 +13,7 @@ import 'package:aloe/constants.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:page_transition/page_transition.dart';
 
 import '../../../size_config.dart';
 
@@ -36,13 +38,18 @@ class _BodyState extends State<Body> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Mes plantes",
-                  style: TextStyle(
-                    fontSize: getProportionateScreenWidth(context, 15),
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
+                ReturnButton(press: () {
+                  Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.fade,
+                          child: NavScreen(
+                            startingIndex: homeScreenIndex,
+                          )));
+                }),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Mes plantes"),
                 ),
                 StreamBuilder(
                     stream: databaseReference
@@ -95,15 +102,6 @@ class _BodyState extends State<Body> {
                       }
                       return Container();
                     })
-
-                // /*
-
-                // Exemple d'utilisation : à corriger et à implémenter
-                // */
-                // AddWateringButton(
-                //   plantName: "capu",
-                //   isForActivitiesScreen: false,
-                // ),
               ],
             ),
           ),
