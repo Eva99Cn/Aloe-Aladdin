@@ -42,11 +42,6 @@ class _BodyState extends State<Body> {
                               startingIndex: homeScreenIndex,
                             )));
                   }),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("Mes plantes"),
-                  ),
-                  PlantDetailsItem(),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           elevation: 0,
@@ -61,7 +56,12 @@ class _BodyState extends State<Body> {
                                       widgetIndex: 1,
                                     )));
                       },
-                      child: Text("Ajouter des plantes"))
+                      child: Text("Ajouter des plantes")),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Mes plantes"),
+                  ),
+                  PlantDetailsItem()
                 ],
               ),
             )),
