@@ -12,79 +12,134 @@ import '../../../constants.dart';
 import '../../../size_config.dart';
 
 class PlantDetailsItem extends StatefulWidget {
-  final plantInformation;
-  const PlantDetailsItem({Key key, this.plantInformation}) : super(key: key);
   @override
   _PlantDetailsItemState createState() => _PlantDetailsItemState();
 }
 
 class _PlantDetailsItemState extends State<PlantDetailsItem> {
-  LinkedHashMap<dynamic, dynamic> myPlant = new LinkedHashMap();
+  int plantId = 0;
+
+  List<dynamic> userPlants = [];
+  List<dynamic> allPlants = [];
+
+  @override
+  void initState() {
+    super.initState();
+    databaseReference
+        .child("AllPlantes")
+        .once()
+        .then((DataSnapshot snapshotPlant) {
+      List<dynamic> _values = snapshotPlant.value;
+      allPlants.addAll(_values);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: StreamBuilder(
-            stream: databaseReference
-                .child('AllPlantes')
-                .orderByChild("Id_Ma_Plante")
-                .equalTo(widget.plantInformation['IdPlante'])
-                .onValue,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        StreamBuilder(
+            stream:
+                databaseReference.child("Users").child(currentUser.uid).onValue,
             builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
               if (snapshot.hasData) {
-                myPlant.clear();
+                userPlants.clear();
                 try {
                   Map<dynamic, dynamic> _values = snapshot.data.snapshot.value;
                   _values.forEach((key, value) {
-                    myPlant.addAll(value);
+                    userPlants.add(value);
+                  });
+                  databaseReference
+                      .child("AllPlantes")
+                      .once()
+                      .then((DataSnapshot snapshotPlant) {
+                    List<dynamic> _values = snapshotPlant.value;
+                    allPlants.addAll(_values);
                   });
                 } catch (err) {
                   return Center(
                     child: Column(
                       children: [
                         Text("Pas de plantes ajoutées"),
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                primary: kPrimaryColor,
-                                padding: const EdgeInsets.all(8.0)),
-                            onPressed: () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => NavScreen(
-                                            startingIndex: homeScreenIndex,
-                                            widgetIndex: 1,
-                                          )));
-                            },
-                            child: Text("Ajouter des plantes"))
                       ],
                     ),
                   );
                 }
-                var photoUrl = myPlant['Photo'];
 
-                return (Row(
-                  children: [
-                    Container(
-                      height: getProportionateScreenHeight(context, 70),
-                      width: getProportionateScreenWidth(context, 40),
-                      child: CachedNetworkImage(
-                        placeholder: (context, url) => Text(
-                          "Loading...",
-                          style: TextStyle(fontSize: 20),
+                return ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    physics: ScrollPhysics(),
+                    itemCount: userPlants.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 10, bottom: 10),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              leading: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    plantId = userPlants[index]["Id_Ma_Plante"];
+                                    //TODO : Aller au détail de la plante
+                                  });
+                                },
+                                child: Container(
+                                  height:
+                                      getProportionateScreenHeight(context, 70),
+                                  width:
+                                      getProportionateScreenWidth(context, 40),
+                                  child: CachedNetworkImage(
+                                    placeholder: (context, url) => Text(
+                                      "Loading...",
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    imageUrl: plantUrlFinder(index),
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                              title: Text(
+                                userPlants[index]["NomPlante"],
+                                style: TextStyle(
+                                  fontSize:
+                                      getProportionateScreenHeight(context, 14),
+                                  color: Colors.black,
+                                ),
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Voir plus de détails ",
+                                    style: TextStyle(
+                                      fontSize: getProportionateScreenHeight(
+                                          context, 14),
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        fit: BoxFit.fill,
-                        imageUrl: photoUrl,
-                      ),
-                    ),
-                    Column(
-                      children: [Text(widget.plantInformation['NomPlante'])],
-                    )
-                  ],
-                ));
+                      );
+                    });
               }
               return Container();
-            }));
+            }),
+      ],
+    );
+  }
+
+  String plantUrlFinder(int index) {
+    String url = "";
+    allPlants.forEach((element) {
+      if (element["Id_Ma_Plante"] == userPlants[index]["IdPlante"]) {
+        url = element["Photo"].toString();
+      }
+    });
+    return url;
   }
 }
