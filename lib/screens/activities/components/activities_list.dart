@@ -107,6 +107,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
                             ListTile(
                               leading: GestureDetector(
                                 onTap: () {
+                                  if (!mounted) return;
                                   setState(() {
                                     plantId = userPlants[index]["Id_Ma_Plante"];
                                     //TODO : Aller au détail de la plante

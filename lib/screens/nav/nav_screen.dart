@@ -81,8 +81,8 @@ class _NavScreenState extends State<NavScreen> {
                                   context,
                                   PageRouteBuilder(
                                     pageBuilder: (_, __, ___) => NavScreen(
-                                        startingIndex: homeScreenIndex,
-                                        selectedWidget: HomeScreen()),
+                                      startingIndex: homeScreenIndex,
+                                    ),
                                     transitionDuration: Duration(seconds: 0),
                                   ),
                                 );

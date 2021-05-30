@@ -20,9 +20,7 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-        child: SafeArea(
-            child: Column(
-      children: [DashBoard()],
-    )));
+      child: DashBoard(),
+    );
   }
 }

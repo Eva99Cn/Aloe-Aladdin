@@ -1,6 +1,5 @@
 import 'package:aloe/components/default_button.dart';
 import 'package:aloe/components/form_error.dart';
-import 'package:aloe/screens/home/home_screen.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -229,7 +228,6 @@ class _SignUpFormState extends State<SignUpForm> {
                   MaterialPageRoute(
                       builder: (context) => NavScreen(
                             startingIndex: homeScreenIndex,
-                            selectedWidget: HomeScreen(),
                           )));
             },
           ),

@@ -1,4 +1,3 @@
-import 'package:aloe/screens/home/home_screen.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
@@ -13,7 +12,6 @@ class IntroScreen extends StatelessWidget {
       seconds: 2,
       navigateAfterSeconds: NavScreen(
         startingIndex: homeScreenIndex,
-        selectedWidget: HomeScreen(),
       ),
       title: Text(
         'Aloe',
