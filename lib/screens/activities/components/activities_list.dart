@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:aloe/components/add_watering_button.dart';
+import 'package:aloe/components/default_button.dart';
 import 'package:aloe/screens/all_plants/components/grid_of_plants.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -49,19 +52,22 @@ class _ActivitiesListState extends State<ActivitiesList> {
                 try {
                   Map<dynamic, dynamic> _values = snapshot.data.snapshot.value;
                   _values.forEach((key, value) {
-                    userPlants.add(value);
+                    if (value["arrosageDate"] != null) {
+                      userPlants.add(value);
+                    }
                   });
                 } catch (err) {
                   return Center(
                     child: Column(
                       children: [
-                        Text("Pas de plantes ajoutées"),
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                primary: kPrimaryColor,
-                                padding: const EdgeInsets.all(8.0)),
-                            onPressed: () {
+                        Text(
+                          "Pas de plantes ajoutées",
+                          style: TextStyle(
+                              fontSize: getProportionateScreenWidth(
+                                  context, bodyFontSize)),
+                        ),
+                        DefaultButton(
+                            press: () {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -70,7 +76,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                             selectedWidget: GridOfPlants(),
                                           )));
                             },
-                            child: Text("Ajouter des plantes"))
+                            text: "Ajouter des plantes")
                       ],
                     ),
                   );
@@ -188,7 +194,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                                         ["arrosageDate"]))
                                                 .inSeconds
                                                 .toDouble()),
-                                  )
+                                  ),
                                 ],
                               ),
                               trailing: Container(

@@ -8,12 +8,15 @@ import '../constants.dart';
 import '../size_config.dart';
 
 class PlantCard extends StatefulWidget {
-  final List allPlants;
-  final int index;
+  final String plantName;
+  final String pictureUrl;
+  final int plantId;
+
   const PlantCard({
     Key key,
-    @required this.allPlants,
-    @required this.index,
+    @required this.plantId,
+    @required this.plantName,
+    @required this.pictureUrl,
   }) : super(key: key);
 
   @override
@@ -33,8 +36,7 @@ class _PlantCardState extends State<PlantCard> {
                   builder: (context) => NavScreen(
                         startingIndex: homeScreenIndex,
                         selectedWidget: PlantDetailsScreen(
-                          plantId: widget.allPlants[widget.index]
-                              ["Id_Ma_Plante"],
+                          plantId: widget.plantId,
                         ),
                       )));
         },
@@ -51,7 +53,7 @@ class _PlantCardState extends State<PlantCard> {
                   "Loading...",
                   style: TextStyle(fontSize: 20),
                 ),
-                imageUrl: widget.allPlants[widget.index]["Photo"],
+                imageUrl: widget.pictureUrl,
                 fit: BoxFit.fill,
               ),
             ),
@@ -65,7 +67,7 @@ class _PlantCardState extends State<PlantCard> {
                   ),
                 ),
                 child: Text(
-                  widget.allPlants[widget.index]["Nom"],
+                  widget.plantName,
                   style: TextStyle(
                     fontSize: getProportionateScreenHeight(context, 14),
                     color: Colors.black,

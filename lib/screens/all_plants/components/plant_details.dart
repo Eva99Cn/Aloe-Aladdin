@@ -125,8 +125,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                   children: [
                                     Container(
                                         height: 100,
-                                        child:
-                                            buildPlantNameFormField(context)),
+                                        child: buildPlantNameFormField()),
                                     FormError(errors: errors),
                                     SecondButton(
                                       press: () async {
@@ -152,10 +151,6 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                               "NomPlante": plantName,
                                               "IdPlante": plantInformation[
                                                   "Id_Ma_Plante"],
-                                              "arrosageDate":
-                                                  formatter.format(now),
-                                              "prochainArrosage":
-                                                  formatter.format(now),
                                             });
                                             showDialog(
                                                 context: context,
@@ -243,9 +238,8 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
     );
   }
 
-  TextFormField buildPlantNameFormField(BuildContext context) {
+  TextFormField buildPlantNameFormField() {
     return TextFormField(
-      autofocus: true,
       style: TextStyle(
           fontSize: getProportionateScreenWidth(context, formFontSize)),
       keyboardType: TextInputType.text,
@@ -256,7 +250,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
         } else if (plantNameValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidPlantNameError);
         }
-        return null;
+        plantName = value;
       },
       validator: (value) {
         if (value.isEmpty) {

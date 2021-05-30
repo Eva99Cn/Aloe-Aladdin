@@ -7,36 +7,23 @@ import 'package:flutter/material.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 
-class ProfilForm extends StatefulWidget {
+class PasswordChangeForm extends StatefulWidget {
   @override
-  _ProfilFormState createState() => _ProfilFormState();
+  _PasswordChangeFormState createState() => _PasswordChangeFormState();
 }
 
-class _ProfilFormState extends State<ProfilForm> {
+class _PasswordChangeFormState extends State<PasswordChangeForm> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final _formEmailKey = GlobalKey<FormState>();
   final _formPasswordKey = GlobalKey<FormState>();
   List<Map<dynamic, dynamic>> userInfo = [];
-
-  String email;
-  String password;
   String confirmPassword;
   String oldPassword;
   String newpassword;
 
-  bool isModifyEmail = false;
   bool isModifyPassword = false;
   final List<String> errorsPasswordForm = [];
-  final List<String> errorsEmailForm = [];
 
   void addError({String error}) {
-    if (isModifyEmail) {
-      if (!errorsEmailForm.contains(error)) {
-        setState(() {
-          errorsEmailForm.add(error);
-        });
-      }
-    }
     if (isModifyPassword) {
       if (!errorsPasswordForm.contains(error)) {
         setState(() {
@@ -47,13 +34,6 @@ class _ProfilFormState extends State<ProfilForm> {
   }
 
   void removeError({String error}) {
-    if (isModifyEmail) {
-      if (errorsEmailForm.contains(error)) {
-        setState(() {
-          errorsEmailForm.remove(error);
-        });
-      }
-    }
     if (isModifyPassword) {
       if (errorsPasswordForm.contains(error)) {
         setState(() {
@@ -73,64 +53,19 @@ class _ProfilFormState extends State<ProfilForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  "Email : ",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  _auth.currentUser.email,
-                  style: TextStyle(color: Colors.black),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: DefaultButton(
-                    press: () {
-                      setState(() {
-                        isModifyEmail = isModifyEmail ? false : true;
-                      });
-                      errorsEmailForm.clear();
-                    },
-                    text: "Modifier",
-                  ),
-                ),
-                Visibility(
-                  visible: isModifyEmail,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Form(
-                      key: _formEmailKey,
-                      child: Column(
-                        children: [
-                          buildEmailFormField(),
-                          buildModifyEmailPasswordFormField(),
-                          FormError(errors: errorsEmailForm),
-                          SecondButton(
-                            press: () {
-                              if (_formEmailKey.currentState.validate()) {
-                                _formEmailKey.currentState.save();
-                                modifyEmail();
-                              }
-                            },
-                            text: "Valider",
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
                 Text("Mot de passe",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: DefaultButton(
-                    press: () {
-                      setState(() {
-                        isModifyPassword = isModifyPassword ? false : true;
-                      });
-                      errorsPasswordForm.clear();
-                    },
-                    text: "Modifier",
-                  ),
+                    style: TextStyle(
+                        fontSize:
+                            getProportionateScreenWidth(context, bodyFontSize),
+                        fontWeight: FontWeight.bold)),
+                DefaultButton(
+                  press: () {
+                    setState(() {
+                      isModifyPassword = isModifyPassword ? false : true;
+                    });
+                    errorsPasswordForm.clear();
+                  },
+                  text: "Modifier",
                 ),
                 Visibility(
                   visible: isModifyPassword,
@@ -203,41 +138,6 @@ class _ProfilFormState extends State<ProfilForm> {
     );
   }
 
-  TextFormField buildEmailFormField() {
-    return TextFormField(
-      style: TextStyle(
-          fontSize: getProportionateScreenWidth(context, formFontSize)),
-      keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: "Nouveau Email",
-        labelStyle: TextStyle(
-            fontSize: getProportionateScreenWidth(context, formFontSize)),
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon:
-            InkWell(child: Icon(Icons.mail_outline, size: 20), onTap: () {}),
-      ),
-    );
-  }
-
   TextFormField buildOldPassFormField() {
     return TextFormField(
       style: TextStyle(
@@ -259,42 +159,6 @@ class _ProfilFormState extends State<ProfilForm> {
       },
       decoration: InputDecoration(
         labelText: "Ancien mot de passe",
-        labelStyle: TextStyle(
-            fontSize: getProportionateScreenWidth(context, formFontSize)),
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: InkWell(
-            child: Icon(Icons.lock_outline_rounded, size: 20), onTap: () {}),
-      ),
-    );
-  }
-
-  TextFormField buildModifyEmailPasswordFormField() {
-    return TextFormField(
-      style: TextStyle(
-          fontSize: getProportionateScreenWidth(context, formFontSize)),
-      obscureText: true,
-      onSaved: (newValue) => password = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
-        }
-        if (value.length >= 8) {
-          removeError(error: kShortPassError);
-        }
-        password = value;
-      },
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: kPassNullError);
-          return "";
-        } else if (value.length < 8) {
-          addError(error: kShortPassError);
-          return "";
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: "Mot de passe",
         labelStyle: TextStyle(
             fontSize: getProportionateScreenWidth(context, formFontSize)),
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -338,34 +202,6 @@ class _ProfilFormState extends State<ProfilForm> {
             child: Icon(Icons.lock_outline_rounded, size: 20), onTap: () {}),
       ),
     );
-  }
-
-  Future<void> modifyEmail() async {
-    _auth
-        .signInWithEmailAndPassword(
-            email: _auth.currentUser.email, password: password)
-        .then((value) => _auth.currentUser.updateEmail(email).then((value) {
-              _auth.currentUser.sendEmailVerification();
-
-              setState(() {
-                isModifyEmail = false;
-              });
-
-              errorsEmailForm.clear();
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("L'Email à bien été modifié"),
-                duration: Duration(seconds: 5),
-              ));
-            }))
-        .catchError((err) {
-      if (err.toString() ==
-          "[firebase_auth/too-many-requests] Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.") {
-        addError(error: kTooManyAttempts);
-      } else if (err.toString() ==
-          "[firebase_auth/wrong-password] The password is invalid or the user does not have a password.") {
-        addError(error: kWrongPassword);
-      }
-    });
   }
 
   Future<void> modifyPassword() async {

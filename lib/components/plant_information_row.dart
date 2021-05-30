@@ -24,7 +24,7 @@ class PlantInfoDetails extends StatelessWidget {
           Expanded(
               child: Text(
             plantInfo,
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.end,
             style: TextStyle(
               fontSize: getProportionateScreenHeight(context, 14),
               color: Colors.black,

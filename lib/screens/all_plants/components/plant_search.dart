@@ -51,9 +51,9 @@ class _PlantSearchState extends State<PlantSearch> {
             ),
             itemBuilder: (BuildContext context, int index) {
               return PlantCard(
-                allPlants: allPlants,
-                index: index,
-              );
+                  plantId: allPlants[index]["Id_Ma_Plante"],
+                  plantName: allPlants[index]["Nom"],
+                  pictureUrl: allPlants[index]["Photo"]);
             }),
       ],
     );

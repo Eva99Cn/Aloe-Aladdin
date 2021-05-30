@@ -26,13 +26,14 @@ String kMatchPassError = "Les mots de passe ne correspondent pas";
 String kPlantNameNullError = "Veuillez entrer un surnom";
 String kPlantNameExistsError = "Le surnom existe deja";
 String kInvalidPlantNameError =
-    "Le surnom ne doit contenir que des lettres, des nombres et ne peut contenir d'espace";
+    "Le surnom ne doit contenir que des lettres, des nombres et ne peut contenir d'espace au début et à la fin";
 
 String kTooManyAttempts =
     "L'accès à ce compte a été temporairement désactivé en raison de nombreuses tentatives de connexion infructueuses.";
 String kWrongPassword = "Le mot de passe n'est pas valide";
 
-final RegExp plantNameValidatorRegExp = RegExp(r'^[a-zA-Z0-9]+$');
+final RegExp plantNameValidatorRegExp =
+    RegExp(r'^[-a-zA-Z0-9-()]+(\s+[-a-zA-Z0-9-()]+)*$');
 
 DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
 
@@ -41,7 +42,7 @@ int newsScreenIndex = 1;
 int signInScreenIndex = 2;
 
 double formFontSize = 10;
-double bodyFontSize = 12;
+double bodyFontSize = 10;
 double headerFontSize = 28;
 double buttonFontSize = 8;
 
