@@ -20,7 +20,7 @@ class PlantDetailsScreen extends StatefulWidget {
 }
 
 class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
-  Map<dynamic, dynamic> allPlants = {};
+  Map<dynamic, dynamic> plantInformation = {};
   String plantName = "";
   List<String> errors = [];
   int plantId;
@@ -67,14 +67,14 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
               if (snapshot.hasData) {
                 try {
                   Map<dynamic, dynamic> _values = snapshot.data.snapshot.value;
-                  allPlants = _values;
+                  plantInformation = _values;
                 } catch (err) {}
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      allPlants["Nom"],
+                      plantInformation["Nom"],
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -94,7 +94,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                               "Loading...",
                               style: TextStyle(fontSize: 20),
                             ),
-                            imageUrl: allPlants["Photo"],
+                            imageUrl: plantInformation["Photo"],
                             fit: BoxFit.fill,
                           ),
                         ),
@@ -151,8 +151,8 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                               "DateAjout":
                                                   formatter.format(now),
                                               "NomPlante": plantName,
-                                              "IdPlante":
-                                                  allPlants["Id_Ma_Plante"],
+                                              "IdPlante": plantInformation[
+                                                  "Id_Ma_Plante"],
                                               "arrosageDate":
                                                   formatter.format(now),
                                               "prochainArrosage":
@@ -184,7 +184,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                         children: [
                           PlantInfoDetails(
                             description: "Espèce : ",
-                            plantInfo: allPlants["Espèce"],
+                            plantInfo: plantInformation["Espèce"],
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -197,7 +197,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                 Spacer(),
                                 Expanded(
                                     child: Text(
-                                  allPlants["Espèce"],
+                                  plantInformation["Espèce"],
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: getProportionateScreenHeight(
@@ -222,7 +222,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                 Spacer(),
                                 Expanded(
                                     child: Text(
-                                  allPlants["Fréquence_Arrosage"],
+                                  plantInformation["Fréquence_Arrosage"],
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: getProportionateScreenHeight(
@@ -247,7 +247,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                 ),
                                 Expanded(
                                     child: Text(
-                                  allPlants["Difficulté_Entretien"],
+                                  plantInformation["Difficulté_Entretien"],
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: getProportionateScreenHeight(
@@ -272,7 +272,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                 ),
                                 Expanded(
                                     child: Text(
-                                  allPlants["Climat"],
+                                  plantInformation["Climat"],
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: getProportionateScreenHeight(
@@ -297,7 +297,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                 ),
                                 Expanded(
                                     child: Text(
-                                  allPlants["Expositon"],
+                                  plantInformation["Expositon"],
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: getProportionateScreenHeight(
@@ -319,7 +319,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                 ),
                                 Expanded(
                                     child: Text(
-                                  allPlants["Saison_Semence"],
+                                  plantInformation["Saison_Semence"],
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: getProportionateScreenHeight(
@@ -344,7 +344,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                 ),
                                 Expanded(
                                     child: Text(
-                                  allPlants["Terre"],
+                                  plantInformation["Terre"],
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: getProportionateScreenHeight(
@@ -368,7 +368,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                 ),
                                 Expanded(
                                     child: Text(
-                                  allPlants["Taille_A_Maturité"],
+                                  plantInformation["Taille_A_Maturité"],
                                   textAlign: TextAlign.center,
                                 ))
                               ],
