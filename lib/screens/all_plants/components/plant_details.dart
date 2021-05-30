@@ -82,7 +82,6 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                         color: Colors.black,
                       ),
                     ),
-                    Text(""),
                     Card(
                       elevation: 0,
                       child: GridTile(
@@ -186,193 +185,33 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                             description: "Espèce : ",
                             plantInfo: plantInformation["Espèce"],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  " Espèce : ",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Spacer(),
-                                Expanded(
-                                    child: Text(
-                                  plantInformation["Espèce"],
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: getProportionateScreenHeight(
-                                        context, 14),
-                                    color: Colors.black,
-                                  ),
-                                ))
-                              ],
-                            ),
+                          PlantInfoDetails(
+                            description: "Fréquence \nd'arrosage : ",
+                            plantInfo: plantInformation["Fréquence_Arrosage"],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    " Fréquence d'arrosage : ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Spacer(),
-                                Expanded(
-                                    child: Text(
-                                  plantInformation["Fréquence_Arrosage"],
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: getProportionateScreenHeight(
-                                        context, 14),
-                                    color: Colors.black,
-                                  ),
-                                ))
-                              ],
-                            ),
+                          PlantInfoDetails(
+                            description: "Difficulté \nd'entretien : ",
+                            plantInfo: plantInformation["Difficulté_Entretien"],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    " Difficulté d'entretien : ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Expanded(
-                                    child: Text(
-                                  plantInformation["Difficulté_Entretien"],
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: getProportionateScreenHeight(
-                                        context, 14),
-                                    color: Colors.black,
-                                  ),
-                                ))
-                              ],
-                            ),
+                          PlantInfoDetails(
+                            description: "Climat : ",
+                            plantInfo: plantInformation["Climat"],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    " Climat : ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Expanded(
-                                    child: Text(
-                                  plantInformation["Climat"],
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: getProportionateScreenHeight(
-                                        context, 14),
-                                    color: Colors.black,
-                                  ),
-                                ))
-                              ],
-                            ),
+                          PlantInfoDetails(
+                            description: "Exposition : ",
+                            plantInfo: plantInformation["Expositon"],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    " Exposition : ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Expanded(
-                                    child: Text(
-                                  plantInformation["Expositon"],
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: getProportionateScreenHeight(
-                                        context, 14),
-                                    color: Colors.black,
-                                  ),
-                                ))
-                              ],
-                            ),
+                          PlantInfoDetails(
+                            description: "Saison de \nsemence : ",
+                            plantInfo: plantInformation["Saison_Semence"],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  " Saison de semence : ",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Expanded(
-                                    child: Text(
-                                  plantInformation["Saison_Semence"],
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: getProportionateScreenHeight(
-                                        context, 14),
-                                    color: Colors.black,
-                                  ),
-                                ))
-                              ],
-                            ),
+                          PlantInfoDetails(
+                            description: "Type de \nTerre : ",
+                            plantInfo: plantInformation["Terre"],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    " Type de terre : ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Expanded(
-                                    child: Text(
-                                  plantInformation["Terre"],
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: getProportionateScreenHeight(
-                                        context, 14),
-                                    color: Colors.black,
-                                  ),
-                                ))
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    " Taille à maturité : ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Expanded(
-                                    child: Text(
-                                  plantInformation["Taille_A_Maturité"],
-                                  textAlign: TextAlign.center,
-                                ))
-                              ],
-                            ),
+                          PlantInfoDetails(
+                            description: "Taille à \nmaturité : ",
+                            plantInfo: plantInformation["Taille_A_Maturité"],
                           ),
                         ],
                       ),
