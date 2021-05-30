@@ -25,35 +25,46 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
-    UserPlant userPlant;
     return SafeArea(
       child: SizedBox(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Text(
-                  "ICI page Mes plantes",
-                  style: TextStyle(
-                    fontSize: getProportionateScreenWidth(context, 15),
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ReturnButton(press: () {
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            type: PageTransitionType.fade,
+                            child: NavScreen(
+                              startingIndex: homeScreenIndex,
+                            )));
+                  }),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          primary: kPrimaryColor,
+                          padding: const EdgeInsets.all(8.0)),
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NavScreen(
+                                      startingIndex: homeScreenIndex,
+                                      widgetIndex: 1,
+                                    )));
+                      },
+                      child: Text("Ajouter des plantes")),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Mes plantes"),
                   ),
-                ),
-
-                /*
-                
-                Exemple d'utilisation : à corriger et à implémenter
-                */
-                AddWateringButton(
-                  plantName: "capu",
-                  isForActivitiesScreen: false,
-                )
-              ],
-            ),
-          ),
-        ),
+                  PlantDetailsItem()
+                ],
+              ),
+            )),
       ),
     );
   }
