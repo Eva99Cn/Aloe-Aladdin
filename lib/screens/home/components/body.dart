@@ -1,33 +1,27 @@
 import 'package:aloe/components/dashbord_button.dart';
 import 'package:aloe/constants.dart';
-import 'package:aloe/screens/activities/activities_screen.dart';
 import 'package:aloe/screens/all_plants/all_plants_screen.dart';
 import 'package:aloe/screens/my_plants/my_plants_screen.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:flutter/material.dart';
 
+import 'home_screen.dart';
+
 class Body extends StatefulWidget {
-  final int widgetIndex;
-  const Body({Key key, this.widgetIndex}) : super(key: key);
   @override
   _BodyState createState() => _BodyState();
 }
 
 class _BodyState extends State<Body> {
+  @override
   int selectedOption = 0;
-  @override
-  void initState() {
-    super.initState();
-    selectedOption = widget.widgetIndex;
-  }
 
-  @override
   Widget build(BuildContext context) {
     List<Widget> widgetOptions = <Widget>[
       buildDashboard(context),
       AllPlantsScreen(), // TODO : Toutes les plantes
       MyPlantsScreen(), // TODO : Mes plantes
-      MyActivitiesScreen(), // TODO : Activités
+      HomeScreen(), // TODO : Activités
     ];
 
     return SingleChildScrollView(
@@ -59,7 +53,7 @@ class _BodyState extends State<Body> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => (NavScreen(
-                              startingIndex: 2,
+                              startingIndex: signInScreenIndex,
                             ))))
                 : setState(() {
                     selectedOption = 2;

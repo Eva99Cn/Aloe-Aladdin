@@ -1,6 +1,7 @@
 import 'package:aloe/components/default_button.dart';
 import 'package:aloe/components/form_error.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
@@ -15,8 +16,10 @@ class _ProfilFormState extends State<ProfilForm> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final _formEmailKey = GlobalKey<FormState>();
   final _formPasswordKey = GlobalKey<FormState>();
+  DatabaseReference databaseReference = FirebaseDatabase.instance.reference();
   List<Map<dynamic, dynamic>> userInfo = [];
-
+  String notificationButton =
+      "Receive a notification when new articles are out";
   String email;
   String password;
   String conformPassword;
@@ -35,138 +38,149 @@ class _ProfilFormState extends State<ProfilForm> {
       });
   }
 
-  void removeError({String error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                FormError(errors: errors),
-                Text(
-                  "Email" + " : ",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  _auth.currentUser.email,
-                  style: TextStyle(color: Colors.black),
-                ),
-                Padding(
+        StreamBuilder(
+            stream: databaseReference
+                .child('Users')
+                .child(_auth.currentUser.uid)
+                .onValue,
+            builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
+              if (snapshot.hasData) {
+                userInfo.clear();
+                Map<dynamic, dynamic> _values = snapshot.data.snapshot.value;
+
+                userInfo.add(_values);
+
+                return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        isModifyEmail = isModifyEmail ? false : true;
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                        primary: kSecondaryColor,
-                        padding: const EdgeInsets.all(8.0)),
-                    child: Text(
-                      "Modifier",
-                      style: TextStyle(
-                        color: Colors.black,
-                        //fontSize: getProportionateScreenWidth(context,16),
-                      ),
-                    ),
-                  ),
-                ),
-                Visibility(
-                  visible: isModifyEmail,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Form(
-                      key: _formEmailKey,
-                      child: Column(
-                        children: [
-                          buildEmailFormField(),
-                          //SizedBox(
-                          //  height: getProportionateScreenHeight(context,30)),
-                          buildModifyEmailPasswordFormField(),
-                          // SizedBox(
-                          //  height: ),
-                          DefaultButton(
-                            text: "Continue",
-                            press: () {
-                              if (_formEmailKey.currentState.validate()) {
-                                _formEmailKey.currentState.save();
-                                // if all are valid then go to success screen
-                                modifyEmail();
-                              }
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        FormError(errors: errors),
+                        Text(
+                          "Email" + " : ",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          userInfo[0]['email'],
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                isModifyEmail = isModifyEmail ? false : true;
+                              });
                             },
+                            style: ElevatedButton.styleFrom(
+                                primary: kSecondaryColor,
+                                padding: const EdgeInsets.all(8.0)),
+                            child: Text(
+                              "Modifier",
+                              style: TextStyle(
+                                color: Colors.black,
+                                //fontSize: getProportionateScreenWidth(context,16),
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Text("Mot de passe",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _isModifyPassword = _isModifyPassword ? false : true;
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                        primary: kSecondaryColor,
-                        padding: const EdgeInsets.all(8.0)),
-                    child: Text(
-                      "Modifier",
-                      style: TextStyle(
-                        color: Colors.black,
-                        //fontSize:,
-                      ),
-                    ),
-                  ),
-                ),
-                Visibility(
-                  visible: _isModifyPassword,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Form(
-                      key: _formPasswordKey,
-                      child: Column(
-                        children: [
-                          buildOldPassFormField(),
-                          // SizedBox(
-                          //    height: getProportionateScreenHeight(context,30)),
-                          buildNewPasswordFormField(),
-                          // SizedBox(
-                          //    height: getProportionateScreenHeight(context,30)),
-                          buildNewConfirmPassFormField(),
-                          // SizedBox(
-                          //   height: getProportionateScreenHeight(context,30)),
-                          DefaultButton(
-                            text: "Continue",
-                            press: () {
-                              if (_formPasswordKey.currentState.validate()) {
-                                _formPasswordKey.currentState.save();
-                                modifyPassword();
-                              }
+                        ),
+                        Visibility(
+                          visible: isModifyEmail,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Form(
+                              key: _formEmailKey,
+                              child: Column(
+                                children: [
+                                  buildEmailFormField(),
+                                  //SizedBox(
+                                  //  height: getProportionateScreenHeight(context,30)),
+                                  buildModifyEmailPasswordFormField(),
+                                  // SizedBox(
+                                  //  height: ),
+                                  DefaultButton(
+                                    text: "Continue",
+                                    press: () {
+                                      if (_formEmailKey.currentState
+                                          .validate()) {
+                                        _formEmailKey.currentState.save();
+                                        // if all are valid then go to success screen
+                                        modifyEmail();
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Text("Mot de passe",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _isModifyPassword =
+                                    _isModifyPassword ? false : true;
+                              });
                             },
+                            style: ElevatedButton.styleFrom(
+                                primary: kSecondaryColor,
+                                padding: const EdgeInsets.all(8.0)),
+                            child: Text(
+                              "Modifier",
+                              style: TextStyle(
+                                color: Colors.black,
+                                //fontSize:,
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
+                        ),
+                        Visibility(
+                          visible: _isModifyPassword,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Form(
+                              key: _formPasswordKey,
+                              child: Column(
+                                children: [
+                                  buildOldPassFormField(),
+                                  // SizedBox(
+                                  //    height: getProportionateScreenHeight(context,30)),
+                                  buildNewPasswordFormField(),
+                                  // SizedBox(
+                                  //    height: getProportionateScreenHeight(context,30)),
+                                  buildNewConfirmPassFormField(),
+                                  // SizedBox(
+                                  //   height: getProportionateScreenHeight(context,30)),
+                                  DefaultButton(
+                                    text: "Continue",
+                                    press: () {
+                                      if (_formPasswordKey.currentState
+                                          .validate()) {
+                                        _formPasswordKey.currentState.save();
+                                        modifyPassword();
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-        ),
+                );
+              }
+              return Container();
+            }),
       ],
     );
   }
@@ -344,7 +358,12 @@ class _ProfilFormState extends State<ProfilForm> {
             email: _auth.currentUser.email, password: password)
         .then((value) => _auth.currentUser.updateEmail(email).then((value) {
               _auth.currentUser.sendEmailVerification();
-
+              databaseReference
+                  .child("Users")
+                  .child(_auth.currentUser.uid)
+                  .update({
+                'email': email,
+              });
               setState(() {
                 isModifyEmail = false;
               });
@@ -378,5 +397,12 @@ class _ProfilFormState extends State<ProfilForm> {
         .catchError((err) {
       addError(error: "tryagain");
     });
+  }
+
+  void removeError({String error}) {
+    if (errors.contains(error))
+      setState(() {
+        errors.remove(error);
+      });
   }
 }
