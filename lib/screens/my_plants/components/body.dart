@@ -1,7 +1,19 @@
+import 'dart:collection';
+
 import 'package:aloe/components/add_watering_button.dart';
+import 'package:aloe/components/returnButton.dart';
 import 'package:aloe/models/UserPlant.dart';
+import 'package:aloe/screens/my_plants/components/plants_details.dart';
+import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:aloe/constants.dart';
+
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:page_transition/page_transition.dart';
 
 import '../../../size_config.dart';
 
