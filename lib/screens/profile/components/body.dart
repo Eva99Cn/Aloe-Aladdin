@@ -1,5 +1,5 @@
 import 'package:aloe/screens/profile/components/logout.dart';
-import 'package:aloe/screens/profile/components/profil_form.dart';
+import 'package:aloe/screens/profile/components/profilform.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatelessWidget {

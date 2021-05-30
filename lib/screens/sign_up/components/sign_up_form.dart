@@ -2,6 +2,7 @@ import 'package:aloe/components/default_button.dart';
 import 'package:aloe/components/form_error.dart';
 import 'package:aloe/screens/signupsuccess/signupsuccess.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
@@ -15,6 +16,9 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
+  DatabaseReference databaseReference =
+      FirebaseDatabase.instance.reference().child("Users");
+  DatabaseReference databaseReference1 = FirebaseDatabase.instance.reference();
   String email;
   String password;
   String conformPassword;
@@ -115,17 +119,17 @@ class _SignUpFormState extends State<SignUpForm> {
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
+          removeError(error: "kEmailNullError");
         } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
+          removeError(error: "kInvalidEmailError");
         }
         return null;
       },
       validator: (value) {
         if (value.isNotEmpty) {
-          addError(error: kEmailNullError);
+          addError(error: "kEmailNullError");
         } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
+          addError(error: "kInvalidEmailError");
           return "";
         }
         return null;
@@ -162,7 +166,7 @@ class _SignUpFormState extends State<SignUpForm> {
           addError(error: kPassNullError);
           return "";
         } else if (value.length < 8) {
-          addError(error: kShortPassError);
+          addError(error: "kShortPassError");
           return "";
         }
         return null;
@@ -192,6 +196,9 @@ class _SignUpFormState extends State<SignUpForm> {
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((result) async {
       result.user.sendEmailVerification();
+      databaseReference.child(result.user.uid).set({
+        'email': email,
+      }).catchError((onError) {});
 
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => SignUpSuccessScreen()));
