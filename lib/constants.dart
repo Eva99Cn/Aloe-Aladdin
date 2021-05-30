@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 
 const kPrimaryColor = Color(0xFF16B84E); // Vert principal
 const kBackgroundColor = Color(0xFFF5F5DC); //Beige clair
-const kPrimaryGradientColor = Colors.accents;
+const kStyle1ButtonColor = Color(0xffC5E1A5);
 const kSecondaryColor = Color(0xff09423E); // Vert Foncé
 const kTextColor = Color(0xFF757575); // Noir
 
@@ -40,9 +40,10 @@ int homeScreenIndex = 0;
 int newsScreenIndex = 1;
 int signInScreenIndex = 2;
 
-double formFontSize = 12;
+double formFontSize = 10;
 double bodyFontSize = 12;
 double headerFontSize = 28;
+double buttonFontSize = 8;
 
 double generalPaddingSize = 20;
 

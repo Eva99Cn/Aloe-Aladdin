@@ -12,14 +12,13 @@ class Body extends StatelessWidget {
         width: double.infinity,
         child: Padding(
           padding: EdgeInsets.symmetric(
-              horizontal:
-                  getProportionateScreenWidth(context, generalPaddingSize)),
+              horizontal: getProportionateScreenWidth(context, 10)),
           child: SingleChildScrollView(
             child: Column(
               children: [
                 SizedBox(
                     height: getProportionateScreenHeight(
-                        context, generalPaddingSize)), // 4%
+                        context, generalPaddingSize)),
                 Text(
                   "Créer un compte",
                   style: TextStyle(

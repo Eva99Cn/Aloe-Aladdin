@@ -26,6 +26,7 @@ class _NavScreenState extends State<NavScreen> {
     selectedIndex = widget.startingIndex;
     selectedWidget =
         widget.selectedWidget != null ? widget.selectedWidget : HomeScreen();
+    super.initState();
   }
 
   Widget build(BuildContext context) {

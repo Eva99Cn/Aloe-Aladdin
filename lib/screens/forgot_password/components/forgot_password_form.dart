@@ -69,13 +69,7 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
                   child: Icon(Icons.mail_outline, size: 20), onTap: () {}),
             ),
           ),
-          SizedBox(
-              height:
-                  getProportionateScreenHeight(context, generalPaddingSize)),
           FormError(errors: errors),
-          SizedBox(
-              height:
-                  getProportionateScreenHeight(context, generalPaddingSize)),
           DefaultButton(
             text: "Continuer",
             press: () {

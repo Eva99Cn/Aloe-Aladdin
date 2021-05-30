@@ -8,30 +8,23 @@ import 'sign_form.dart';
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SizedBox(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                    height: getProportionateScreenHeight(
-                        context, generalPaddingSize)),
-                Text(
-                  "Connexion",
-                  style: TextStyle(
-                    fontSize: getProportionateScreenWidth(context, 15),
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SignForm(),
-                NoAccountText(),
-              ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      child: Column(
+        children: [
+          SizedBox(
+              height:
+                  getProportionateScreenHeight(context, generalPaddingSize)),
+          Text(
+            "Connexion",
+            style: TextStyle(
+              fontSize: getProportionateScreenWidth(context, 15),
+              fontWeight: FontWeight.bold,
             ),
           ),
-        ),
+          SignForm(),
+          NoAccountText(),
+        ],
       ),
     );
   }

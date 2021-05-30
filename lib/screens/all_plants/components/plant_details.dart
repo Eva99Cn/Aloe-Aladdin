@@ -1,6 +1,8 @@
 import 'package:aloe/components/default_button.dart';
 import 'package:aloe/components/form_error.dart';
+import 'package:aloe/components/plant_information_row.dart';
 import 'package:aloe/components/return_button.dart';
+import 'package:aloe/components/second_button.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -63,7 +65,6 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                 .onValue,
             builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
               if (snapshot.hasData) {
-                print(snapshot.data.snapshot.value);
                 try {
                   Map<dynamic, dynamic> _values = snapshot.data.snapshot.value;
                   allPlants = _values;
@@ -116,243 +117,265 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                         }),
                     Visibility(
                         visible: isVisibleNewPlantForm,
-                        child: Form(
-                            key: _formKey,
-                            child: Container(
-                              child: Column(
-                                children: [
-                                  Container(
-                                      height: 100,
-                                      child: buildPlantNameFormField(context)),
-                                  FormError(errors: errors),
-                                  TextButton(
-                                    child: Text(
-                                      "Ajouter à mes plantes",
-                                      style: TextStyle(color: kPrimaryColor),
-                                    ),
-                                    onPressed: () async {
-                                      if (_formKey.currentState.validate()) {
-                                        _formKey.currentState.save();
-                                        print(errors);
-                                        DataSnapshot snapshot =
-                                            await databaseReference
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Form(
+                              key: _formKey,
+                              child: Container(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                        height: 100,
+                                        child:
+                                            buildPlantNameFormField(context)),
+                                    FormError(errors: errors),
+                                    SecondButton(
+                                      press: () async {
+                                        if (_formKey.currentState.validate()) {
+                                          _formKey.currentState.save();
+                                          DataSnapshot snapshot =
+                                              await databaseReference
+                                                  .child("Users")
+                                                  .child(currentUser.uid)
+                                                  .child(plantName)
+                                                  .once();
+
+                                          if (snapshot.value == null) {
+                                            errors
+                                                .remove(kPlantNameExistsError);
+                                            databaseReference
                                                 .child("Users")
                                                 .child(currentUser.uid)
                                                 .child(plantName)
-                                                .once();
-
-                                        if (snapshot.value == null) {
-                                          errors.remove(kPlantNameExistsError);
-                                          databaseReference
-                                              .child("Users")
-                                              .child(currentUser.uid)
-                                              .child(plantName)
-                                              .set({
-                                            "DateAjout": formatter.format(now),
-                                            "NomPlante": plantName,
-                                            "IdPlante":
-                                                allPlants["Id_Ma_Plante"],
-                                            "arrosageDate":
-                                                formatter.format(now),
-                                            "prochainArrosage":
-                                                formatter.format(now),
-                                          });
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return buildDialogAddPlantSuccess(
-                                                    context);
-                                              });
-                                        } else {
-                                          addError(
-                                              error: kPlantNameExistsError);
+                                                .set({
+                                              "DateAjout":
+                                                  formatter.format(now),
+                                              "NomPlante": plantName,
+                                              "IdPlante":
+                                                  allPlants["Id_Ma_Plante"],
+                                              "arrosageDate":
+                                                  formatter.format(now),
+                                              "prochainArrosage":
+                                                  formatter.format(now),
+                                            });
+                                            showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return buildDialogAddPlantSuccess(
+                                                      context);
+                                                });
+                                          } else {
+                                            addError(
+                                                error: kPlantNameExistsError);
+                                          }
                                         }
-                                      }
-                                    },
+                                      },
+                                      text: "Ajouter",
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          PlantInfoDetails(
+                            description: "Espèce : ",
+                            plantInfo: allPlants["Espèce"],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  " Espèce : ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Spacer(),
+                                Expanded(
+                                    child: Text(
+                                  allPlants["Espèce"],
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: getProportionateScreenHeight(
+                                        context, 14),
+                                    color: Colors.black,
                                   ),
-                                ],
-                              ),
-                            ))),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(padding: EdgeInsets.all(10)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                " Espèce : ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
+                                ))
+                              ],
                             ),
-                            Expanded(
-                                child: Text(
-                              allPlants["Espèce"],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize:
-                                    getProportionateScreenHeight(context, 14),
-                                color: Colors.black,
-                              ),
-                            ))
-                          ],
-                        ),
-                        Text(""),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                " Fréquence d'arrosage : ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    " Fréquence d'arrosage : ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Spacer(),
+                                Expanded(
+                                    child: Text(
+                                  allPlants["Fréquence_Arrosage"],
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: getProportionateScreenHeight(
+                                        context, 14),
+                                    color: Colors.black,
+                                  ),
+                                ))
+                              ],
                             ),
-                            Expanded(
-                                child: Text(
-                              allPlants["Fréquence_Arrosage"],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize:
-                                    getProportionateScreenHeight(context, 14),
-                                color: Colors.black,
-                              ),
-                            ))
-                          ],
-                        ),
-                        Text(""),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                " Difficulté d'entretien : ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    " Difficulté d'entretien : ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Expanded(
+                                    child: Text(
+                                  allPlants["Difficulté_Entretien"],
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: getProportionateScreenHeight(
+                                        context, 14),
+                                    color: Colors.black,
+                                  ),
+                                ))
+                              ],
                             ),
-                            Expanded(
-                                child: Text(
-                              allPlants["Difficulté_Entretien"],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize:
-                                    getProportionateScreenHeight(context, 14),
-                                color: Colors.black,
-                              ),
-                            ))
-                          ],
-                        ),
-                        Text(""),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                " Climat : ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    " Climat : ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Expanded(
+                                    child: Text(
+                                  allPlants["Climat"],
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: getProportionateScreenHeight(
+                                        context, 14),
+                                    color: Colors.black,
+                                  ),
+                                ))
+                              ],
                             ),
-                            Expanded(
-                                child: Text(
-                              allPlants["Climat"],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize:
-                                    getProportionateScreenHeight(context, 14),
-                                color: Colors.black,
-                              ),
-                            ))
-                          ],
-                        ),
-                        Text(""),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                " Exposition : ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    " Exposition : ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Expanded(
+                                    child: Text(
+                                  allPlants["Expositon"],
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: getProportionateScreenHeight(
+                                        context, 14),
+                                    color: Colors.black,
+                                  ),
+                                ))
+                              ],
                             ),
-                            Expanded(
-                                child: Text(
-                              allPlants["Expositon"],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize:
-                                    getProportionateScreenHeight(context, 14),
-                                color: Colors.black,
-                              ),
-                            ))
-                          ],
-                        ),
-                        Text(""),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                " Saison de semence : ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  " Saison de semence : ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Expanded(
+                                    child: Text(
+                                  allPlants["Saison_Semence"],
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: getProportionateScreenHeight(
+                                        context, 14),
+                                    color: Colors.black,
+                                  ),
+                                ))
+                              ],
                             ),
-                            Expanded(
-                                child: Text(
-                              allPlants["Saison_Semence"],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize:
-                                    getProportionateScreenHeight(context, 14),
-                                color: Colors.black,
-                              ),
-                            ))
-                          ],
-                        ),
-                        Text(""),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                " Type de terre : ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    " Type de terre : ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Expanded(
+                                    child: Text(
+                                  allPlants["Terre"],
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: getProportionateScreenHeight(
+                                        context, 14),
+                                    color: Colors.black,
+                                  ),
+                                ))
+                              ],
                             ),
-                            Expanded(
-                                child: Text(
-                              allPlants["Terre"],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize:
-                                    getProportionateScreenHeight(context, 14),
-                                color: Colors.black,
-                              ),
-                            ))
-                          ],
-                        ),
-                        Text(""),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                " Taille à maturité : ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    " Taille à maturité : ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Expanded(
+                                    child: Text(
+                                  allPlants["Taille_A_Maturité"],
+                                  textAlign: TextAlign.center,
+                                ))
+                              ],
                             ),
-                            Expanded(
-                                child: Text(
-                              allPlants["Taille_A_Maturité"],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize:
-                                    getProportionateScreenHeight(context, 14),
-                                color: Colors.black,
-                              ),
-                            ))
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 );
@@ -367,23 +390,15 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
     return AlertDialog(
       title: new Text('La plante a bien été ajouté'),
       actions: <Widget>[
-        Container(
-          height: getProportionateScreenWidth(context, 100),
-          width: getProportionateScreenWidth(context, 150),
-          child: Column(
-            children: [
-              TextButton(
-                child: Text(
-                  "OK",
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  _formKey.currentState.reset();
-                  setAddPlantButtonText();
-                },
-              ),
-            ],
+        TextButton(
+          child: Text(
+            "OK",
           ),
+          onPressed: () {
+            Navigator.of(context).pop();
+            _formKey.currentState.reset();
+            setAddPlantButtonText();
+          },
         )
       ],
     );

@@ -61,7 +61,6 @@ class _SignFormState extends State<SignForm> {
             ],
           ),
           FormError(errors: errors),
-          //SizedBox(height: getProportionateScreenHeight(context,20)),
           DefaultButton(
             text: "Se connecter",
             press: () {
@@ -103,13 +102,11 @@ class _SignFormState extends State<SignForm> {
       },
       decoration: InputDecoration(
         labelText: "Email",
-        labelStyle: TextStyle(
-          fontSize: getProportionateScreenWidth(context, formFontSize),
-        ),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: InkWell(
-          child: Icon(Icons.mail_outline,
-              size: MediaQuery.of(context).size.width * 0.05),
+          child: Icon(
+            Icons.mail_outline,
+          ),
         ),
       ),
     );
@@ -136,15 +133,11 @@ class _SignFormState extends State<SignForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "${("Mot de passe")}",
-        labelStyle: TextStyle(
-            fontSize: getProportionateScreenWidth(context, formFontSize)),
+        labelText: "Mot de passe",
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: InkWell(
-            child: Icon(
-              Icons.lock_outlined,
-            ),
-            onTap: () {}),
+        suffixIcon: Icon(
+          Icons.lock_outlined,
+        ),
       ),
     );
   }

@@ -84,8 +84,6 @@ class _SignUpFormState extends State<SignUpForm> {
       obscureText: true,
       onSaved: (newValue) => confirmPassword = newValue,
       onChanged: (value) {
-        print(password);
-
         if (value.isNotEmpty) {
           removeError(error: kConfirmPassNullError);
         }
@@ -179,8 +177,6 @@ class _SignUpFormState extends State<SignUpForm> {
         labelText: "Mot de passe" + "*",
         labelStyle: TextStyle(
             fontSize: getProportionateScreenWidth(context, formFontSize)),
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: InkWell(
             child: Icon(Icons.lock_outline_rounded, size: 20), onTap: () {}),
