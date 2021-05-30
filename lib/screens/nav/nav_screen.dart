@@ -2,7 +2,6 @@ import 'package:aloe/screens/home/components/home_screen.dart';
 import 'package:aloe/screens/news/news_screen.dart';
 import 'package:aloe/screens/profile/profile_screen.dart';
 import 'package:aloe/screens/sign_in/sign_in_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
@@ -10,7 +9,9 @@ import '../../constants.dart';
 
 class NavScreen extends StatefulWidget {
   final int startingIndex;
-  const NavScreen({Key key, this.startingIndex}) : super(key: key);
+  final int widgetIndex;
+  const NavScreen({Key key, this.startingIndex, this.widgetIndex})
+      : super(key: key);
   @override
   _NavScreenState createState() => _NavScreenState();
 }
@@ -18,23 +19,20 @@ class NavScreen extends StatefulWidget {
 class _NavScreenState extends State<NavScreen> {
   @override
   int selectedIndex = 0;
+  int homeWidgetIndex = 0;
 
   void initState() {
-    int selectedIndex = widget.startingIndex;
-  }
-
-  void _onSearchButtonPressed() {
-    print("search button clicked");
+    selectedIndex = widget.startingIndex;
+    homeWidgetIndex = widget.widgetIndex != null ? widget.widgetIndex : 0;
   }
 
   Widget build(BuildContext context) {
-    User currentUser = FirebaseAuth.instance.currentUser;
     List<Widget> widgetOptions = <Widget>[
-      HomeScreen(),
+      HomeScreen(
+        widgetIndex: homeWidgetIndex,
+      ),
       NewsScreen(),
-      currentUser != null
-          ? (currentUser.emailVerified ? ProfileScreen() : SignInScreen())
-          : SignInScreen()
+      currentUser != null ? ProfileScreen() : SignInScreen()
     ];
 
     return Scaffold(
