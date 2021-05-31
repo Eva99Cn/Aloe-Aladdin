@@ -1,8 +1,11 @@
 import 'dart:collection';
 
 import 'package:aloe/components/add_watering_button.dart';
-import 'package:aloe/components/returnButton.dart';
+import 'package:aloe/components/return_button.dart';
 import 'package:aloe/models/UserPlant.dart';
+import 'package:aloe/screens/all_plants/all_plants_screen.dart';
+import 'package:aloe/screens/all_plants/components/grid_of_plants.dart';
+import 'package:aloe/screens/home/home_screen.dart';
 import 'package:aloe/screens/my_plants/components/plants_details.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,7 +56,7 @@ class _BodyState extends State<Body> {
                             MaterialPageRoute(
                                 builder: (context) => NavScreen(
                                       startingIndex: homeScreenIndex,
-                                      widgetIndex: 1,
+                                      selectedWidget: AllPlantsScreen(),
                                     )));
                       },
                       child: Text("Ajouter des plantes")),
