@@ -9,7 +9,9 @@ class ReturnButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.arrow_back),
-      onPressed: press,
+      onPressed: () {
+        Navigator.pop(context);
+      },
     );
   }
 }

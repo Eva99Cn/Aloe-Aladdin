@@ -28,10 +28,11 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Aloe',
       theme: ThemeData(
+        primarySwatch: Colors.blueGrey,
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: kBackgroundColor,
+        accentColor: Colors.black,
         fontFamily: 'Montserrat',
-        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: IntroScreen(),
     );

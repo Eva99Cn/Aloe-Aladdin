@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 import '../size_config.dart';
 
-class DefaultButton extends StatelessWidget {
-  const DefaultButton({
+class SecondButton extends StatelessWidget {
+  const SecondButton({
     Key key,
     this.text,
     this.press,
@@ -18,7 +18,7 @@ class DefaultButton extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: TextButton(
         style: TextButton.styleFrom(
-          backgroundColor: kPrimaryColor,
+          backgroundColor: kStyle1ButtonColor,
         ),
         onPressed: press,
         child: Padding(

@@ -1,6 +1,11 @@
+import 'dart:ui';
+
 import 'package:aloe/components/add_watering_button.dart';
+import 'package:aloe/components/default_button.dart';
+import 'package:aloe/screens/all_plants/components/grid_of_plants.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +19,7 @@ class ActivitiesList extends StatefulWidget {
 
 class _ActivitiesListState extends State<ActivitiesList> {
   int plantId = 0;
+  DateTime nowDate = DateTime.now();
 
   List<dynamic> userPlants = [];
   List<dynamic> allPlants = [];
@@ -32,6 +38,8 @@ class _ActivitiesListState extends State<ActivitiesList> {
 
   @override
   Widget build(BuildContext context) {
+    User currentUser = FirebaseAuth.instance.currentUser;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -44,28 +52,31 @@ class _ActivitiesListState extends State<ActivitiesList> {
                 try {
                   Map<dynamic, dynamic> _values = snapshot.data.snapshot.value;
                   _values.forEach((key, value) {
-                    userPlants.add(value);
+                    if (value["arrosageDate"] != null) {
+                      userPlants.add(value);
+                    }
                   });
                 } catch (err) {
                   return Center(
                     child: Column(
                       children: [
-                        Text("Pas de plantes ajoutées"),
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                primary: kPrimaryColor,
-                                padding: const EdgeInsets.all(8.0)),
-                            onPressed: () {
+                        Text(
+                          "Pas de plantes ajoutées",
+                          style: TextStyle(
+                              fontSize: getProportionateScreenWidth(
+                                  context, bodyFontSize)),
+                        ),
+                        DefaultButton(
+                            press: () {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => NavScreen(
                                             startingIndex: homeScreenIndex,
-                                            widgetIndex: 1,
+                                            selectedWidget: GridOfPlants(),
                                           )));
                             },
-                            child: Text("Ajouter des plantes"))
+                            text: "Ajouter des plantes")
                       ],
                     ),
                   );
@@ -77,6 +88,18 @@ class _ActivitiesListState extends State<ActivitiesList> {
                     physics: ScrollPhysics(),
                     itemCount: userPlants.length,
                     itemBuilder: (BuildContext context, int index) {
+                      var isNextWateringDefined =
+                          userPlants[index]["prochainArrosage"] != null;
+                      var hasWateringDatePassed = formatter
+                              .parse(userPlants[index]["prochainArrosage"])
+                              .difference(nowDate)
+                              .inDays <
+                          0;
+                      int daysRemainingBeforeWatering = formatter
+                          .parse(userPlants[index]["prochainArrosage"])
+                          .difference(nowDate)
+                          .inDays
+                          .abs();
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: Column(
@@ -84,6 +107,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
                             ListTile(
                               leading: GestureDetector(
                                 onTap: () {
+                                  if (!mounted) return;
                                   setState(() {
                                     plantId = userPlants[index]["Id_Ma_Plante"];
                                     //TODO : Aller au détail de la plante
@@ -116,7 +140,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Prochain arrosage ",
+                                    "Arrosage ",
                                     style: TextStyle(
                                       fontSize: getProportionateScreenHeight(
                                           context, 14),
@@ -124,23 +148,53 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                     ),
                                   ),
                                   Text(
-                                    userPlants[index]["prochainArrosage"] !=
-                                            null
-                                        ? "D-" +
-                                            formatter
-                                                .parse(userPlants[index]
-                                                    ["prochainArrosage"])
-                                                .difference(formatter.parse(
-                                                    userPlants[index]
-                                                        ["arrosageDate"]))
-                                                .inDays
-                                                .toString()
+                                    isNextWateringDefined
+                                        ? hasWateringDatePassed
+                                            ? "D + " +
+                                                daysRemainingBeforeWatering
+                                                    .toString()
+                                            : "D - " +
+                                                daysRemainingBeforeWatering
+                                                    .toString()
                                         : "Pas défini",
                                     style: TextStyle(
                                       fontSize: getProportionateScreenHeight(
                                           context, 14),
                                       color: Colors.black,
                                     ),
+                                  ),
+                                  LinearProgressIndicator(
+                                    semanticsValue: formatter
+                                        .parse(userPlants[index]
+                                            ["prochainArrosage"])
+                                        .difference(nowDate)
+                                        .inDays
+                                        .toString(),
+                                    backgroundColor: Colors.grey,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        formatter
+                                                    .parse(userPlants[index]
+                                                        ["prochainArrosage"])
+                                                    .difference(nowDate)
+                                                    .inDays >
+                                                0
+                                            ? kPrimaryColor
+                                            : Colors.red),
+                                    value: 1 -
+                                        (formatter
+                                                .parse(userPlants[index]
+                                                    ["prochainArrosage"])
+                                                .difference(nowDate)
+                                                .inSeconds
+                                                .toDouble() /
+                                            formatter
+                                                .parse(userPlants[index]
+                                                    ["prochainArrosage"])
+                                                .difference(formatter.parse(
+                                                    userPlants[index]
+                                                        ["arrosageDate"]))
+                                                .inSeconds
+                                                .toDouble()),
                                   ),
                                 ],
                               ),

@@ -1,7 +1,11 @@
 import 'package:aloe/components/default_button.dart';
 import 'package:aloe/components/form_error.dart';
+import 'package:aloe/components/plant_information_row.dart';
+import 'package:aloe/components/return_button.dart';
+import 'package:aloe/components/second_button.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -16,9 +20,10 @@ class PlantDetailsScreen extends StatefulWidget {
 }
 
 class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
-  Map<dynamic, dynamic> allPlants = {};
-  String plantName;
+  Map<dynamic, dynamic> plantInformation = {};
+  String plantName = "";
   List<String> errors = [];
+  int plantId;
 
   var now = new DateTime.now();
   final _formKey = GlobalKey<FormState>();
@@ -28,8 +33,6 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
   void addError({String error}) {
     if (!errors.contains(error))
       setState(() {
-        print(errors);
-
         errors.add(error);
       });
   }
@@ -42,25 +45,43 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    plantId = widget.plantId - 1;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    User currentUser = FirebaseAuth.instance.currentUser;
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        ReturnButton(),
         StreamBuilder(
             stream: databaseReference
                 .child('AllPlantes')
-                .orderByChild("Id_Ma_Plante")
-                .equalTo(widget.plantId)
+                .child(plantId.toString())
                 .onValue,
             builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
               if (snapshot.hasData) {
-                allPlants.clear();
-                Map<dynamic, dynamic> _values = snapshot.data.snapshot.value;
-                _values.forEach((key, value) {
-                  allPlants.addAll(value);
-                });
+                try {
+                  Map<dynamic, dynamic> _values = snapshot.data.snapshot.value;
+                  plantInformation = _values;
+                } catch (err) {}
 
                 return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Text(
+                      plantInformation["Nom"],
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: getProportionateScreenHeight(context, 25),
+                        color: Colors.black,
+                      ),
+                    ),
                     Card(
                       elevation: 0,
                       child: GridTile(
@@ -72,7 +93,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                               "Loading...",
                               style: TextStyle(fontSize: 20),
                             ),
-                            imageUrl: allPlants["Photo"],
+                            imageUrl: plantInformation["Photo"],
                             fit: BoxFit.fill,
                           ),
                         ),
@@ -95,71 +116,97 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                         }),
                     Visibility(
                         visible: isVisibleNewPlantForm,
-                        child: Form(
-                            key: _formKey,
-                            child: Container(
-                              child: Column(
-                                children: [
-                                  Container(
-                                      height: 100,
-                                      child: buildPlantNameFormField(context)),
-                                  FormError(errors: errors),
-                                  TextButton(
-                                    child: Text(
-                                      "Ajouter à mes plantes",
-                                      style: TextStyle(color: kPrimaryColor),
-                                    ),
-                                    onPressed: () async {
-                                      if (_formKey.currentState.validate()) {
-                                        _formKey.currentState.save();
-                                        print(errors);
-                                        DataSnapshot snapshot =
-                                            await databaseReference
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Form(
+                              key: _formKey,
+                              child: Container(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                        height: 100,
+                                        child: buildPlantNameFormField()),
+                                    FormError(errors: errors),
+                                    SecondButton(
+                                      press: () async {
+                                        if (_formKey.currentState.validate()) {
+                                          _formKey.currentState.save();
+                                          DataSnapshot snapshot =
+                                              await databaseReference
+                                                  .child("Users")
+                                                  .child(currentUser.uid)
+                                                  .child(plantName)
+                                                  .once();
+
+                                          if (snapshot.value == null) {
+                                            errors
+                                                .remove(kPlantNameExistsError);
+                                            databaseReference
                                                 .child("Users")
                                                 .child(currentUser.uid)
                                                 .child(plantName)
-                                                .once();
-
-                                        if (snapshot.value == null) {
-                                          errors.remove(kPlantNameExistsError);
-                                          databaseReference
-                                              .child("Users")
-                                              .child(currentUser.uid)
-                                              .child(plantName)
-                                              .set({
-                                            "DateAjout": formatter.format(now),
-                                            "NomPlante": plantName,
-                                            "IdPlante":
-                                                allPlants["Id_Ma_Plante"],
-                                            "arrosageDate":
-                                                formatter.format(now),
-                                          });
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return buildDialogAddPlantSuccess(
-                                                    context);
-                                              });
-                                        } else {
-                                          addError(
-                                              error: kPlantNameExistsError);
+                                                .set({
+                                              "DateAjout":
+                                                  formatter.format(now),
+                                              "NomPlante": plantName,
+                                              "IdPlante": plantInformation[
+                                                  "Id_Ma_Plante"],
+                                            });
+                                            showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return buildDialogAddPlantSuccess(
+                                                      context);
+                                                });
+                                          } else {
+                                            addError(
+                                                error: kPlantNameExistsError);
+                                          }
                                         }
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ))),
-                    Container(
+                                      },
+                                      text: "Ajouter",
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            allPlants["Nom"],
-                            style: TextStyle(
-                              fontSize:
-                                  getProportionateScreenHeight(context, 14),
-                              color: Colors.black,
-                            ),
+                          PlantInfoDetails(
+                            description: "Espèce : ",
+                            plantInfo: plantInformation["Espèce"],
+                          ),
+                          PlantInfoDetails(
+                            description: "Fréquence \nd'arrosage : ",
+                            plantInfo: plantInformation["Fréquence_Arrosage"],
+                          ),
+                          PlantInfoDetails(
+                            description: "Difficulté \nd'entretien : ",
+                            plantInfo: plantInformation["Difficulté_Entretien"],
+                          ),
+                          PlantInfoDetails(
+                            description: "Climat : ",
+                            plantInfo: plantInformation["Climat"],
+                          ),
+                          PlantInfoDetails(
+                            description: "Exposition : ",
+                            plantInfo: plantInformation["Expositon"],
+                          ),
+                          PlantInfoDetails(
+                            description: "Saison de \nsemence : ",
+                            plantInfo: plantInformation["Saison_Semence"],
+                          ),
+                          PlantInfoDetails(
+                            description: "Type de \nTerre : ",
+                            plantInfo: plantInformation["Terre"],
+                          ),
+                          PlantInfoDetails(
+                            description: "Taille à \nmaturité : ",
+                            plantInfo: plantInformation["Taille_A_Maturité"],
                           ),
                         ],
                       ),
@@ -177,29 +224,22 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
     return AlertDialog(
       title: new Text('La plante a bien été ajouté'),
       actions: <Widget>[
-        Container(
-          height: getProportionateScreenWidth(context, 100),
-          width: getProportionateScreenWidth(context, 150),
-          child: Column(
-            children: [
-              TextButton(
-                child: Text(
-                  "OK",
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
+        TextButton(
+          child: Text(
+            "OK",
           ),
+          onPressed: () {
+            Navigator.of(context).pop();
+            _formKey.currentState.reset();
+            setAddPlantButtonText();
+          },
         )
       ],
     );
   }
 
-  TextFormField buildPlantNameFormField(BuildContext context) {
+  TextFormField buildPlantNameFormField() {
     return TextFormField(
-      autofocus: true,
       style: TextStyle(
           fontSize: getProportionateScreenWidth(context, formFontSize)),
       keyboardType: TextInputType.text,
@@ -210,7 +250,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
         } else if (plantNameValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidPlantNameError);
         }
-        return null;
+        plantName = value;
       },
       validator: (value) {
         if (value.isEmpty) {

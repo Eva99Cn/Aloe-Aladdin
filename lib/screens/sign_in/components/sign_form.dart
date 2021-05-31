@@ -60,7 +60,6 @@ class _SignFormState extends State<SignForm> {
             ],
           ),
           FormError(errors: errors),
-          //SizedBox(height: getProportionateScreenHeight(context,20)),
           DefaultButton(
             text: "Se connecter",
             press: () {
@@ -102,16 +101,11 @@ class _SignFormState extends State<SignForm> {
       },
       decoration: InputDecoration(
         labelText: "Email",
-        labelStyle: TextStyle(
-          fontSize: getProportionateScreenWidth(context, formFontSize),
-        ),
-
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: InkWell(
-          child: Icon(Icons.mail_outline,
-              size: MediaQuery.of(context).size.width * 0.05),
+          child: Icon(
+            Icons.mail_outline,
+          ),
         ),
       ),
     );
@@ -138,15 +132,11 @@ class _SignFormState extends State<SignForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "${("Mot de passe")}",
-        labelStyle: TextStyle(
-            fontSize: getProportionateScreenWidth(context, formFontSize)),
+        labelText: "Mot de passe",
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: InkWell(
-            child: Icon(
-              Icons.lock_outlined,
-            ),
-            onTap: () {}),
+        suffixIcon: Icon(
+          Icons.lock_outlined,
+        ),
       ),
     );
   }
@@ -163,32 +153,29 @@ class _SignFormState extends State<SignForm> {
         .signInWithEmailAndPassword(email: email, password: password)
         .then((result) async {
       if (result.user.emailVerified) {
-        if (result.user.uid != "DNrxNkfOjeZmJcFLIBpnDjMdbYa2") {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => NavScreen(
-                        startingIndex: 0,
-                      )));
-        } else {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => NavScreen(
-                        startingIndex: 0,
-                      )));
-        }
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => NavScreen(
+                      startingIndex: 0,
+                    )));
       } else {
         addError(
             error: "Mail non vérifié, \n nouveau mail de vérification\nenvoyé");
         result.user.sendEmailVerification();
       }
     }).catchError((err) {
-      setState(() {
+      if (err.toString() ==
+          "[firebase_auth/too-many-requests] Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.") {
+        addError(error: kTooManyAttempts);
+      } else if (err.toString() ==
+          "[firebase_auth/wrong-password] The password is invalid or the user does not have a password.") {
+        addError(error: kWrongPassword);
+      } else {
         addError(
             error:
                 "Il y a eu une erreur \nlors de l'authentification \nveuillez réessayer !");
-      });
+      }
     });
   }
 }

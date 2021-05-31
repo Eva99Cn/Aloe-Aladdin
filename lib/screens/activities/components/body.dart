@@ -1,8 +1,7 @@
-import 'package:aloe/components/returnButton.dart';
+import 'package:aloe/components/return_button.dart';
 import 'package:aloe/constants.dart';
-import 'package:aloe/screens/nav/nav_screen.dart';
+import 'package:aloe/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 
 import 'activities_list.dart';
 
@@ -23,17 +22,16 @@ class _BodyState extends State<Body> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ReturnButton(press: () {
-                    Navigator.push(
-                        context,
-                        PageTransition(
-                            type: PageTransitionType.fade,
-                            child: NavScreen(
-                              startingIndex: homeScreenIndex,
-                            )));
+                    Navigator.pop(context);
                   }),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text("Mes activités"),
+                    child: Text(
+                      "Mes activités",
+                      style: TextStyle(
+                          fontSize: getProportionateScreenWidth(
+                              context, bodyFontSize)),
+                    ),
                   ),
                   ActivitiesList(),
                 ],

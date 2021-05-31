@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:aloe/components/plant_card.dart';
+import 'package:aloe/components/return_button.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +16,7 @@ class PlantSearch extends StatefulWidget {
 
 class _PlantSearchState extends State<PlantSearch> {
   List<dynamic> allPlants = [];
+  int plantId;
   bool hasNotFoundPlants = false;
   @override
   void initState() {
@@ -25,84 +27,34 @@ class _PlantSearchState extends State<PlantSearch> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Column(
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                  icon: Icon(Icons.search), hintText: "Rechercher"),
-              onChanged: (text) {
-                searchMethod(text);
-              },
-            ),
-            Visibility(
-              visible: hasNotFoundPlants,
-              child: Text("Aucun résultat"),
-            ),
-            GridView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                physics: ScrollPhysics(),
-                itemCount: allPlants.length,
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent:
-                      getProportionateScreenHeight(context, 300),
-                  childAspectRatio: 3 / 2,
-                  crossAxisSpacing: getProportionateScreenHeight(context, 0),
-                  mainAxisSpacing: getProportionateScreenWidth(context, 10),
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding:
-                        const EdgeInsets.only(left: 5, right: 10, bottom: 10),
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {});
-                      },
-                      child: Column(
-                        children: [
-                          Flexible(
-                            child: Card(
-                              elevation: 0,
-                              child: GridTile(
-                                child: Container(
-                                  height: getProportionateScreenHeight(
-                                      context, 200),
-                                  width:
-                                      getProportionateScreenWidth(context, 600),
-                                  child: CachedNetworkImage(
-                                    placeholder: (context, url) => Text(
-                                      "Loading...",
-                                      style: TextStyle(fontSize: 20),
-                                    ),
-                                    imageUrl: allPlants[index]["Photo"],
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            child: Column(
-                              children: [
-                                Text(
-                                  allPlants[index]["Nom"],
-                                  style: TextStyle(
-                                    fontSize: getProportionateScreenHeight(
-                                        context, 14),
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                })
-          ],
+        ReturnButton(),
+        TextField(
+          decoration:
+              InputDecoration(icon: Icon(Icons.search), hintText: "Rechercher"),
+          onChanged: (text) {
+            searchMethod(text);
+          },
         ),
+        Visibility(
+          visible: hasNotFoundPlants,
+          child: Text("Aucun résultat"),
+        ),
+        GridView.builder(
+            shrinkWrap: true,
+            physics: ScrollPhysics(),
+            itemCount: allPlants.length,
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: getProportionateScreenHeight(context, 300),
+              childAspectRatio: 3 / 2,
+            ),
+            itemBuilder: (BuildContext context, int index) {
+              return PlantCard(
+                  plantId: allPlants[index]["Id_Ma_Plante"],
+                  plantName: allPlants[index]["Nom"],
+                  pictureUrl: allPlants[index]["Photo"]);
+            }),
       ],
     );
   }

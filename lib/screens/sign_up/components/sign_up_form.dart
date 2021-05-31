@@ -1,6 +1,6 @@
 import 'package:aloe/components/default_button.dart';
 import 'package:aloe/components/form_error.dart';
-import 'package:aloe/screens/signupsuccess/signupsuccess.dart';
+import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +17,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   String email;
   String password;
-  String conformPassword;
+  String confirmPassword;
 
   bool remember = false;
   final List<String> errors = [];
@@ -27,6 +27,12 @@ class _SignUpFormState extends State<SignUpForm> {
       setState(() {
         errors.add(error);
       });
+  }
+
+  void removeError({String error}) {
+    setState(() {
+      errors.remove(error);
+    });
   }
 
   @override
@@ -75,20 +81,21 @@ class _SignUpFormState extends State<SignUpForm> {
       style: TextStyle(
           fontSize: getProportionateScreenWidth(context, formFontSize)),
       obscureText: true,
-      onSaved: (newValue) => conformPassword = newValue,
+      onSaved: (newValue) => confirmPassword = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
-        } else if (value.isNotEmpty && password == conformPassword) {
+          removeError(error: kConfirmPassNullError);
+        }
+        if (password == confirmPassword) {
           removeError(error: kMatchPassError);
         }
-        conformPassword = value;
+        confirmPassword = value;
       },
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kPassNullError);
+          addError(error: kConfirmPassNullError);
           return "";
-        } else if ((password != value)) {
+        } else if (password != value) {
           addError(error: kMatchPassError);
           return "";
         }
@@ -98,8 +105,6 @@ class _SignUpFormState extends State<SignUpForm> {
         labelText: "Confirmer le mot de passe" + "*",
         labelStyle: TextStyle(
             fontSize: getProportionateScreenWidth(context, formFontSize)),
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: InkWell(
             child: Icon(Icons.lock_outline_rounded, size: 20), onTap: () {}),
@@ -122,8 +127,9 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       validator: (value) {
-        if (value.isNotEmpty) {
+        if (value.isEmpty) {
           addError(error: kEmailNullError);
+          return "";
         } else if (!emailValidatorRegExp.hasMatch(value)) {
           addError(error: kInvalidEmailError);
           return "";
@@ -134,8 +140,6 @@ class _SignUpFormState extends State<SignUpForm> {
         labelText: "Email" + "*",
         labelStyle: TextStyle(
             fontSize: getProportionateScreenWidth(context, formFontSize)),
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon:
             InkWell(child: Icon(Icons.mail_outline, size: 20), onTap: () {}),
@@ -152,7 +156,8 @@ class _SignUpFormState extends State<SignUpForm> {
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
+        }
+        if (value.length >= 8) {
           removeError(error: kShortPassError);
         }
         password = value;
@@ -171,8 +176,6 @@ class _SignUpFormState extends State<SignUpForm> {
         labelText: "Mot de passe" + "*",
         labelStyle: TextStyle(
             fontSize: getProportionateScreenWidth(context, formFontSize)),
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: InkWell(
             child: Icon(Icons.lock_outline_rounded, size: 20), onTap: () {}),
@@ -180,21 +183,17 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  void removeError({String error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
-
   Future<void> signUp() async {
     _auth
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((result) async {
       result.user.sendEmailVerification();
-
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => SignUpSuccessScreen()));
+      _auth.signOut();
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return buildDialogSignUpSuccess(context);
+          });
     }).catchError((err) {
       if (err.toString() ==
           "[firebase_auth/email-already-in-use] The email address is already in use by another account.") {
@@ -203,5 +202,35 @@ class _SignUpFormState extends State<SignUpForm> {
         addError(error: "Il y a eu une erreur, rééssayez");
       }
     });
+  }
+
+  AlertDialog buildDialogSignUpSuccess(BuildContext context) {
+    return AlertDialog(
+        title: Column(
+          children: [
+            Icon(
+              Icons.thumb_up_sharp,
+              size: getProportionateScreenHeight(context, 60),
+            ),
+            Text(
+              "Veuillez confirmer votre adresse mail. N'oubliez pas de vérifier dans vos courriers indésirables",
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(
+              "J'ai compris",
+            ),
+            onPressed: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NavScreen(
+                            startingIndex: homeScreenIndex,
+                          )));
+            },
+          ),
+        ]);
   }
 }
