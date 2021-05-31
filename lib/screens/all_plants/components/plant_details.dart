@@ -1,5 +1,4 @@
 import 'package:aloe/components/default_button.dart';
-import 'package:aloe/components/form_error.dart';
 import 'package:aloe/components/plant_information_row.dart';
 import 'package:aloe/components/return_button.dart';
 import 'package:aloe/components/second_button.dart';
@@ -22,27 +21,13 @@ class PlantDetailsScreen extends StatefulWidget {
 class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
   Map<dynamic, dynamic> plantInformation = {};
   String plantName = "";
-  List<String> errors = [];
   int plantId;
 
   var now = new DateTime.now();
   final _formKey = GlobalKey<FormState>();
   bool isVisibleNewPlantForm = false;
   String addPlantText = "Ajouter";
-
-  void addError({String error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
-  }
-
-  void removeError({String error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
+  String error = "";
 
   @override
   void initState() {
@@ -102,8 +87,8 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                     DefaultButton(
                         text: addPlantText,
                         press: () {
+                          setError("");
                           if (currentUser != null) {
-                            errors.clear();
                             setAddPlantButtonText();
                           } else {
                             Navigator.pushReplacement(
@@ -126,7 +111,29 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                     Container(
                                         height: 100,
                                         child: buildPlantNameFormField()),
-                                    FormError(errors: errors),
+                                    Row(
+                                      children: [
+                                        Visibility(
+                                          visible: error != "" ? true : false,
+                                          child: Icon(
+                                            Icons.error,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: getProportionateScreenWidth(
+                                              context, generalPaddingSize),
+                                        ),
+                                        Expanded(
+                                          child: Text(error,
+                                              style: TextStyle(
+                                                fontSize:
+                                                    getProportionateScreenWidth(
+                                                        context, 10),
+                                              )),
+                                        )
+                                      ],
+                                    ),
                                     SecondButton(
                                       press: () async {
                                         if (_formKey.currentState.validate()) {
@@ -139,8 +146,8 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                                   .once();
 
                                           if (snapshot.value == null) {
-                                            errors
-                                                .remove(kPlantNameExistsError);
+                                            setError("");
+
                                             databaseReference
                                                 .child("Users")
                                                 .child(currentUser.uid)
@@ -160,8 +167,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                                       context);
                                                 });
                                           } else {
-                                            addError(
-                                                error: kPlantNameExistsError);
+                                            setError(kPlantNameExistsError);
                                           }
                                         }
                                       },
@@ -246,18 +252,20 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
       onSaved: (newValue) => plantName = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kPlantNameNullError);
+          setError("");
         } else if (plantNameValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidPlantNameError);
+          setError("");
         }
         plantName = value;
       },
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kPlantNameNullError);
+          setError(kPlantNameNullError);
+
           return "";
         } else if (!plantNameValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidPlantNameError);
+          setError(kInvalidPlantNameError);
+
           return "";
         }
         return null;
@@ -283,5 +291,11 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
       });
       isVisibleNewPlantForm = true;
     }
+  }
+
+  void setError(String errorToPrint) {
+    setState(() {
+      error = errorToPrint;
+    });
   }
 }
