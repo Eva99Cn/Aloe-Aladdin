@@ -21,10 +21,11 @@ class _SignFormState extends State<SignForm> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void addError({String error}) {
-    if (!errors.contains(error))
+    if (!errors.contains(error)) {
       setState(() {
         errors.add(error);
       });
+    }
   }
 
   @override
@@ -84,10 +85,11 @@ class _SignFormState extends State<SignForm> {
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
+        }
+        if (emailValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidEmailError);
         }
-        return null;
+        email = value;
       },
       validator: (value) {
         if (value.isEmpty) {
@@ -122,7 +124,7 @@ class _SignFormState extends State<SignForm> {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
         }
-        return null;
+        password = value;
       },
       validator: (value) {
         if (value.isEmpty) {
@@ -142,10 +144,11 @@ class _SignFormState extends State<SignForm> {
   }
 
   void removeError({String error}) {
-    if (errors.contains(error))
+    if (errors.contains(error)) {
       setState(() {
         errors.remove(error);
       });
+    }
   }
 
   Future<void> signIn() async {
