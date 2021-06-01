@@ -98,6 +98,8 @@ class _MyPlantsListState extends State<MyPlantsList> {
                                                       MyPlantDetailsScreen(
                                                     plantId: userPlants[index]
                                                         ["IdPlante"],
+                                                    userPlant:
+                                                        userPlants[index],
                                                   ),
                                                 )));
                                   });

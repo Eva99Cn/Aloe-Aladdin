@@ -3,6 +3,7 @@ import 'package:aloe/components/form_error.dart';
 import 'package:aloe/components/plant_information_row.dart';
 import 'package:aloe/components/return_button.dart';
 import 'package:aloe/components/second_button.dart';
+import 'package:aloe/screens/my_plants/components/My_plants_list.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,7 +15,9 @@ import '../../../size_config.dart';
 
 class MyPlantDetailsScreen extends StatefulWidget {
   final int plantId;
-  const MyPlantDetailsScreen({Key key, this.plantId}) : super(key: key);
+  final Map<dynamic, dynamic> userPlant;
+  const MyPlantDetailsScreen({Key key, this.plantId, this.userPlant})
+      : super(key: key);
   @override
   _MyPlantDetailsScreenState createState() => _MyPlantDetailsScreenState();
 }
@@ -24,6 +27,7 @@ class _MyPlantDetailsScreenState extends State<MyPlantDetailsScreen> {
   String plantName = "";
   List<String> errors = [];
   int plantId;
+  Map<dynamic, dynamic> userPlant;
 
   var now = new DateTime.now();
   final _formKey = GlobalKey<FormState>();
@@ -33,6 +37,7 @@ class _MyPlantDetailsScreenState extends State<MyPlantDetailsScreen> {
   void initState() {
     super.initState();
     plantId = widget.plantId - 1;
+    userPlant = widget.userPlant;
   }
 
   @override
@@ -59,11 +64,18 @@ class _MyPlantDetailsScreenState extends State<MyPlantDetailsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      plantInformation["Nom"],
-                      textAlign: TextAlign.center,
+                      userPlant["NomPlante"],
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: getProportionateScreenHeight(context, 25),
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      plantInformation["Nom"],
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: getProportionateScreenHeight(context, 14),
                         color: Colors.black,
                       ),
                     ),
