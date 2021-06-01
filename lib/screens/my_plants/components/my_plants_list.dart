@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:aloe/components/default_button.dart';
 import 'package:aloe/components/form_error.dart';
+import 'package:aloe/screens/my_plants/components/my_plant_details.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,12 +13,14 @@ import 'package:intl/intl.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 
-class PlantDetailsItem extends StatefulWidget {
+class MyPlantsList extends StatefulWidget {
+  final int plantId;
+  const MyPlantsList({Key key, this.plantId}) : super(key: key);
   @override
-  _PlantDetailsItemState createState() => _PlantDetailsItemState();
+  _MyPlantsListState createState() => _MyPlantsListState();
 }
 
-class _PlantDetailsItemState extends State<PlantDetailsItem> {
+class _MyPlantsListState extends State<MyPlantsList> {
   int plantId = 0;
 
   List<dynamic> userPlants = [];
@@ -84,8 +87,19 @@ class _PlantDetailsItemState extends State<PlantDetailsItem> {
                               leading: GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    plantId = userPlants[index]["Id_Ma_Plante"];
-                                    //TODO : Aller au détail de la plante
+                                    plantId = userPlants[index]["IdPlante"];
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => NavScreen(
+                                                  startingIndex:
+                                                      homeScreenIndex,
+                                                  selectedWidget:
+                                                      MyPlantDetailsScreen(
+                                                    plantId: userPlants[index]
+                                                        ["IdPlante"],
+                                                  ),
+                                                )));
                                   });
                                 },
                                 child: Container(

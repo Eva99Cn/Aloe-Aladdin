@@ -6,7 +6,7 @@ import 'package:aloe/models/UserPlant.dart';
 import 'package:aloe/screens/all_plants/all_plants_screen.dart';
 import 'package:aloe/screens/all_plants/components/grid_of_plants.dart';
 import 'package:aloe/screens/home/home_screen.dart';
-import 'package:aloe/screens/my_plants/components/plants_details.dart';
+import 'package:aloe/screens/my_plants/components/my_plants_list.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +64,7 @@ class _BodyState extends State<Body> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text("Mes plantes"),
                   ),
-                  PlantDetailsItem()
+                  MyPlantsList()
                 ],
               ),
             )),
