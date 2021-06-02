@@ -1,13 +1,7 @@
 import 'package:aloe/components/add_watering_button.dart';
-import 'package:aloe/components/default_button.dart';
-import 'package:aloe/components/form_error.dart';
 import 'package:aloe/components/plant_information_row.dart';
 import 'package:aloe/components/return_button.dart';
-import 'package:aloe/components/second_button.dart';
-import 'package:aloe/screens/my_plants/components/My_plants_list.dart';
-import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -15,10 +9,8 @@ import '../../../constants.dart';
 import '../../../size_config.dart';
 
 class MyPlantDetailsScreen extends StatefulWidget {
-  final int plantId;
   final Map<dynamic, dynamic> userPlant;
-  const MyPlantDetailsScreen({Key key, this.plantId, this.userPlant})
-      : super(key: key);
+  const MyPlantDetailsScreen({Key key, this.userPlant}) : super(key: key);
   @override
   _MyPlantDetailsScreenState createState() => _MyPlantDetailsScreenState();
 }
@@ -27,24 +19,19 @@ class _MyPlantDetailsScreenState extends State<MyPlantDetailsScreen> {
   Map<dynamic, dynamic> plantInformation = {};
   String plantName = "";
   List<String> errors = [];
-  int plantId;
   Map<dynamic, dynamic> userPlant;
 
   var now = new DateTime.now();
-  final _formKey = GlobalKey<FormState>();
   bool isVisibleNewPlantForm = false;
 
   @override
   void initState() {
     super.initState();
-    plantId = widget.plantId - 1;
     userPlant = widget.userPlant;
   }
 
   @override
   Widget build(BuildContext context) {
-    User currentUser = FirebaseAuth.instance.currentUser;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -52,7 +39,7 @@ class _MyPlantDetailsScreenState extends State<MyPlantDetailsScreen> {
         StreamBuilder(
             stream: databaseReference
                 .child('AllPlantes')
-                .child(plantId.toString())
+                .child((userPlant["IdPlante"] - 1).toString())
                 .onValue,
             builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
               if (snapshot.hasData) {

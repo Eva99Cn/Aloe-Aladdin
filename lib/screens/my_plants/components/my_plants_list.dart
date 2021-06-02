@@ -1,28 +1,20 @@
-import 'dart:collection';
-
-import 'package:aloe/components/default_button.dart';
-import 'package:aloe/components/form_error.dart';
 import 'package:aloe/screens/my_plants/components/my_plant_details.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
 
 class MyPlantsList extends StatefulWidget {
-  final int plantId;
-  const MyPlantsList({Key key, this.plantId}) : super(key: key);
+  const MyPlantsList({Key key}) : super(key: key);
   @override
   _MyPlantsListState createState() => _MyPlantsListState();
 }
 
 class _MyPlantsListState extends State<MyPlantsList> {
-  int plantId = 0;
-
   List<dynamic> userPlants = [];
   List<dynamic> allPlants = [];
 
@@ -87,7 +79,6 @@ class _MyPlantsListState extends State<MyPlantsList> {
                               leading: GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    plantId = userPlants[index]["IdPlante"];
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -96,8 +87,6 @@ class _MyPlantsListState extends State<MyPlantsList> {
                                                       homeScreenIndex,
                                                   selectedWidget:
                                                       MyPlantDetailsScreen(
-                                                    plantId: userPlants[index]
-                                                        ["IdPlante"],
                                                     userPlant:
                                                         userPlants[index],
                                                   ),
