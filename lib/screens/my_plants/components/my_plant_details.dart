@@ -1,3 +1,4 @@
+import 'package:aloe/components/add_watering_button.dart';
 import 'package:aloe/components/default_button.dart';
 import 'package:aloe/components/form_error.dart';
 import 'package:aloe/components/plant_information_row.dart';
@@ -96,6 +97,11 @@ class _MyPlantDetailsScreenState extends State<MyPlantDetailsScreen> {
                         ),
                       ),
                     ),
+                    (userPlant["arrosageDate"] == null)
+                        ? AddWateringButton(
+                            plantName: userPlant["NomPlante"],
+                            isForActivitiesScreen: false)
+                        : Container(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
