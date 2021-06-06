@@ -111,7 +111,6 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                   if (!mounted) return;
                                   setState(() {
                                     plantId = userPlants[index]["Id_Ma_Plante"];
-                                    //TODO : Aller au détail de la plante
                                   });
                                 },
                                 child: Container(
