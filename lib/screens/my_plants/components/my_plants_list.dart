@@ -1,25 +1,20 @@
-import 'dart:collection';
-
-import 'package:aloe/components/default_button.dart';
-import 'package:aloe/components/form_error.dart';
+import 'package:aloe/screens/my_plants/components/my_plant_details.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
 
-class PlantDetailsItem extends StatefulWidget {
+class MyPlantsList extends StatefulWidget {
+  const MyPlantsList({Key key}) : super(key: key);
   @override
-  _PlantDetailsItemState createState() => _PlantDetailsItemState();
+  _MyPlantsListState createState() => _MyPlantsListState();
 }
 
-class _PlantDetailsItemState extends State<PlantDetailsItem> {
-  int plantId = 0;
-
+class _MyPlantsListState extends State<MyPlantsList> {
   List<dynamic> userPlants = [];
   List<dynamic> allPlants = [];
 
@@ -80,15 +75,23 @@ class _PlantDetailsItemState extends State<PlantDetailsItem> {
                         padding: const EdgeInsets.only(right: 10, bottom: 10),
                         child: Column(
                           children: [
-                            ListTile(
-                              leading: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    plantId = userPlants[index]["Id_Ma_Plante"];
-                                    //TODO : Aller au détail de la plante
-                                  });
-                                },
-                                child: Container(
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => NavScreen(
+                                                startingIndex: homeScreenIndex,
+                                                selectedWidget:
+                                                    MyPlantDetailsScreen(
+                                                  userPlant: userPlants[index],
+                                                ),
+                                              )));
+                                });
+                              },
+                              child: ListTile(
+                                leading: Container(
                                   height:
                                       getProportionateScreenHeight(context, 70),
                                   width:
@@ -102,27 +105,27 @@ class _PlantDetailsItemState extends State<PlantDetailsItem> {
                                     fit: BoxFit.fill,
                                   ),
                                 ),
-                              ),
-                              title: Text(
-                                userPlants[index]["NomPlante"],
-                                style: TextStyle(
-                                  fontSize:
-                                      getProportionateScreenHeight(context, 14),
-                                  color: Colors.black,
-                                ),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Voir plus de détails ",
-                                    style: TextStyle(
-                                      fontSize: getProportionateScreenHeight(
-                                          context, 14),
-                                      color: Colors.black,
-                                    ),
+                                title: Text(
+                                  userPlants[index]["NomPlante"],
+                                  style: TextStyle(
+                                    fontSize: getProportionateScreenHeight(
+                                        context, 14),
+                                    color: Colors.black,
                                   ),
-                                ],
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Voir plus de détails ",
+                                      style: TextStyle(
+                                        fontSize: getProportionateScreenHeight(
+                                            context, 14),
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],

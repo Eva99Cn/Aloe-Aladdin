@@ -14,6 +14,9 @@ class UserPlant {
     this.name = userPlantInformation["NomPlante"];
     this.plantId = userPlantInformation["IdPlante"];
     this.acquisitionDate = formatter.parse(userPlantInformation["DateAjout"]);
-    this.wateringDate = formatter.parse(userPlantInformation["arrosageDate"]);
+    if (userPlantInformation["arrosageDate"] != null)
+      this.wateringDate = formatter.parse(userPlantInformation["arrosageDate"]);
+    else
+      this.wateringDate = null;
   }
 }
