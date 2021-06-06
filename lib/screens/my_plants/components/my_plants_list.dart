@@ -75,25 +75,23 @@ class _MyPlantsListState extends State<MyPlantsList> {
                         padding: const EdgeInsets.only(right: 10, bottom: 10),
                         child: Column(
                           children: [
-                            ListTile(
-                              leading: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => NavScreen(
-                                                  startingIndex:
-                                                      homeScreenIndex,
-                                                  selectedWidget:
-                                                      MyPlantDetailsScreen(
-                                                    userPlant:
-                                                        userPlants[index],
-                                                  ),
-                                                )));
-                                  });
-                                },
-                                child: Container(
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => NavScreen(
+                                                startingIndex: homeScreenIndex,
+                                                selectedWidget:
+                                                    MyPlantDetailsScreen(
+                                                  userPlant: userPlants[index],
+                                                ),
+                                              )));
+                                });
+                              },
+                              child: ListTile(
+                                leading: Container(
                                   height:
                                       getProportionateScreenHeight(context, 70),
                                   width:
@@ -107,27 +105,27 @@ class _MyPlantsListState extends State<MyPlantsList> {
                                     fit: BoxFit.fill,
                                   ),
                                 ),
-                              ),
-                              title: Text(
-                                userPlants[index]["NomPlante"],
-                                style: TextStyle(
-                                  fontSize:
-                                      getProportionateScreenHeight(context, 14),
-                                  color: Colors.black,
-                                ),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Voir plus de détails ",
-                                    style: TextStyle(
-                                      fontSize: getProportionateScreenHeight(
-                                          context, 14),
-                                      color: Colors.black,
-                                    ),
+                                title: Text(
+                                  userPlants[index]["NomPlante"],
+                                  style: TextStyle(
+                                    fontSize: getProportionateScreenHeight(
+                                        context, 14),
+                                    color: Colors.black,
                                   ),
-                                ],
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Voir plus de détails ",
+                                      style: TextStyle(
+                                        fontSize: getProportionateScreenHeight(
+                                            context, 14),
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
