@@ -121,8 +121,15 @@ class _AddWateringButtonState extends State<AddWateringButton> {
                             updateNextWateringDateOnDatabase();
                             NotificationService()
                                 .scheduleNotificationForNextWatering(userPlant);
-
-                            Navigator.pop(c);
+                            if (!widget.isForActivitiesScreen) {
+                              showDialog(
+                                  context: c,
+                                  builder: (BuildContext context) {
+                                    return buildDialogAddFirstWateringDate(
+                                        context);
+                                  });
+                            } else
+                              Navigator.pop(c);
                           },
                           child: Text("Confirmer")),
                       TextButton(
@@ -135,6 +142,24 @@ class _AddWateringButtonState extends State<AddWateringButton> {
                 ],
               ));
         });
+  }
+
+  AlertDialog buildDialogAddFirstWateringDate(BuildContext context) {
+    return AlertDialog(
+      title: new Text('Le premier arrosage de la plante a bien été ajouté'),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            "OK",
+          ),
+          onPressed: () {
+            Navigator.pop(context, true);
+            Navigator.pop(context, true);
+            Navigator.pop(context, true);
+          },
+        )
+      ],
+    );
   }
 
   Future<void> updateNextWateringDateOnDatabase() async {
