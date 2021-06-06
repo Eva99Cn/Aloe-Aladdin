@@ -222,7 +222,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
 
   AlertDialog buildDialogAddPlantSuccess(BuildContext context) {
     return AlertDialog(
-      title: new Text('La plante a bien été ajouté'),
+      title: new Text('La plante a bien été ajoutée'),
       actions: <Widget>[
         TextButton(
           child: Text(
