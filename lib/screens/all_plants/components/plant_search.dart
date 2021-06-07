@@ -67,8 +67,15 @@ class _PlantSearchState extends State<PlantSearch> {
       allPlants.clear();
       for (int i = 0; i < searchedPlants.length; i++) {
         String plantName = searchedPlants[i]['Nom'].toString().toUpperCase();
+        String plantSpecies =
+            searchedPlants[i]['Espèce'].toString().toUpperCase();
+        String plantDifficulty = searchedPlants[i]['Difficulté_Entretien']
+            .toString()
+            .toUpperCase(); // Simple,Moyen,Difficile
 
-        if (plantName.contains(query.toUpperCase())) {
+        if (plantName.contains(query.toUpperCase()) ||
+            plantDifficulty.contains(query.toUpperCase()) ||
+            plantSpecies.contains(query.toUpperCase())) {
           allPlants.add(searchedPlants[i]);
         }
       }
