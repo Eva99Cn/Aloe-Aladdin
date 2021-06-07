@@ -1,4 +1,4 @@
-import 'package:aloe/screens/home/components/home_screen.dart';
+import 'package:aloe/screens/home/home_screen.dart';
 import 'package:aloe/screens/news/news_screen.dart';
 import 'package:aloe/screens/profile/profile_screen.dart';
 import 'package:aloe/screens/sign_in/sign_in_screen.dart';
@@ -10,7 +10,9 @@ import '../../constants.dart';
 
 class NavScreen extends StatefulWidget {
   final int startingIndex;
-  const NavScreen({Key key, this.startingIndex}) : super(key: key);
+  final Widget selectedWidget;
+  const NavScreen({Key key, this.startingIndex, this.selectedWidget})
+      : super(key: key);
   @override
   _NavScreenState createState() => _NavScreenState();
 }
@@ -18,23 +20,22 @@ class NavScreen extends StatefulWidget {
 class _NavScreenState extends State<NavScreen> {
   @override
   int selectedIndex = 0;
+  Widget selectedWidget = HomeScreen();
 
   void initState() {
-    int selectedIndex = widget.startingIndex;
-  }
-
-  void _onSearchButtonPressed() {
-    print("search button clicked");
+    selectedIndex = widget.startingIndex;
+    selectedWidget =
+        widget.selectedWidget != null ? widget.selectedWidget : HomeScreen();
+    super.initState();
   }
 
   Widget build(BuildContext context) {
-    User currentUser = FirebaseAuth.instance.currentUser;
+    User _auth = FirebaseAuth.instance.currentUser;
+
     List<Widget> widgetOptions = <Widget>[
-      HomeScreen(),
+      selectedWidget,
       NewsScreen(),
-      currentUser != null
-          ? (currentUser.emailVerified ? ProfileScreen() : SignInScreen())
-          : SignInScreen()
+      _auth != null ? ProfileScreen() : SignInScreen()
     ];
 
     return Scaffold(
@@ -76,7 +77,7 @@ class _NavScreenState extends State<NavScreen> {
                               icon: Icons.home,
                               text: 'Accueil',
                               onPressed: () {
-                                Navigator.push(
+                                Navigator.pushReplacement(
                                   context,
                                   PageRouteBuilder(
                                     pageBuilder: (_, __, ___) => NavScreen(

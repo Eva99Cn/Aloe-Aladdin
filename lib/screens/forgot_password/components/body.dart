@@ -11,9 +11,7 @@ class Body extends StatelessWidget {
       width: double.infinity,
       child: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal:
-                  getProportionateScreenWidth(context, generalPaddingSize)),
+          padding: EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
               Text(
@@ -25,9 +23,6 @@ class Body extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(
-                  height: getProportionateScreenHeight(
-                      context, generalPaddingSize)),
               ForgotPassForm(),
             ],
           ),
