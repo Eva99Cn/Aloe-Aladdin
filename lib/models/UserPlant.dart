@@ -19,4 +19,8 @@ class UserPlant {
     else
       this.wateringDate = null;
   }
+
+  void setWateringDate(DateTime newWateringDate) {
+    this.wateringDate = newWateringDate;
+  }
 }

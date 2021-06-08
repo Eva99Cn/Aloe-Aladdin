@@ -42,13 +42,16 @@ class NotificationService {
   }
 
   void scheduleNotificationForNextWatering(UserPlant userPlant) async {
+    var now = new DateTime.now();
     await flutterLocalNotificationsPlugin.zonedSchedule(
         userPlant.hashCode,
         "Aloe",
         "N'oubliez pas d'arroser " + userPlant.name,
         tz.TZDateTime.now(tz.local).add(new Duration(
-            //seconds: 1
-            days: computeWatering(userPlant.wateringRequirements))),
+            //seconds: 1)),
+            days: computeWatering(userPlant.wateringRequirements) -
+                (now.day - userPlant.wateringDate.day),
+            seconds: 10)),
         const NotificationDetails(
             android: AndroidNotificationDetails("Aloe", "Aloe", 'Rappel')),
         payload: "Rappel",
@@ -67,11 +70,13 @@ class NotificationService {
 
   int computeWatering(String frequency) {
     int frequencyInDays = 0;
-    if (frequency == "1 fois par semaine")
+    if (frequency == "1 fois par semaine") {
       frequencyInDays = 7;
-    else if (frequency == "2 fois par semaine")
+    } else if (frequency == "2 fois par semaine") {
       frequencyInDays = 3;
-    else if (frequency == "3 fois par semaine") frequencyInDays = 2;
+    } else if (frequency == "3 fois par semaine") {
+      frequencyInDays = 2;
+    }
 
     return frequencyInDays;
   }

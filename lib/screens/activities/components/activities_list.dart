@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:aloe/components/add_watering_button.dart';
 import 'package:aloe/components/default_button.dart';
 import 'package:aloe/screens/all_plants/all_plants_screen.dart';
-import 'package:aloe/screens/all_plants/components/grid_of_plants.dart';
+import 'package:aloe/screens/my_plants/components/my_plant_details.dart';
 import 'package:aloe/screens/my_plants/my_plants_screen.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -84,135 +84,160 @@ class _ActivitiesListState extends State<ActivitiesList> {
                   );
                 }
 
-                return ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    physics: ScrollPhysics(),
-                    itemCount: userPlants.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      var isNextWateringDefined =
-                          userPlants[index]["prochainArrosage"] != null;
-                      var hasWateringDatePassed = formatter
-                              .parse(userPlants[index]["prochainArrosage"])
-                              .difference(nowDate)
-                              .inDays <
-                          0;
-                      int daysRemainingBeforeWatering = formatter
-                          .parse(userPlants[index]["prochainArrosage"])
-                          .difference(nowDate)
-                          .inDays
-                          .abs();
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
+                return userPlants.length == 0
+                    ? Center(
                         child: Column(
                           children: [
-                            ListTile(
-                              leading: GestureDetector(
-                                onTap: () {
-                                  if (!mounted) return;
-                                  setState(() {
-                                    plantId = userPlants[index]["Id_Ma_Plante"];
-                                  });
+                            Text(
+                              "Veuillez renseigner un arrosage",
+                              style: TextStyle(
+                                  fontSize: getProportionateScreenWidth(
+                                      context, bodyFontSize)),
+                            ),
+                            DefaultButton(
+                                press: () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => NavScreen(
+                                                startingIndex: homeScreenIndex,
+                                                selectedWidget:
+                                                    MyPlantsScreen(),
+                                              )));
                                 },
-                                child: Container(
-                                  height:
-                                      getProportionateScreenHeight(context, 70),
-                                  width:
-                                      getProportionateScreenWidth(context, 40),
-                                  child: CachedNetworkImage(
-                                    placeholder: (context, url) => Text(
-                                      "Loading...",
-                                      style: TextStyle(fontSize: 20),
+                                text: "Voir mes plantes")
+                          ],
+                        ),
+                      )
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        physics: ScrollPhysics(),
+                        itemCount: userPlants.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          var isNextWateringDefined =
+                              userPlants[index]["prochainArrosage"] != null;
+
+                          int daysRemainingBeforeWatering = formatter
+                              .parse(userPlants[index]["prochainArrosage"])
+                              .difference(nowDate)
+                              .inDays
+                              .abs();
+                          bool hasWateringDatePassed =
+                              daysRemainingBeforeWatering < 0;
+
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  leading: GestureDetector(
+                                    onTap: () {
+                                      if (!mounted) return;
+                                      setState(() {
+                                        plantId =
+                                            userPlants[index]["Id_Ma_Plante"];
+                                      });
+                                    },
+                                    child: Container(
+                                      height: getProportionateScreenHeight(
+                                          context, 70),
+                                      width: getProportionateScreenWidth(
+                                          context, 40),
+                                      child: CachedNetworkImage(
+                                        placeholder: (context, url) => Text(
+                                          "Loading...",
+                                          style: TextStyle(fontSize: 20),
+                                        ),
+                                        imageUrl: plantUrlFinder(index),
+                                        fit: BoxFit.fill,
+                                      ),
                                     ),
-                                    imageUrl: plantUrlFinder(index),
-                                    fit: BoxFit.fill,
                                   ),
-                                ),
-                              ),
-                              title: Text(
-                                userPlants[index]["NomPlante"],
-                                style: TextStyle(
-                                  fontSize:
-                                      getProportionateScreenHeight(context, 14),
-                                  color: Colors.black,
-                                ),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Arrosage ",
+                                  title: Text(
+                                    userPlants[index]["NomPlante"],
                                     style: TextStyle(
                                       fontSize: getProportionateScreenHeight(
                                           context, 14),
                                       color: Colors.black,
                                     ),
                                   ),
-                                  Text(
-                                    isNextWateringDefined
-                                        ? hasWateringDatePassed
-                                            ? "D + " +
-                                                daysRemainingBeforeWatering
-                                                    .toString()
-                                            : "D - " +
-                                                daysRemainingBeforeWatering
-                                                    .toString()
-                                        : "Pas défini",
-                                    style: TextStyle(
-                                      fontSize: getProportionateScreenHeight(
-                                          context, 14),
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  LinearProgressIndicator(
-                                    semanticsValue: formatter
-                                        .parse(userPlants[index]
-                                            ["prochainArrosage"])
-                                        .difference(nowDate)
-                                        .inDays
-                                        .toString(),
-                                    backgroundColor: Colors.grey,
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        formatter
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Arrosage ",
+                                        style: TextStyle(
+                                          fontSize:
+                                              getProportionateScreenHeight(
+                                                  context, 14),
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Text(
+                                        isNextWateringDefined
+                                            ? hasWateringDatePassed
+                                                ? "J + " +
+                                                    daysRemainingBeforeWatering
+                                                        .toString()
+                                                : "J - " +
+                                                    daysRemainingBeforeWatering
+                                                        .toString()
+                                            : "Pas défini",
+                                        style: TextStyle(
+                                          fontSize:
+                                              getProportionateScreenHeight(
+                                                  context, 14),
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      LinearProgressIndicator(
+                                        semanticsValue: formatter
+                                            .parse(userPlants[index]
+                                                ["prochainArrosage"])
+                                            .difference(nowDate)
+                                            .inDays
+                                            .toString(),
+                                        backgroundColor: Colors.grey,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                daysRemainingBeforeWatering > 0
+                                                    ? kPrimaryColor
+                                                    : Colors.red),
+                                        value: (1 -
+                                            formatter
                                                     .parse(userPlants[index]
                                                         ["prochainArrosage"])
                                                     .difference(nowDate)
-                                                    .inDays >
-                                                0
-                                            ? kPrimaryColor
-                                            : Colors.red),
-                                    value: 1 -
-                                        (formatter
-                                                .parse(userPlants[index]
-                                                    ["prochainArrosage"])
-                                                .difference(nowDate)
-                                                .inSeconds
-                                                .toDouble() /
-                                            formatter
-                                                .parse(userPlants[index]
-                                                    ["prochainArrosage"])
-                                                .difference(formatter.parse(
-                                                    userPlants[index]
-                                                        ["arrosageDate"]))
-                                                .inSeconds
-                                                .toDouble()),
+                                                    .inSeconds
+                                                    .toDouble() /
+                                                formatter
+                                                    .parse(userPlants[index]
+                                                        ["prochainArrosage"])
+                                                    .difference(formatter.parse(
+                                                        userPlants[index]
+                                                            ["arrosageDate"]))
+                                                    .inSeconds
+                                                    .toDouble()),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                              trailing: Container(
-                                height:
-                                    getProportionateScreenHeight(context, 60),
-                                width: getProportionateScreenWidth(context, 20),
-                                child: AddWateringButton(
-                                  plantName: userPlants[index]["NomPlante"],
-                                  isForActivitiesScreen: true,
+                                  trailing: Container(
+                                    height: getProportionateScreenHeight(
+                                        context, 60),
+                                    width: getProportionateScreenWidth(
+                                        context, 20),
+                                    child: AddWateringButton(
+                                      plantName: userPlants[index]["NomPlante"],
+                                      isForActivitiesScreen: true,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ],
-                        ),
-                      );
-                    });
+                          );
+                        });
               }
               return Container();
             }),
