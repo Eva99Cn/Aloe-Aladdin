@@ -122,10 +122,7 @@ class _AddWateringButtonState extends State<AddWateringButton> {
                             userPlant.setWateringDate(choosenDateTime);
                             NotificationService()
                                 .scheduleNotificationForNextWatering(userPlant);
-                            print(NotificationService().computeWatering(
-                                    userPlant.wateringRequirements) -
-                                (initialDate.hour -
-                                    userPlant.wateringDate.hour));
+
                             if (!widget.isForActivitiesScreen) {
                               showDialog(
                                   context: c,
