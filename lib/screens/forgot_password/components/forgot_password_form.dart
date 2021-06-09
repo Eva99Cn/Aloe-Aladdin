@@ -44,17 +44,18 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
             onSaved: (newValue) => email = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
-                removeError(error: kEmailNullError);
-              } if (emailValidatorRegExp.hasMatch(value)) {
-                removeError(error: kInvalidEmailError);
+                removeError(error: emailNullError);
+              }
+              if (emailValidatorRegExp.hasMatch(value)) {
+                removeError(error: invalidEmailError);
               }
               return null;
             },
             validator: (value) {
               if (value.isEmpty) {
-                addError(error: kEmailNullError);
+                addError(error: emailNullError);
               } else if (!emailValidatorRegExp.hasMatch(value)) {
-                addError(error: kInvalidEmailError);
+                addError(error: invalidEmailError);
                 return "";
               }
               return null;

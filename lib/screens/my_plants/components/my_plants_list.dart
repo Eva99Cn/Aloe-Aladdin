@@ -75,57 +75,51 @@ class _MyPlantsListState extends State<MyPlantsList> {
                         padding: const EdgeInsets.only(right: 10, bottom: 10),
                         child: Column(
                           children: [
-                            GestureDetector(
+                            ListTile(
                               onTap: () {
-                                setState(() {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => NavScreen(
-                                                startingIndex: homeScreenIndex,
-                                                selectedWidget:
-                                                    MyPlantDetailsScreen(
-                                                  userPlant: userPlants[index],
-                                                ),
-                                              )));
-                                });
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => NavScreen(
+                                              startingIndex: homeScreenIndex,
+                                              selectedWidget: MyPlantDetails(
+                                                userPlant: userPlants[index],
+                                              ),
+                                            )));
                               },
-                              child: ListTile(
-                                leading: Container(
-                                  height:
-                                      getProportionateScreenHeight(context, 70),
-                                  width:
-                                      getProportionateScreenWidth(context, 40),
-                                  child: CachedNetworkImage(
-                                    placeholder: (context, url) => Text(
-                                      "Loading...",
-                                      style: TextStyle(fontSize: 20),
-                                    ),
-                                    imageUrl: plantUrlFinder(index),
-                                    fit: BoxFit.fill,
+                              leading: Container(
+                                height:
+                                    getProportionateScreenHeight(context, 70),
+                                width: getProportionateScreenWidth(context, 40),
+                                child: CachedNetworkImage(
+                                  placeholder: (context, url) => Text(
+                                    "Loading...",
+                                    style: TextStyle(fontSize: 20),
                                   ),
+                                  imageUrl: plantUrlFinder(index),
+                                  fit: BoxFit.fill,
                                 ),
-                                title: Text(
-                                  userPlants[index]["NomPlante"],
-                                  style: TextStyle(
-                                    fontSize: getProportionateScreenHeight(
-                                        context, 14),
-                                    color: Colors.black,
-                                  ),
+                              ),
+                              title: Text(
+                                userPlants[index]["NomPlante"],
+                                style: TextStyle(
+                                  fontSize:
+                                      getProportionateScreenHeight(context, 14),
+                                  color: Colors.black,
                                 ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Voir plus de détails ",
-                                      style: TextStyle(
-                                        fontSize: getProportionateScreenHeight(
-                                            context, 14),
-                                        color: Colors.black,
-                                      ),
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Voir plus de détails ",
+                                    style: TextStyle(
+                                      fontSize: getProportionateScreenHeight(
+                                          context, 14),
+                                      color: Colors.black,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:aloe/components/add_plants_button.dart';
 import 'package:aloe/components/add_watering_button.dart';
 import 'package:aloe/components/default_button.dart';
 import 'package:aloe/screens/all_plants/all_plants_screen.dart';
@@ -68,23 +69,14 @@ class _ActivitiesListState extends State<ActivitiesList> {
                               fontSize: getProportionateScreenWidth(
                                   context, bodyFontSize)),
                         ),
-                        DefaultButton(
-                            press: () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => NavScreen(
-                                            startingIndex: homeScreenIndex,
-                                            selectedWidget: AllPlantsScreen(),
-                                          )));
-                            },
-                            text: "Ajouter des plantes")
+                        AddPlantsButton()
                       ],
                     ),
                   );
                 }
 
-                return userPlants.length == 0
+                bool isUserPlantLengthNull = userPlants.length == 0;
+                return isUserPlantLengthNull
                     ? Center(
                         child: Column(
                           children: [
@@ -133,11 +125,18 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                 ListTile(
                                   leading: GestureDetector(
                                     onTap: () {
-                                      if (!mounted) return;
-                                      setState(() {
-                                        plantId =
-                                            userPlants[index]["Id_Ma_Plante"];
-                                      });
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => NavScreen(
+                                                    startingIndex:
+                                                        homeScreenIndex,
+                                                    selectedWidget:
+                                                        MyPlantDetails(
+                                                      userPlant:
+                                                          userPlants[index],
+                                                    ),
+                                                  )));
                                     },
                                     child: Container(
                                       height: getProportionateScreenHeight(
@@ -203,7 +202,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                         valueColor:
                                             AlwaysStoppedAnimation<Color>(
                                                 daysRemainingBeforeWatering > 0
-                                                    ? kPrimaryColor
+                                                    ? primaryColor
                                                     : Colors.red),
                                         value: (1 -
                                             formatter

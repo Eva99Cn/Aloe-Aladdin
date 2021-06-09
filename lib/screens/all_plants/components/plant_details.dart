@@ -55,6 +55,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                   plantInformation = _values;
                 } catch (err) {}
 
+                bool hasNoError = error != "";
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -114,7 +115,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                     Row(
                                       children: [
                                         Visibility(
-                                          visible: error != "" ? true : false,
+                                          visible: hasNoError ? true : false,
                                           child: Icon(
                                             Icons.error,
                                             color: Colors.red,
@@ -167,7 +168,7 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
                                                       context);
                                                 });
                                           } else {
-                                            setError(kPlantNameExistsError);
+                                            setError(plantNameExistsError);
                                           }
                                         }
                                       },
@@ -260,11 +261,11 @@ class _PlantDetailsScreenState extends State<PlantDetailsScreen> {
       },
       validator: (value) {
         if (value.isEmpty) {
-          setError(kPlantNameNullError);
+          setError(plantNameNullError);
 
           return "";
         } else if (!plantNameValidatorRegExp.hasMatch(value)) {
-          setError(kInvalidPlantNameError);
+          setError(invalidPlantNameError);
 
           return "";
         }

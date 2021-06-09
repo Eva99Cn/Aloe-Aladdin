@@ -21,7 +21,7 @@ class IntroScreen extends StatelessWidget {
             color: Colors.black),
       ),
       backgroundColor: Colors.white,
-      loaderColor: kPrimaryColor,
+      loaderColor: primaryColor,
       image: Image(
         image: AssetImage('assets/images/logo.png'),
       ),

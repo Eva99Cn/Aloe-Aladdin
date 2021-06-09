@@ -84,19 +84,19 @@ class _SignUpFormState extends State<SignUpForm> {
       onSaved: (newValue) => confirmPassword = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kConfirmPassNullError);
+          removeError(error: confirmPassNullError);
         }
         if (password == confirmPassword) {
-          removeError(error: kMatchPassError);
+          removeError(error: matchPassError);
         }
         confirmPassword = value;
       },
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kConfirmPassNullError);
+          addError(error: confirmPassNullError);
           return "";
         } else if (password != value) {
-          addError(error: kMatchPassError);
+          addError(error: matchPassError);
           return "";
         }
         return null;
@@ -120,19 +120,19 @@ class _SignUpFormState extends State<SignUpForm> {
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
+          removeError(error: emailNullError);
         }
         if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
+          removeError(error: invalidEmailError);
         }
         email = value;
       },
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
+          addError(error: emailNullError);
           return "";
         } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
+          addError(error: invalidEmailError);
           return "";
         }
         return null;
@@ -156,19 +156,19 @@ class _SignUpFormState extends State<SignUpForm> {
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
+          removeError(error: passNullError);
         }
         if (value.length >= 8) {
-          removeError(error: kShortPassError);
+          removeError(error: shortPassError);
         }
         password = value;
       },
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kPassNullError);
+          addError(error: passNullError);
           return "";
         } else if (value.length < 8) {
-          addError(error: kShortPassError);
+          addError(error: shortPassError);
           return "";
         }
         return null;

@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:aloe/components/add_plants_button.dart';
 import 'package:aloe/components/add_watering_button.dart';
 import 'package:aloe/components/return_button.dart';
 import 'package:aloe/models/UserPlant.dart';
@@ -45,21 +46,7 @@ class _BodyState extends State<Body> {
                               startingIndex: homeScreenIndex,
                             )));
                   }),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          primary: kPrimaryColor,
-                          padding: const EdgeInsets.all(8.0)),
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => NavScreen(
-                                      startingIndex: homeScreenIndex,
-                                      selectedWidget: AllPlantsScreen(),
-                                    )));
-                      },
-                      child: Text("Ajouter des plantes")),
+                  AddPlantsButton(),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text("Mes plantes"),

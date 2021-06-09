@@ -2,33 +2,27 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-const kPrimaryColor = Color(0xFF16B84E); // Vert principal
-const kBackgroundColor = Color(0xFFF5F5DC); //Beige clair
-const kStyle1ButtonColor = Color(0xffC5E1A5);
-const kSecondaryColor = Color(0xff09423E); // Vert Foncé
-const kTextColor = Color(0xFF757575); // Noir
-
-const kAnimationDuration = Duration(milliseconds: 200);
-
-const defaultDuration = Duration(milliseconds: 250);
+const primaryColor = Color(0xFF16B84E); // Vert principal
+const backgroundColor = Color(0xFFF5F5DC); //Beige clair
+const style1ButtonColor = Color(0xffC5E1A5);
 
 // Form Error
 final RegExp emailValidatorRegExp =
     RegExp(r"^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
-String kEmailNullError = "Veuillez entrer un mail";
-String kInvalidEmailError = "Le mail n'est pas valide";
-String kPassNullError = "Veuillez entrer un mot de passe";
-String kShortPassError = "Le mot de passe est trop court";
-String kConfirmPassNullError = "Veuillez confirmer votre mot de passe";
+String emailNullError = "Veuillez entrer un mail";
+String invalidEmailError = "Le mail n'est pas valide";
+String passNullError = "Veuillez entrer un mot de passe";
+String shortPassError = "Le mot de passe est trop court";
+String confirmPassNullError = "Veuillez confirmer votre mot de passe";
 
-String kMatchPassError = "Les mots de passe ne correspondent pas";
-String kPlantNameNullError = "Veuillez entrer un surnom";
-String kPlantNameExistsError = "Le surnom existe deja";
-String kInvalidPlantNameError =
+String matchPassError = "Les mots de passe ne correspondent pas";
+String plantNameNullError = "Veuillez entrer un surnom";
+String plantNameExistsError = "Le surnom existe deja";
+String invalidPlantNameError =
     "Le surnom ne doit contenir que des lettres, des nombres et ne peut contenir d'espace au début et à la fin";
 
-String kTooManyAttempts =
+String tooManyAttemptsError =
     "L'accès à ce compte a été temporairement désactivé en raison de nombreuses tentatives de connexion infructueuses.";
 String kWrongPassword = "Le mot de passe n'est pas valide";
 

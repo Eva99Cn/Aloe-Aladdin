@@ -28,6 +28,7 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
+    var isGridOfPLantWidget = selectedOption == 0;
     return SafeArea(
       child: SizedBox(
         child: Padding(
@@ -41,7 +42,7 @@ class _BodyState extends State<Body> {
                     ReturnButton(),
                     Spacer(),
                     Visibility(
-                      visible: selectedOption == 0 ? true : false,
+                      visible: isGridOfPLantWidget ? true : false,
                       child: IconButton(
                           icon: Icon(Icons.search),
                           onPressed: () {

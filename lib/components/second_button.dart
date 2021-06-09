@@ -18,7 +18,7 @@ class SecondButton extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: TextButton(
         style: TextButton.styleFrom(
-          backgroundColor: kStyle1ButtonColor,
+          backgroundColor: style1ButtonColor,
         ),
         onPressed: press,
         child: Padding(

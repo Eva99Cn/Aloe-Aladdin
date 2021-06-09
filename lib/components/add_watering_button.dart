@@ -1,10 +1,10 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:aloe/constants.dart';
 import 'package:aloe/models/UserPlant.dart';
 import 'package:aloe/services/notifications_services.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 import '../size_config.dart';
 
@@ -62,7 +62,7 @@ class _AddWateringButtonState extends State<AddWateringButton> {
               elevation: 0,
               primary: widget.isForActivitiesScreen
                   ? Colors.transparent
-                  : kPrimaryColor,
+                  : primaryColor,
               padding: const EdgeInsets.all(8.0)),
           child: Container(
             width: getProportionateScreenWidth(context, 100),
@@ -130,8 +130,9 @@ class _AddWateringButtonState extends State<AddWateringButton> {
                                     return buildDialogAddFirstWateringDate(
                                         context);
                                   });
-                            } else
+                            } else {
                               Navigator.pop(c);
+                            }
                           },
                           child: Text("Confirmer")),
                       TextButton(

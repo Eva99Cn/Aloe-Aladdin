@@ -21,7 +21,7 @@ class DashboardButton extends StatelessWidget {
         height: getProportionateScreenHeight(context, 100),
         child: TextButton(
           style: TextButton.styleFrom(
-            backgroundColor: kPrimaryColor,
+            backgroundColor: primaryColor,
           ),
           onPressed: press,
           child: Text(

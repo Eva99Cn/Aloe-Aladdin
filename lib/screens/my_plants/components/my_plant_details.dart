@@ -1,6 +1,5 @@
 import 'package:aloe/components/add_watering_button.dart';
 import 'package:aloe/components/plant_information_row.dart';
-import 'package:aloe/components/return_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -8,14 +7,14 @@ import 'package:flutter/material.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 
-class MyPlantDetailsScreen extends StatefulWidget {
+class MyPlantDetails extends StatefulWidget {
   final Map<dynamic, dynamic> userPlant;
-  const MyPlantDetailsScreen({Key key, this.userPlant}) : super(key: key);
+  const MyPlantDetails({Key key, this.userPlant}) : super(key: key);
   @override
-  _MyPlantDetailsScreenState createState() => _MyPlantDetailsScreenState();
+  _MyPlantDetailsState createState() => _MyPlantDetailsState();
 }
 
-class _MyPlantDetailsScreenState extends State<MyPlantDetailsScreen> {
+class _MyPlantDetailsState extends State<MyPlantDetails> {
   Map<dynamic, dynamic> plantInformation = {};
   String plantName = "";
   List<String> errors = [];
@@ -35,7 +34,6 @@ class _MyPlantDetailsScreenState extends State<MyPlantDetailsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ReturnButton(),
         StreamBuilder(
             stream: databaseReference
                 .child('AllPlantes')

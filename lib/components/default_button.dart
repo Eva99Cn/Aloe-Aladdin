@@ -18,7 +18,7 @@ class DefaultButton extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: TextButton(
         style: TextButton.styleFrom(
-          backgroundColor: kPrimaryColor,
+          backgroundColor: primaryColor,
         ),
         onPressed: press,
         child: Padding(

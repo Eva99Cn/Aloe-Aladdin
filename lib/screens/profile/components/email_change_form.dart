@@ -117,19 +117,20 @@ class _EmailChangeFormState extends State<EmailChangeForm> {
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
+          removeError(error: emailNullError);
+        }
+        if (emailValidatorRegExp.hasMatch(value)) {
+          removeError(error: invalidEmailError);
         }
 
         email = value;
       },
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
+          addError(error: emailNullError);
           return "";
         } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
+          addError(error: invalidEmailError);
           return "";
         }
         return null;
@@ -153,19 +154,19 @@ class _EmailChangeFormState extends State<EmailChangeForm> {
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
+          removeError(error: passNullError);
         }
         if (value.length >= 8) {
-          removeError(error: kShortPassError);
+          removeError(error: shortPassError);
         }
         password = value;
       },
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kPassNullError);
+          addError(error: passNullError);
           return "";
         } else if (value.length < 8) {
-          addError(error: kShortPassError);
+          addError(error: shortPassError);
           return "";
         }
         return null;
@@ -201,7 +202,7 @@ class _EmailChangeFormState extends State<EmailChangeForm> {
         .catchError((err) {
       if (err.toString() ==
           "[firebase_auth/too-many-requests] Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.") {
-        addError(error: kTooManyAttempts);
+        addError(error: tooManyAttemptsError);
       } else if (err.toString() ==
           "[firebase_auth/wrong-password] The password is invalid or the user does not have a password.") {
         addError(error: kWrongPassword);

@@ -29,8 +29,8 @@ class _MyAppState extends State<MyApp> {
       title: 'Aloe',
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
-        primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: kBackgroundColor,
+        primaryColor: primaryColor,
+        scaffoldBackgroundColor: backgroundColor,
         accentColor: Colors.black,
         fontFamily: 'Montserrat',
       ),

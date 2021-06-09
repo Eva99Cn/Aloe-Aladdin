@@ -110,19 +110,19 @@ class _PasswordChangeFormState extends State<PasswordChangeForm> {
       onSaved: (newValue) => confirmPassword = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
+          removeError(error: passNullError);
         }
         if (newpassword == value) {
-          removeError(error: kMatchPassError);
+          removeError(error: matchPassError);
         }
         confirmPassword = value;
       },
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kPassNullError);
+          addError(error: passNullError);
           return "";
         } else if ((newpassword != value)) {
-          addError(error: kMatchPassError);
+          addError(error: matchPassError);
           return "";
         }
         return null;
@@ -146,13 +146,13 @@ class _PasswordChangeFormState extends State<PasswordChangeForm> {
       onSaved: (newValue) => oldPassword = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
+          removeError(error: passNullError);
         }
         oldPassword = value;
       },
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kPassNullError);
+          addError(error: passNullError);
           return "";
         }
         return null;
@@ -176,19 +176,19 @@ class _PasswordChangeFormState extends State<PasswordChangeForm> {
       onSaved: (newValue) => newpassword = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
+          removeError(error: passNullError);
         }
         if (value.length >= 8) {
-          removeError(error: kShortPassError);
+          removeError(error: shortPassError);
         }
         newpassword = value;
       },
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kPassNullError);
+          addError(error: passNullError);
           return "";
         } else if (value.length < 8) {
-          addError(error: kShortPassError);
+          addError(error: shortPassError);
           return "";
         }
         return null;
@@ -222,7 +222,7 @@ class _PasswordChangeFormState extends State<PasswordChangeForm> {
         .catchError((err) {
       if (err.toString() ==
           "[firebase_auth/too-many-requests] Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.") {
-        addError(error: kTooManyAttempts);
+        addError(error: tooManyAttemptsError);
       } else if (err.toString() ==
           "[firebase_auth/wrong-password] The password is invalid or the user does not have a password.") {
         addError(error: kWrongPassword);

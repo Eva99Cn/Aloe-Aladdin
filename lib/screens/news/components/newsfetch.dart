@@ -12,15 +12,15 @@ Future<List<News>> _getNews() async {
 
   var jsonData = json.decode(response.body);
 
-  List<News> Articles = [];
+  List<News> articles = [];
 
   for (var articles in jsonData["articles"]) {
     News newArticle = News(articles["publishedAt"], articles["title"],
         articles["url"], articles["author"], articles["urlToImage"]);
-    Articles.add(newArticle);
+    articles.add(newArticle);
   }
 
-  return Articles;
+  return articles;
 }
 
 class NewsFetch extends StatefulWidget {
