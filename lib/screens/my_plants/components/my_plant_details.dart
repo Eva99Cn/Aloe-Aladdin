@@ -1,5 +1,6 @@
 import 'package:aloe/components/add_watering_button.dart';
 import 'package:aloe/components/plant_information_row.dart';
+import 'package:aloe/components/return_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,7 @@ class _MyPlantDetailsState extends State<MyPlantDetails> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        ReturnButton(),
         StreamBuilder(
             stream: databaseReference
                 .child('AllPlantes')

@@ -33,30 +33,7 @@ class _AddWateringButtonState extends State<AddWateringButton> {
       child: SizedBox(
         child: ElevatedButton(
           onPressed: () {
-            databaseReference
-                .child("Users")
-                .child(_auth.uid)
-                .child(widget.plantName)
-                .once()
-                .then((DataSnapshot snapshot) {
-              Map<dynamic, dynamic> userPlantInformation = snapshot.value;
-              int plantId = userPlantInformation["IdPlante"] - 1;
-              databaseReference
-                  .child("AllPlantes")
-                  .child(plantId.toString())
-                  .once()
-                  .then((DataSnapshot snapshotPlant) {
-                Map<dynamic, dynamic> _values = snapshotPlant.value;
-                plantInformation = _values;
-
-                userPlant = new UserPlant(
-                  userPlantInformation,
-                  plantInformation["Fréquence_Arrosage"],
-                );
-                userPlant.init();
-                bottomDatePicker(context, userPlant);
-              });
-            });
+            getPlantInformationFromDatabase(userPlant, context);
           },
           style: ElevatedButton.styleFrom(
               elevation: 0,
@@ -90,6 +67,39 @@ class _AddWateringButtonState extends State<AddWateringButton> {
         ),
       ),
     );
+  }
+
+  Future<void> getPlantInformationFromDatabase(
+      UserPlant userPlant, BuildContext context) async {
+    await databaseReference
+        .child("Users")
+        .child(_auth.uid)
+        .child(widget.plantName)
+        .once()
+        .then((DataSnapshot snapshot) {
+      Map<dynamic, dynamic> userPlantInformation = snapshot.value;
+      int plantId = userPlantInformation["IdPlante"] - 1;
+      databaseReference
+          .child("AllPlantes")
+          .child(plantId.toString())
+          .once()
+          .then((DataSnapshot snapshotPlant) {
+        Map<dynamic, dynamic> _values = snapshotPlant.value;
+        plantInformation = _values;
+        userPlant = createUserPlant(userPlant, userPlantInformation);
+        bottomDatePicker(context, userPlant);
+      });
+    });
+  }
+
+  UserPlant createUserPlant(
+      UserPlant userPlant, Map<dynamic, dynamic> userPlantInformation) {
+    userPlant = new UserPlant(
+      userPlantInformation,
+      plantInformation["Fréquence_Arrosage"],
+    );
+    userPlant.init();
+    return userPlant;
   }
 
   bottomDatePicker(context, UserPlant userPlant) {

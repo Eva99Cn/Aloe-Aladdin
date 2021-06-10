@@ -18,7 +18,6 @@ class NavScreen extends StatefulWidget {
 }
 
 class _NavScreenState extends State<NavScreen> {
-  @override
   int selectedIndex = 0;
   Widget selectedWidget = HomeScreen();
 
@@ -29,6 +28,7 @@ class _NavScreenState extends State<NavScreen> {
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
     User _auth = FirebaseAuth.instance.currentUser;
 

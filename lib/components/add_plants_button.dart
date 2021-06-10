@@ -3,13 +3,7 @@ import 'package:aloe/screens/all_plants/all_plants_screen.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:aloe/constants.dart';
-import 'package:aloe/models/UserPlant.dart';
-import 'package:aloe/services/notifications_services.dart';
-
-import '../size_config.dart';
 
 class AddPlantsButton extends StatefulWidget {
   @override

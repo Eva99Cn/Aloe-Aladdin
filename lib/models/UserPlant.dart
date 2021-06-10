@@ -3,9 +3,9 @@ import '../constants.dart';
 class UserPlant {
   final Map<dynamic, dynamic> userPlantInformation;
   String name = "";
-  DateTime wateringDate = null;
+  DateTime wateringDate;
   int plantId = 0;
-  DateTime acquisitionDate = null;
+  DateTime acquisitionDate;
   final String wateringRequirements;
 
   UserPlant(this.userPlantInformation, this.wateringRequirements);

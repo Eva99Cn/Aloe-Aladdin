@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:aloe/components/add_plants_button.dart';
 import 'package:aloe/components/add_watering_button.dart';
 import 'package:aloe/components/default_button.dart';
-import 'package:aloe/screens/all_plants/all_plants_screen.dart';
 import 'package:aloe/screens/my_plants/components/my_plant_details.dart';
 import 'package:aloe/screens/my_plants/my_plants_screen.dart';
 import 'package:aloe/screens/nav/nav_screen.dart';
@@ -113,8 +112,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
                           int daysRemainingBeforeWatering = formatter
                               .parse(userPlants[index]["prochainArrosage"])
                               .difference(nowDate)
-                              .inDays
-                              .abs();
+                              .inDays;
                           bool hasWateringDatePassed =
                               daysRemainingBeforeWatering < 0;
 
@@ -179,6 +177,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                             ? hasWateringDatePassed
                                                 ? "J + " +
                                                     daysRemainingBeforeWatering
+                                                        .abs()
                                                         .toString()
                                                 : "J - " +
                                                     daysRemainingBeforeWatering
@@ -201,7 +200,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                         backgroundColor: Colors.grey,
                                         valueColor:
                                             AlwaysStoppedAnimation<Color>(
-                                                daysRemainingBeforeWatering > 0
+                                                !hasWateringDatePassed
                                                     ? primaryColor
                                                     : Colors.red),
                                         value: (1 -

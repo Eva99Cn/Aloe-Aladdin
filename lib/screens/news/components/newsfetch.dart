@@ -7,16 +7,17 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 Future<List<News>> _getNews() async {
-  final response = await http.get(Uri.parse(
-      "https://newsapi.org/v2/everything?q=Botanique&sortBy=popularity&apiKey=5c5ec550fd934ca0a833d6f458b25de1"));
+  var url = Uri.parse(
+      "https://newsapi.org/v2/everything?q=Botanique&sortBy=popularity&apiKey=5c5ec550fd934ca0a833d6f458b25de1");
+  final response = await http.get(url);
 
   var jsonData = json.decode(response.body);
 
   List<News> articles = [];
 
-  for (var articles in jsonData["articles"]) {
-    News newArticle = News(articles["publishedAt"], articles["title"],
-        articles["url"], articles["author"], articles["urlToImage"]);
+  for (var article in jsonData["articles"]) {
+    News newArticle =
+        News(article["title"], article["url"], article["urlToImage"]);
     articles.add(newArticle);
   }
 
@@ -40,7 +41,7 @@ class _NewsFetchState extends State<NewsFetch> {
           if (snapshot.data == null) {
             return Container(
               child: Center(
-                child: Text("Loading..."),
+                child: Text("Chargement..."),
               ),
             );
           } else {
